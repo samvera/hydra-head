@@ -23,9 +23,11 @@ require 'rspec/core/rake_task'
 require File.expand_path('../config/application', __FILE__)
 Hydra::Head::Application.load_tasks
 
-RSpec::Core::RakeTask.new(:spec) do |spec|
-  spec.pattern = FileList['spec/**/*_spec.rb']
-end
+# This task is aldready defined by Hydra::Head::Application.load_tasks
+# Defining it here will cause it to be declared twice (and run twice when called)
+# RSpec::Core::RakeTask.new(:spec) do |spec|
+#   spec.pattern = FileList['spec/**/*_spec.rb']
+# end
 
 RSpec::Core::RakeTask.new(:rcov) do |spec|
   spec.pattern = 'spec/**/*_spec.rb'
