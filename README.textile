@@ -4,7 +4,7 @@ The hydra-head rails engine gives you the basic functionality for creating a Hyd
 
 Underneath a Hydra Head, content is stored in a "Fedora Repository":http://fedora-commons.org and indexed in Solr.  You can set up any number of Hydra Heads on top of one Fedora Repository.  This allows you to expose the same body of content to many different people in a wide variety of ways...hence the name _Hydra_: *One Body, Many Heads*
 
-This is your starting point for taking advantage of the technologies developed by the "Hydra Project":http://projecthydra.org.  The project wiki is at http://wiki.duraspace.org/display/hydra.
+This is your starting point for taking advantage of the technologies developed by the "Hydra Project":http://projecthydra.org.  The project wiki is at "http://wiki.duraspace.org/display/hydra":http://wiki.duraspace.org/display/hydra.
 
 h2. What is a Hydra Head?
 
@@ -68,6 +68,6 @@ h2. Getting Involved
 The "Hydra Wiki":https://wiki.duraspace.org/display/hydra has a section of useful "Developer Documentation":https://wiki.duraspace.org/display/hydra/developers, including additional information about how to get involved.
 
 *Mailing List*: "hydra-tech":http://groups.google.com/group/hydra-tech
-*Ticket Tracker*: https://jira.duraspace.org/browse/HYDRA
-*Wiki*: https://wiki.duraspace.org/display/hydra/developers
+*Ticket Tracker*: "https://jira.duraspace.org/browse/HYDRA":https://jira.duraspace.org/browse/HYDRA
+*Wiki*: "https://wiki.duraspace.org/display/hydra/developers":https://wiki.duraspace.org/display/hydra/developers
 
