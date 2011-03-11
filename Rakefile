@@ -20,8 +20,8 @@ require 'rake/rdoctask'
 require 'rspec/core'
 require 'rspec/core/rake_task'
 
-Hydra::Engine::Application.load_tasks
-
+require File.expand_path('../config/application', __FILE__)
+Hydra::Head::Application.load_tasks
 
 RSpec::Core::RakeTask.new(:spec) do |spec|
   spec.pattern = FileList['spec/**/*_spec.rb']
@@ -36,7 +36,8 @@ task :default => :spec
 
 Rake::RDocTask.new do |rdoc|
   require "hydra-head/version"
-  version = Hydra::Head.const_defined?(VERSION) ? Hydra::Head::VERSION : ""
+  
+  version = Hydra::Head.const_defined?("VERSION") ? Hydra::Head::VERSION : ""
 
   rdoc.rdoc_dir = 'rdoc'
   rdoc.title = "hydra-head #{version}"
