@@ -22,8 +22,7 @@ group :development, :test do
 
 end
  
-# Please see Jeweler section in the Rakefile for runtime dependency information.
-# Jeweler puts those dependencies into the gemspec (hydra-head.gemspec)
+# Please see hydra-head.gemspec for runtime dependency information.
 
 gemspec
 
