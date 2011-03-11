@@ -25,6 +25,12 @@ rerun.txt
 coverage.data
 coverage/*
 
+## TEST APP
+pkg/
+spec/dummy/db/*.sqlite3
+spec/dummy/log/*.log
+spec/dummy/tmp/
+
 
 ## PROJECT::GENERAL
 coverage

@@ -4,13 +4,13 @@ require "hydra-head/version"
 
 Gem::Specification.new do |s|
   s.name        = "hydra-head"
-  s.version     = Hydra::Repository::VERSION
+  s.version     = Hydra::Head::VERSION
   s.platform    = Gem::Platform::RUBY
-  s.authors     = ["TODO: Write your name"]
-  s.email       = ["TODO: Write your email address"]
-  s.homepage    = ""
-  s.summary     = %q{TODO: Write a gem summary}
-  s.description = %q{TODO: Write a gem description}
+  s.authors     = ["Matt Zumwalt"]
+  s.email       = ["hydra-tech@groups.google.com","collaborate@yourmediashelf.com"]
+  s.homepage    = "http://projecthydra.org"
+  s.summary     = %q{A rails engine that gives you the basic functionality for creating a Hydra Head}
+  s.description = %q{The hydra-head rails engine gives you the basic functionality for creating a Hydra Head. Hydra Heads allow you to Create, Annotate, Arrange, and Disseminate digital content of any type.}
 
   s.rubyforge_project = "hydra-head"
 

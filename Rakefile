@@ -1,7 +1,28 @@
-# Add your own tasks in files placed in lib/tasks ending in .rake,
-# for example lib/tasks/capistrano.rake, and they will automatically be available to Rake.
+# encoding: UTF-8
+require 'rubygems'
+begin
+  require 'bundler/setup'
+rescue LoadError
+  puts 'You must `gem install bundler` and `bundle install` to run rake tasks'
+end
 
-require File.expand_path('../config/application', __FILE__)
 require 'rake'
+require 'rake/rdoctask'
 
-HydraRepository::Application.load_tasks
+require 'rspec/core'
+require 'rspec/core/rake_task'
+
+Hydra::Engine::Application.load_tasks
+
+
+RSpec::Core::RakeTask.new(:spec)
+
+task :default => :spec
+
+Rake::RDocTask.new(:rdoc) do |rdoc|
+  rdoc.rdoc_dir = 'rdoc'
+  rdoc.title    = 'Hydra-head'
+  rdoc.options << '--line-numbers' << '--inline-source'
+  rdoc.rdoc_files.include('README.rdoc')
+  rdoc.rdoc_files.include('lib/**/*.rb')
+end
