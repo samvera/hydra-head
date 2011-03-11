@@ -11,13 +11,13 @@ Hydra Heads combine:
 * Ruby on Rails "homepage":http://rubyonrails.org
 * Blacklight "code":https://github.com/projectblacklight/blacklight | "homepage":http://projectblacklight.org
 * ActiveFedora "code":https://github.com/mediashelf/active_fedora | "homepage":http://yourmediashelf.com/activefedora/
-* OM "code":https://github.com/mediashelf/om]
-* Solrizer "code":https://github.com/projecthydra/solrizer]
+* OM "code":https://github.com/mediashelf/om
+* Solrizer "code":https://github.com/projecthydra/solrizer
 * Hydra Head Access Controls based on Hydra rightsMetadata
 * Hydra Head View Helpers
 * Hydra Medatata jquery plugin
 
-Underneath a Hydra Head, content is stored in a Fedora Repository and indexed in Solr.  
+Underneath a Hydra Head, content is stored in a Fedora Repository and indexed in Solr.  You can set up any number of Hydra Heads on top of one Fedora Repository.  This allows you to expose the same body of content to many different people in a wide variety of ways...hence the name _Hydra_: *One Body, Many Heads*
 
 h2. Developer Tools for Building Hydra Heads
 
