@@ -1,6 +1,8 @@
 h1. hydra-head Rails Engine
 
-The hydra-head rails engine gives you the basic functionality for creating a Hydra Head.  Hydra Heads are specialized interfaces to Fedora Repositories.
+The hydra-head rails engine gives you the basic functionality for creating a Hydra Head.  Hydra Heads allow you to Create, Annotate, Arrange, and Disseminate digital content of any type.
+
+Underneath a Hydra Head, content is stored in a "Fedora Repository":http://fedora-commons.org and indexed in Solr.  You can set up any number of Hydra Heads on top of one Fedora Repository.  This allows you to expose the same body of content to many different people in a wide variety of ways...hence the name _Hydra_: *One Body, Many Heads*
 
 This is your starting point for taking advantage of the technologies developed by the "Hydra Project":http://projecthydra.org.  The project wiki is at http://wiki.duraspace.org/display/hydra.
 
@@ -11,13 +13,25 @@ Hydra Heads combine:
 * Ruby on Rails "homepage":http://rubyonrails.org
 * Blacklight "code":https://github.com/projectblacklight/blacklight | "homepage":http://projectblacklight.org
 * ActiveFedora "code":https://github.com/mediashelf/active_fedora | "homepage":http://yourmediashelf.com/activefedora/
-* OM "code":https://github.com/mediashelf/om
+* OM (opinionated metadata) "code":https://github.com/mediashelf/om
 * Solrizer "code":https://github.com/projecthydra/solrizer
 * Hydra Head Access Controls based on Hydra rightsMetadata
 * Hydra Head View Helpers
 * Hydra Medatata jquery plugin
 
-Underneath a Hydra Head, content is stored in a Fedora Repository and indexed in Solr.  You can set up any number of Hydra Heads on top of one Fedora Repository.  This allows you to expose the same body of content to many different people in a wide variety of ways...hence the name _Hydra_: *One Body, Many Heads*
+All of these tools work together so that you can create custom interfaces for Creating, Annotating and Arranging content that is stored in "Fedora Repositories":http://fedora-commons.org and indexed in "Solr":http://lucene.apache.org/solr/.
+
+
+h2. How to build a Hydra Head
+
+# Create a Rails Application
+# Install the hydra-head gem and require it in your Rails app
+# Install the gems for any Hydra Content Types that you want to use in your Hydra Head
+# Write some tests & start coding
+
+When you've got something working, post it on github and email the hydra-tech mailing list to let us know what you're up to.
+
+When you want to show off your work, create a 5-15 minute screencast showing the unique features of your head.  You can then submit the screeencast, along with information about your Hydra Head, to the Hydra Head Showcase.
 
 h2. Developer Tools for Building Hydra Heads
 
@@ -31,14 +45,29 @@ h2. Hydra Content Types
 
 When you create a Hydra Head that deals with a new type of content, you often want to expose that same content in other Hydra Heads.  To do this, put the models & views for that content type into a Rails Engine and bundle it up into a gem.  That way anyone can install that gem into their own Hydra Heads and start using it.
 
-h2. How to build a Hydra Head
+Some examples of Content Types people have dealt with in Hydra Heads:
 
-# Create a Rails Application
-# Install the hydra-head gem and require it in your Rails app
-# Install the gems for any Hydra Content Types that you want to use in your Hydra Head
-# Write some tests & start coding
+* Open Access Articles & Publications
+* Scanned Images & Books
+* Audio & Video Recordings
+* Datasets 
+* Electronic Theses and Dissertations
+* Born-digital Archival Collections
+* XML records
 
-When you've got something working, post it on github and email the hydra-tech mailing list to let us know what you're up to.
+In order to support this diversity of content, people have employed a wide range of metadata standards.  Some of the common standards that have been used:
 
-When you want to show off your work, create a 5-15 minute screencast showing the unique features of your head.  You can then submit the screeencast, along with information about your Hydra Head, to the Hydra Head Showcase.
+* MODS & Dublin Core
+* EAD
+* VRA
+* TEI
+* PBCore
+
+h2. Getting Involved
+
+The "Hydra Wiki":https://wiki.duraspace.org/display/hydra has a section of useful "Developer Documentation":https://wiki.duraspace.org/display/hydra/developers, including additional information about how to get involved.
+
+*Mailing List*: "hydra-tech":http://groups.google.com/group/hydra-tech
+*Ticket Tracker*: https://jira.duraspace.org/browse/HYDRA
+*Wiki*: https://wiki.duraspace.org/display/hydra/developers
 
