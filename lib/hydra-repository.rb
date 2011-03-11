@@ -1,5 +1,5 @@
-module Hydra
-  module Repository
-    # Your code goes here...
-  end
+module HydraRepository
+  
+  require 'hydra-repository/engine' if defined?(Rails)
+  
 end
