@@ -8,11 +8,11 @@ h2. What is a Hydra Head?
 
 Hydra Heads combine:
 
-* Ruby on Rails ["homepage":http://rubyonrails.org]
-* Blacklight ["code":https://github.com/projectblacklight/blacklight| "homepage":http://projectblacklight.org]
-* ActiveFedora ["code":https://github.com/mediashelf/active_fedora| "homepage":http://yourmediashelf.com/activefedora/]
-* OM ["code":https://github.com/mediashelf/om]
-* Solrizer ["code":https://github.com/projecthydra/solrizer]
+* Ruby on Rails "homepage":http://rubyonrails.org
+* Blacklight "code":https://github.com/projectblacklight/blacklight | "homepage":http://projectblacklight.org
+* ActiveFedora "code":https://github.com/mediashelf/active_fedora | "homepage":http://yourmediashelf.com/activefedora/
+* OM "code":https://github.com/mediashelf/om]
+* Solrizer "code":https://github.com/projecthydra/solrizer]
 * Hydra Head Access Controls based on Hydra rightsMetadata
 * Hydra Head View Helpers
 * Hydra Medatata jquery plugin
@@ -25,7 +25,7 @@ When you use this code to develop your own Hydra Head, you will also benefit fro
 
 * Hydra step definitions for cucumber tests
 * Hydra rake tasks for working with Fedora and Solr
-* For development and prototyping we provide "hydra-jetty":https://github.com/projecthydra/hydra-jetty, which is a copy of jetty with Fedora and Solr pre-installed.
+* "hydra-jetty":https://github.com/projecthydra/hydra-jetty, which is a copy of jetty with Fedora and Solr pre-installed
 
 h2. Hydra Content Types
 
