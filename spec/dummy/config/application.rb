@@ -7,7 +7,7 @@ require "action_view/railtie"
 require "action_mailer/railtie"
 
 Bundler.require
-require "hydra_head"
+require "hydra-head"
 
 module Dummy
   class Application < Rails::Application
