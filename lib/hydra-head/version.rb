@@ -1,5 +1,5 @@
 module Hydra
-  module Repository
+  module Head
     VERSION = "0.0.1"
   end
 end

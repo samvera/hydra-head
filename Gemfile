@@ -9,6 +9,6 @@ group :development, :test do
     gem "webrat"
 end
  
-# Please see blacklight.gemspec for dependency information.
+# Please see hydra-head.gemspec for dependency information.
 gemspec
 

@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    hydra-repository (0.0.1)
+    hydra-head (0.0.1)
       rails (>= 3.0.5)
 
 GEM
@@ -133,7 +133,7 @@ DEPENDENCIES
   capybara
   cucumber-rails
   database_cleaner
-  hydra-repository!
+  hydra-head!
   rspec
   rspec-rails (>= 2.3.0)
   webrat

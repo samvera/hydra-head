@@ -1,6 +1,6 @@
-module HydraRepository
+module Hydra::Head
 
-  require "hydra-repository"
+  require "hydra-head"
 
   require "rails"
 
