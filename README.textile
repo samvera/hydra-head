@@ -35,11 +35,24 @@ When you want to show off your work, create a 5-15 minute screencast showing the
 
 h2. Developer Tools for Building Hydra Heads
 
+h3. Hydra-Specific Developer Tools
+
 When you use this code to develop your own Hydra Head, you will also benefit from
 
 * Hydra step definitions for cucumber tests
 * Hydra rake tasks for working with Fedora and Solr
 * "hydra-jetty":https://github.com/projecthydra/hydra-jetty, which is a copy of jetty with Fedora and Solr pre-installed
+
+h3. Common Ruby/Rails Developer Tools
+
+In developing Hydra Heads, we use these common Ruby/Rails developer tools:
+
+* "RSpec":http://relishapp.com/rspec: Behavior-driven functional tests
+* "Cucumber":http://cukes.info/: natural-language integration/acceptance tests
+* "RVM":http://rvm.beginrescueend.com/ : Ruby Version Manager -- Use it to install Ruby and manage installed gems.
+* "Nokogiri":http://nokogiri.org/: xml manipulation library built on libxml2 and libxslt
+* "Git":http://git-scm.com/ and "Github":http://github.com
+* "ruby-debug":http://bashdb.sourceforge.net/ruby-debug.html: a handy Ruby debugging tool
 
 h2. Hydra Content Types
 
@@ -63,6 +76,8 @@ In order to support this diversity of content, people have employed a wide range
 * TEI
 * PBCore
 
+Using "OM":https://github.com/mediashelf/om, it's easy to add support for parsing, modifying and indexing any XML structures in a Hydra Head.  If you're dealing with XML that's not on this list, don't be afraid.  Take a look at OM and email the "hydra-tech":http://groups.google.com/group/hydra-tech list if you need help.
+
 h2. Getting Involved
 
 The "Hydra Wiki":https://wiki.duraspace.org/display/hydra has a section of useful "Developer Documentation":https://wiki.duraspace.org/display/hydra/developers, including additional information about how to get involved.
@@ -70,4 +85,6 @@ The "Hydra Wiki":https://wiki.duraspace.org/display/hydra has a section of usefu
 *Mailing List*: "hydra-tech":http://groups.google.com/group/hydra-tech
 *Ticket Tracker*: "https://jira.duraspace.org/browse/HYDRA":https://jira.duraspace.org/browse/HYDRA
 *Wiki*: "https://wiki.duraspace.org/display/hydra/developers":https://wiki.duraspace.org/display/hydra/developers
+
+There is a weekly Hydra committers call on Monday mornings (PST).  Notes from those calls are posted on the "Notes from Meetings and Calls":https://wiki.duraspace.org/display/hydra/Notes+from+Meetings+and+Calls page on the Hydra wiki.
 
