@@ -1,8 +1,6 @@
+require "hydra-head"
+require "rails"
 module Hydra::Head
-
-  require "hydra-head"
-
-  require "rails"
 
    class Engine < Rails::Engine
 
