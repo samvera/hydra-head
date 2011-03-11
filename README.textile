@@ -49,7 +49,7 @@ In developing Hydra Heads, we use these common Ruby/Rails developer tools:
 
 * "RSpec":http://relishapp.com/rspec: Behavior-driven functional tests
 * "Cucumber":http://cukes.info/: natural-language integration/acceptance tests
-* "RVM:http://rvm.beginrescueend.com/ : Ruby Version Manager -- Use it to install Ruby and manage installed gems.
+* "RVM":http://rvm.beginrescueend.com/ : Ruby Version Manager -- Use it to install Ruby and manage installed gems.
 * "Nokogiri":http://nokogiri.org/: xml manipulation library built on libxml2 and libxslt
 * "Git":http://git-scm.com/ and "Github":http://github.com
 * "ruby-debug":http://bashdb.sourceforge.net/ruby-debug.html: a handy Ruby debugging tool
