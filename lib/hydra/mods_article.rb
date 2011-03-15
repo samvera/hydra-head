@@ -141,6 +141,12 @@ module Hydra
         }
       end
       return builder.doc
+    end    
+ 
+    def self.identifer_relator_terms
+       {"isbn" => "ISBN",
+        "oclc" => "OCLC"
+        }
     end
     
     # Generates a new Person node
