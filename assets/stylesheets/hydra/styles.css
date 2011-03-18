@@ -1,5 +1,5 @@
 html {
-    background-color: white;
+  background-color: white;
 	overflow-y: scroll;
 }
 
@@ -72,15 +72,27 @@ div.notice-wrap {
     text-decoration: none;
 }
 
+#hd ul {
+	margin: 5px;
+	padding: 5px;
+}
+
+#hd ul li {
+	list-style-type: none;
+	display: inline;
+	color: blue;
+	cursor: pointer;
+	margin-left: 10px;
+}
+
 #container1_login {
     height: 26px;
     float: right;
-    padding-left: 20px;
+		margin-right: 40px;
     padding-top: 7px;
 }
 
 #libra_banner_container {
-	background: url(/images/uva/libra_banner_bg.jpg);
 	height: 78px;
 	width: 100%;
 }
@@ -124,7 +136,7 @@ button.ui-button-icon-only {
 
 #re-run-action, #re-run-add-contributor-action {
     font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
-    color: #0F3E83;
+    color: blue
 }
 
 .edit-browse .active {
@@ -173,7 +185,7 @@ button.ui-button-icon-only {
 }
 
 a:link, a:visited, a:active, #uvalicense_read_all {
-    color: #0F3E83;
+    color: blue
     text-decoration: underline;
     border: none;
 }
@@ -187,7 +199,7 @@ a:link, a:visited, a:active, #uvalicense_read_all {
 }
 
 a:hover, a:hover.addval, #uvalicense_read_all:hover {
-    color: #4079A0;
+    color: blue
 }
 
 a.addval {
@@ -268,7 +280,7 @@ dl dd {
 }
 
 .home_text h1 {
-	color: #4079A0;
+	color: blue
 	font-size: 24px;
 	margin: 0;
 }
@@ -343,7 +355,7 @@ dl dd {
 .home_buttons ul li,
 .libra_buttons ul li {
 	border-top: 1px solid #b6c8de;
-	color: #0F3E83;
+	color: blue
 	cursor: pointer;
 	font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
 	font-size: 13px;
@@ -455,7 +467,6 @@ table#file_assets {
 .yui-g {
     height: 78px;
     width: 100%;
-    background-image: url(/images/uva/libra_banner_bg.jpg);
     background-repeat: repeat-x;
     color: #F3A729;
     text-align: left;
@@ -532,47 +543,42 @@ table#file_assets {
 }
 
 #bd .sidebar {
-    margin: 0;
+  margin: 0;
 	padding: 0;
-    text-align: right;
-    float: left;
+  text-align: right;
+  float: left;
 	width: 238px;
 }
 
 #facets {
-	border-bottom: 1px solid #83A1C9;
-    border-left: 1px solid #83A1C9;
-	border-top: 1px solid #83A1C9;
-    text-align: left;
-    background-color: white;
+  text-align: left;
+  background-color: white;
 	padding: 0;
 	font-size: 12px;
 }
 
 .side_bar_heading, #facets div h3 {
-    background-color: #CCD9F2;
+    background-color: white;
     height: 50px;
 }
 
 #facets h2 {
-    color: #617DA6;
-    font: normal normal normal 10px/20px "Helvetica Neue", Arial, Helvetica, sans-serif;
-    padding: 1em 0px 1em 10px;
+  color: blue;
+  font: normal normal normal 10px/20px "Helvetica Neue", Arial, Helvetica, sans-serif;
+  padding: 1em 0px 1em 10px;
 	margin: 0;
 	border-top: 1px solid #dddddd;
-    text-transform: uppercase;
+  text-transform: uppercase;
 }
 
 #facets div {
-    background-color: #E5EBFD;
-	border-top: 1px solid #B7C5DC;
+  background-color: #EEE;
 }
 
 #facets div h3 {
     margin-top: 0;
     margin-left: 0;
-    color: #4079A0;
-    color: #0F3E83;
+    color: black;
     font-size: 13px;
     font-weight: bold;
     line-height: 20px;
@@ -607,36 +613,24 @@ body .ui-widget {
 }
 
 #search {
-    background-image: url(/images/uva/search_bg.jpg);
-    background-repeat: repeat-x;
     height: 42px;
     left: 0px;
     position: static;
     top: 0px;
     width: 100%;
     text-align: right;
-		border: 1px solid #AAA;
 		border-radius: 0;
 		font-size: 100%;
 		padding: 0;
-    /*  width: 695px;
-     background-image: url(/images/uva/search_bg.jpg);
-     background-repeat: repeat-x;
-     height: 42px;
-     margin: -11px -11px 0 0;
-     top: 0;
-     left: ;
-     position: static;
-     float: right;*/
 }
 
 #search #form1 {
     height: 25px;
     width: 615px;
     margin-left: 12px;
-    background-color: #FFF;
+    background-color: white;
     margin-top: 7px;
-    border: 1px solid #0F1C38;
+    border: none;
 }
 
 #search form {
@@ -913,23 +907,21 @@ tr.document {
 }*/
 
 #footer {
-    width: 100%;
-	background-color: #4672AF;
-    background-image: url(/images/uva/footer_bg.png);
-    background-repeat: repeat-x;
+	width: 100%;
+	background-color: white;
 }
 
 #footer #container3 {
 	height: 160px;
-    width: 960px;
-    margin-right: auto;
-    margin-left: auto;
-    text-align: right;
-    font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
-    font-size: 11px;
-    color: #FFF;
-    line-height: 21px;
-    padding-top: 15px;
+  width: 960px;
+  margin-right: auto;
+  margin-left: auto;
+  text-align: right;
+  font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  color: #FFF;
+  line-height: 21px;
+  padding-top: 15px;
 }
 
 #footer .contact_info {
@@ -944,7 +936,6 @@ tr.document {
 }
 
 #footer_notices {
-	border-top: 1px solid #648FC7;
 	clear: both;
 	padding-top: 1.5em;
 	width: 100%;
@@ -1007,8 +998,6 @@ div .author_browse_image {
     vertical-align: baseline;
     padding: 6px;
     width: 102px;
-	background: #FFFBEF;
-	border: 2px solid #EEE4CC;
 	-webkit-border-radius: 4px 4px 4px 4px;
 	-moz-border-radius:    4px 4px 4px 4px;
 	border-radius:         4px 4px 4px 4px;
@@ -1016,7 +1005,6 @@ div .author_browse_image {
 }
 
 .author_browse_image a.facet_image {
-	border: 1px solid #EEE4CC;
 	display: block;
 	width: 100px;
 	max-height: 100px;
@@ -1215,7 +1203,7 @@ table#file_assets tr.file_asset td {
     padding: 4px 7px 4px 26px;
     border: none;
     white-space: nowrap;
-    color: #0F3E83;
+    color: blue
 	font-size: 1.06em;
 	font-style: normal;
     font-weight: bold;
