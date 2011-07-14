@@ -1,8 +1,6 @@
 @show @articles
-Feature: Show a document
-  In order to [goal]
-  [stakeholder]
-  wants [behaviour]
+Feature: ModsAsset Show View
+  I want to see appropriate information for ModsAsset objects in the show view
   
   @overwritten
   Scenario: Public visit Publicly Viewable Document

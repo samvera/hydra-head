@@ -1,9 +1,9 @@
 @catalog @articles
-Feature: Mods Asset Search Result
+Feature: ModsAsset Search Result
   As a user
-  I want to see appropriate information for mods asset objects in a search result
+  I want to see appropriate information for ModsAsset objects in a search result
 
-  Scenario: Viewing search results
+  Scenario: Search Results have ModsAsset info
     Given I am on the home page
     And I fill in "q" with "1234-5678"
     When I press "submit"
