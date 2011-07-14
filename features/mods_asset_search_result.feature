@@ -1,8 +1,7 @@
 @catalog @articles
-Feature: Article Search Result
+Feature: Mods Asset Search Result
   As a user
-  In order to find articles
-  I want to see appropriate information about articles in a search result
+  I want to see appropriate information for mods asset objects in a search result
 
   Scenario: Viewing search results
     Given I am on the home page
