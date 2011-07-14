@@ -140,7 +140,9 @@ namespace :hydra do
         "hydrangea:fixture_mods_dataset1",
         "hydrus:admin_class1",
         "hydra:fixture_generic_content",
-        "hydra:fixture_generic_image"
+        "hydra:fixture_generic_image",
+        "hydra:fixture_unknown_model",
+        "hydra:fixture_without_model"
     ]
 
     desc "Load default Hydra fixtures"
