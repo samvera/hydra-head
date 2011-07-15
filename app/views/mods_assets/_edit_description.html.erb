@@ -19,7 +19,7 @@
     <%= fedora_field_label("descMetadata", [:title_info,:main_title], "Title<span class=\"required-note\">Required</span>") %>
     <%= fedora_text_field(@document_fedora,"descMetadata", [:title_info, :main_title], :multiple=>false, :required=>true) %></p>
   
-	<fieldset id="license_fieldset">
+	<fieldset id="license_fields">
 	  <legend>License</legend>
 		<p class="legend-caption">The license outlines the Library's use of your work while acknowledging that you, or the current copyright owner, will continue to be the rights holder.</p>
 		<!-- radio selectors or checkboxes go here -->
@@ -45,7 +45,7 @@
     <span class="field-caption">Any additional notes or comments about the work.</span>
     <%= fedora_text_area(@document_fedora,"descMetadata", [:note], :multiple=>false) %></p>
 
-	<fieldset id="keywords_fieldset">
+	<fieldset id="keyword_fields">
 		<legend>Keywords</legend>
 		<p class="legend-caption">Add keywords to describe the work.</p>
     <p class="fedora-text-field">

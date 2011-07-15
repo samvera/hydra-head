@@ -9,24 +9,24 @@
 <% end %>
   <fieldset class="person contributor" id="<%= base_id %>">
         <%- if @document_fedora.datastreams["descMetadata"].class.terminology.has_term?(:person, :computing_id) %>
-        <p class="computing_id">
+        <p id="<%= base_id%>_computing_id_field" class="fedora-text-field">
           <%= fedora_field_label("descMetadata", [{:person=>person_counter}, :first_name], "Computing ID") %>
           <%= fedora_text_field(@document_fedora,"descMetadata", [{:person=>person_counter}, :computing_id], :multiple=>false, :required=>false ) %>
         </p>
         <%- end %>
-        <p class="name_first">
+        <p id="<%= base_id%>_name_first_field" class="fedora-text-field">
           <%= fedora_field_label("descMetadata", [{:person=>person_counter}, :first_name], "First Name<span class=\"required-note\">required</span>") %>
           <%= fedora_text_field(@document_fedora,"descMetadata", [{:person=>person_counter}, :first_name], :multiple=>false, :required=>true ) %>
         </p>
-        <p class="name_last">
+        <p id="<%= base_id%>_name_last_field" class="fedora-text-field">
           <%= fedora_field_label("descMetadata", [{:person=>person_counter}, :last_name], "Last Name<span class=\"required-note\">required</span>") %>
           <%= fedora_text_field(@document_fedora,"descMetadata", [{:person=>person_counter}, :last_name], :multiple=>false, :required=>true ) %>
         </p>
-        <p class="department">
+        <p id="<%= base_id%>_department_field" class="fedora-text-field">
           <%= fedora_field_label("descMetadata", [{:person=>person_counter}, :description], "Department") %>
           <%= fedora_text_field(@document_fedora,"descMetadata", [{:person=>person_counter}, :description], :multiple=>false, :required=>false ) %>
         </p>
-        <p class="affiliation">
+        <p id="<%= base_id%>_affiliation_field" class="fedora-text-field">
           <%= fedora_field_label("descMetadata", [{:person=>person_counter}, :institution], "Institution") %>
           <%= fedora_text_field(@document_fedora,"descMetadata", [{:person=>person_counter}, :institution], :multiple=>false, :required=>false ) %>
         </p>

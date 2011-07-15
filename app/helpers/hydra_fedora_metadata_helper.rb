@@ -19,42 +19,11 @@ module HydraFedoraMetadataHelper
       base_id = generate_base_id(field_name, current_value, field_values, opts)
       name = "asset[#{datastream_name}][#{field_name}][#{z}]"
         body << "<input class=\"editable-edit edit\" id=\"#{base_id}\" data-datastream-name=\"#{datastream_name}\" name=\"#{name}\" value=\"#{h(current_value.strip)}\" #{required} type=\"text\" />"
+        body << "<a href=\"\" title=\"Delete '#{h(current_value)}'\" class=\"destructive field\">Delete</a>" if opts.fetch(:multiple, true) && !current_value.empty?
     end
     
     result = field_selectors_for(datastream_name, field_key)
     result << body
-    
-    return result
-  end
-  
-  def fedora_ttext_field(resource, datastream_name, field_key, opts={})
-    field_name = field_name_for(field_key)
-    field_values = get_values_from_datastream(resource, datastream_name, field_key, opts)
-    field_values = [""] if field_values.empty?
-    if opts.fetch(:multiple, true)
-      container_tag_type = :li
-    else
-      field_values = [field_values.first]
-      container_tag_type = :span
-    end
-    
-    body = ""
-    
-    field_values.each_with_index do |current_value, z|
-      base_id = generate_base_id(field_name, current_value, field_values, opts)
-      name = "asset[#{datastream_name}][#{field_name}][#{z}]"
-      body << "<#{container_tag_type.to_s} class=\"editable-container field\" id=\"#{base_id}-container\">"
-        body << "<a href=\"\" title=\"Delete '#{h(current_value)}'\" class=\"destructive field\">Delete</a>" if opts.fetch(:multiple, true) && !current_value.empty?
-        body << "<span class=\"editable-text text\" id=\"#{base_id}-text\" style=\"display:none;\">#{h(current_value.lstrip)}</span>"
-        body << "<input class=\"editable-edit edit\" id=\"#{base_id}\" data-datastream-name=\"#{datastream_name}\" rel=\"#{field_name}\" name=\"#{name}\" value=\"#{h(current_value.lstrip)}\"/>"
-      body << "</#{container_tag_type}>"
-    end
-    result = field_selectors_for(datastream_name, field_key)
-    if opts.fetch(:multiple, true)
-      result << content_tag(:ol, body, :rel=>field_name)
-    else
-      result << body
-    end
     
     return result
   end
@@ -83,6 +52,7 @@ module HydraFedoraMetadataHelper
       name = "asset[#{datastream_name}][#{field_name}][#{z}]"
       processed_field_value = white_list( RedCloth.new(current_value, [:sanitize_html]).to_html)
         body << "<textarea class=\"editable-edit edit\" id=\"#{base_id}\" data-datastream-name=\"#{datastream_name}\" name=\"#{name}\" rows=\"10\" cols=\"25\">#{h(current_value.strip)}</textarea>"
+        body << "<a href=\"\" title=\"Delete '#{h(current_value)}'\" class=\"destructive field\">Delete</a>" unless z == 0
     end
     
     result = field_selectors_for(datastream_name, field_key)
