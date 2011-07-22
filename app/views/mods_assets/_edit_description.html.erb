@@ -9,24 +9,27 @@
   <input name="_method" type="hidden" value="put" />
   <input class="content_type" type="hidden" name="content_type" value="mods_asset" />
 
+<!-- ### BEGIN author (step 1) ### -->
+
 	<fieldset id="contributors_fields">
 		<legend>Authors</legend>
 	  <p class="legend-caption">An individual or organizational author of work.</p>	
 		<%= render "contributors/index" %>
-	</fieldset>
-  	
+	</fieldset>	
+	
+<!-- ### END author section ### -->
+
+<!-- ### BEGIN title and journal info (step 2) ### -->  	
+
   <p id="title_field" class="fedora-text-field">
     <%= fedora_field_label("descMetadata", [:title_info,:main_title], "Title<span class=\"required-note\">Required</span>") %>
     <%= fedora_text_field(@document_fedora,"descMetadata", [:title_info, :main_title], :multiple=>false, :required=>true) %></p>
-  
-	<fieldset id="license_fields">
-	  <legend>License</legend>
-		<p class="legend-caption">The license outlines the Library's use of your work while acknowledging that you, or the current copyright owner, will continue to be the rights holder.</p>
-		<!-- radio selectors or checkboxes go here -->
-	</fieldset>
 	
 	<%= render :partial=>"mods_assets/edit_journal", :collection=>@document_fedora.datastreams_in_memory["descMetadata"].find_by_terms(:journal) %>
+
+<!-- ### END title and journal info (step 2) ### -->
 	
+<!-- ### BEGIN additional work info (step 3) ###  -->
 
   <p id="abstract_field" class="fedora-text-area">
     <%= fedora_field_label("descMetadata", [:abstract], "Abstract") %>
@@ -38,7 +41,6 @@
 	  <%= fedora_checkbox(@document_fedora, "descMetadata", [:peer_reviewed], :default_values=>{:checked=>"peer reviewed",:unchecked=>""}) %>
 	  <%= fedora_field_label("descMetadata", [:peer_reviewed], "This work has undergone a peer review process") %>
 	</fieldset>	
-
 
   <p id="notes_field" class="fedora-text-area">
     <%= fedora_field_label("descMetadata", [:note], "Notes") %>
@@ -57,6 +59,8 @@
     <%= fedora_field_label("descMetadata", [:embargo,:embargo_release_date], "Release Date") %>
     <span class="field-caption">Choose when to make your work's files available.</span>
     <%= fedora_text_field(@document_fedora, "rightsMetadata", [:embargo, :embargo_release_date], :multiple => false, :required=>false ) %></p>	
+    
+<!-- ### END additional work info (step 3) ### -->
 
 	<input name="_method" type="hidden" value="put" />
 	<p class="save-description"><%= submit_tag 'Save Description', {:id => "saveDescription"} %></p>
