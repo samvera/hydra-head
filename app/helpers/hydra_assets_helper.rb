@@ -22,7 +22,10 @@ module HydraAssetsHelper
   end
 
   def document_type(document)
-    document[Blacklight.config[:show][:display_type]].first.gsub("info:fedora/afmodel:","")
+    if (document[Blacklight.config[:show][:display_type]]) 
+      document[Blacklight.config[:show][:display_type]].first.gsub("info:fedora/afmodel:","")
+    else ""
+    end
   end
 
   def get_person_from_role(doc,role,opts={})  

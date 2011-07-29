@@ -154,7 +154,7 @@ namespace :hyhead do
     fixtures_dir = "#{TEST_HOST_PATH}/spec/fixtures"
     excluded = [".", ".."]
     FileUtils.mkdir_p(fixtures_dir)
-    puts "Copying features to #{fixtures_dir}"
+    puts "Copying fixtures to #{fixtures_dir}"
     %x[cp -R spec/fixtures/* #{fixtures_dir}]
   end
   
