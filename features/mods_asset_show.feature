@@ -23,7 +23,8 @@ Feature: ModsAsset Show View
     And I should see "University of Virginia"
     And I should see "white plague"
     And I should see "pediatric nursing"
-    And I should see "UVA Libra Contributor's License"
+    # We're not doing anything with licenses for this version of mods_assets
+    # And I should see "UVA Libra Contributor's License"
     And I should not see a link to "the edit document page for libra-oa:1"
   
   Scenario: Public visit Document Show Page for a private document  
