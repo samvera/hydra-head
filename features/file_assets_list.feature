@@ -30,6 +30,12 @@ Feature: List files for a document
     Then I should see a "th" element containing "File"
     Then I should see a link to "the file asset libra-oa:2" with label "gibson.pdf" in the file assets list     
 		Then I should see "Delete this ActiveFedora::Base" in the file assets list  
+
+  Scenario: html5 valid as editor viewing file list
+    Given I am logged in as "archivist1"
+    And I am on the file list page for hydrangea:fixture_mods_article1
+    Then the page should be HTML5 valid
+
  
   @overwritten
   Scenario: Non-editor views the file list
@@ -48,6 +54,14 @@ Feature: List files for a document
     Then I should see a "th" element containing "File"
     Then I should see a link to "the file asset libra-oa:2" with label "gibson.pdf" in the file assets list  
   	Then I should not see "Delete this ActiveFedora::Base" in the file assets list    
-    
 
-    
+  Scenario: html5 valid as non-editor viewing file list
+    Given I am logged in as "permissionlessdude" 
+    And I am on the file list page for hydrangea:fixture_mods_article1    
+    Then the page should be HTML5 valid
+ 
+  Scenario: html5 valid - file assets list page
+    Given I am logged in as "archivist1"
+    And I am on the file asset creation page for hydrangea:fixture_mods_article1
+    Then the page should be HTML5 valid
+

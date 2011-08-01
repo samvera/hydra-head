@@ -23,85 +23,53 @@ describe HydraFedoraMetadataHelper do
   describe "fedora_text_field" do
     it "should generate a text field input with values from the given datastream" do
       generated_html = helper.fedora_text_field(@resource,"ng_ds",[:title, :main_title])
-      generated_html.should have_tag "#title_main_title_0-container.editable-container"do
-        with_tag "span#title_main_title_0-text.editable-text.text", "My Title"
-        with_tag "input#title_main_title_0.editable-edit.edit" do
-          with_tag "[value=?]", "My Title"
-          with_tag "[name=?]","asset[ng_ds][title_main_title][0]"
-          with_tag "[data-datastream-name=?]", "ng_ds" 
-          with_tag "[rel=?]", "title_main_title"
-        end
+      generated_html.should have_tag "input.fieldselector" do
+        with_tag "[value=?]", "title"
+        with_tag "[value=?]", "main_title"
+      end
+      generated_html.should have_tag "input#title_main_title_0.editable-edit.edit" do
+        with_tag "[value=?]", "My Title"
+        with_tag "[name=?]","asset[ng_ds][title_main_title][0]"
+        with_tag "[data-datastream-name=?]", "ng_ds" 
       end
     end
     it "should generate an ordered list of text field inputs" do
       generated_html = helper.fedora_text_field(@resource,"simple_ds","subject")
-      generated_html.should have_tag "ol[rel=subject]" do
-        with_tag "li#subject_0-container.editable-container.field" do
-          with_tag "a.destructive.field"
-          with_tag "span#subject_0-text.editable-text.text", "topic1"
-          with_tag "input#subject_0.editable-edit.edit" do
-            with_tag "[value=?]", "topic1"
-            with_tag "[name=?]", "asset[simple_ds][subject][0]"
-          end
-        end
-        with_tag "li#subject_1-container.editable-container.field" do
-          with_tag "a.destructive.field"
-          with_tag "span#subject_1-text.editable-text.text", "topic2"
-          with_tag "input#subject_1.editable-edit.edit" do
-            with_tag "[value=?]", "topic2"
-            with_tag "[name=?]", "asset[simple_ds][subject][1]"
-          end
-        end
+      generated_html.should have_tag "input#subject_0.editable-edit.edit" do
+        with_tag "[value=?]", "topic1"
+        with_tag "[name=?]", "asset[simple_ds][subject][0]"
+      end      
+      generated_html.should have_tag "input#subject_1.editable-edit.edit" do
+        with_tag "[value=?]", "topic2"
+        with_tag "[name=?]", "asset[simple_ds][subject][1]"
       end
+      generated_html.should have_tag "a.destructive.field"
       generated_html.should have_tag "input", :class=>"editable-edit", :id=>"subject_1", :name=>"asset[simple_ds][subject_1]", :value=>"topic9"                                                                                        
     end
     it "should render an empty control if the field has no values" do
-      helper.fedora_text_field(@resource,"empty_ds","something").should have_tag "li#something_0-container.editable-container" do
-        with_tag "#something_0-text.editable-text.text", ""
-      end
+      helper.fedora_text_field(@resource,"empty_ds","something").should have_tag "#something_0.editable-edit.edit", :value => ""
     end
     it "should limit to single-value output with no ordered list if :multiple=>false" do
-      generated_html = helper.fedora_text_field(@resource,"simple_ds","subject", :multiple=>false)
-      generated_html.should_not have_tag "ol"
-      generated_html.should_not have_tag "li"
-      
-      generated_html.should have_tag "span#subject-container.editable-container.field" do
-        with_tag "span#subject-text.editable-text.text", "topic1"
-        with_tag "input#subject.editable-edit.edit[value=topic1]" do
-          with_tag "[name=?]", "asset[simple_ds][subject][0]"
-        end
+      generated_html = helper.fedora_text_field(@resource,"simple_ds","subject", :multiple=>false)      
+      generated_html.should have_tag "input#subject.editable-edit.edit[value=topic1]" do
+        with_tag "[name=?]", "asset[simple_ds][subject][0]"
       end                                                                                                                                                                                                
     end
   end
   
   describe "fedora_text_area" do
     it "should generate an ordered list of textile-enabled text area with values from the given datastream" do
-      helper.fedora_text_area(@resource,"simple_ds","subject").should have_tag "ol[rel=subject]" do
-        with_tag "li#subject_0-container.field" do
-          without_tag "a.destructive.field"
-          with_tag "span#subject_0-text.editable-text.text[style=display:none;]", "topic1"
-          with_tag "textarea#subject_0.editable-edit.edit", "topic1"
-        end 
-        with_tag "li#subject_1-container.field" do
-          with_tag "span#subject_1-text.editable-text.text[style=display:none;]","topic2"
-          with_tag "textarea#subject_1.editable-edit.edit", "topic2"
-        end 
-      end
+      generated_html = helper.fedora_text_area(@resource,"simple_ds","subject")
+      generated_html.should have_tag "textarea#subject_0.editable-edit.edit", :value => "topic1"
+      generated_html.should have_tag "textarea#subject_1.editable-edit.edit", :value => "topic2"
+      generated_html.should have_tag "a.destructive.field"
     end
     it "should render an empty control if the field has no values" do      
-      helper.fedora_text_area(@resource,"empty_ds","something").should have_tag "li#something_0-container.field" do
-        with_tag "span#something_0-text.editable-text.text[style=display:none;]", ""
-        with_tag "textarea#something_0.editable-edit.edit", ""
-      end
+      helper.fedora_text_area(@resource,"empty_ds","something").should have_tag "textarea#something_0.editable-edit.edit", :value => ""
     end
     it "should limit to single-value output if :multiple=>false" do
       generated_html = helper.fedora_text_area(@resource,"simple_ds","subject", :multiple=>false)
-      generated_html.should_not have_tag "ol"
-      generated_html.should_not have_tag "li"
-      generated_html.should have_tag "span#subject-container.field" do
-        with_tag "span#subject-text.editable-text.text[style=display:none;]", "topic1"
-        with_tag "textarea#subject.editable-edit.edit", "topic1"
-      end
+      generated_html.should have_tag "textarea#subject.editable-edit.edit", :value => "topic1"
     end
   end
   
@@ -109,7 +77,6 @@ describe HydraFedoraMetadataHelper do
     it "should generate a select with values from the given datastream" do
       generated_html = helper.fedora_select(@resource,"simple_ds","subject", :choices=>["topic1","topic2", "topic3"])
       generated_html.should have_tag "select.metadata-dd[name=?]", "asset[simple_ds][subject][0]" do
-        with_tag "[rel=?]", "subject" 
         with_tag "option[value=topic1][selected=selected]"
         with_tag "option[value=topic2][selected=selected]"
         with_tag "option[value=topic3]"
@@ -126,7 +93,6 @@ describe HydraFedoraMetadataHelper do
     it "should generate a date picker with values from the given datastream" do
       generated_html = helper.fedora_date_select(@resource,"simple_ds","subject")
       generated_html.should have_tag ".date-select[name=?]", "asset[simple_ds][subject]" do
-        with_tag "[rel=?]", "subject" 
         with_tag "input#subject-sel-y.controlled-date-part.w4em"
         with_tag "select#subject-sel-mm.controlled-date-part" do
           with_tag "option[value=01]", "January"
@@ -189,11 +155,9 @@ describe HydraFedoraMetadataHelper do
     it "should generate any necessary field_selector values for the given field" do
       generated_html = helper.field_selectors_for("myDsName", [{:name => 3}, :name_part])
       generated_html.should have_tag "input.fieldselector[type=hidden][name=?]", "field_selectors[myDsName][name_3_name_part][][name]" do
-        with_tag "[rel=name_3_name_part]"
         with_tag "[value=3]"
       end
       generated_html.should have_tag "input.fieldselector[type=hidden][name=?]", "field_selectors[myDsName][name_3_name_part][]" do
-        with_tag "[rel=name_3_name_part]"
         with_tag "[value=name_part]"
       end
       # ordering is important.  this next line makes sure that the inputs are in the correct order

@@ -1,41 +1,55 @@
+<!--  ###
+
+  Divide the mods_assets partials into the following:
+  
+  1.) Author (mods_assets/_edit_description and contributors/index)
+  2.) Title and Journal Info (mods_assets/_edit_description and mods_assets/_edit_journal)
+  3.) Additional Work Info (mods_assets/_edit_description)
+  4.) File Count Selection (NEW)
+  5.) File Upload (file_assets/index)
+  6.) Permissions (permissions/index)
+  7.) Review and Submit (NEW)
+  
+  N.B.: information from show partials are also included in the new workflow
+  
+      ### -->
+
 <div class="document_viewer" id="cover_container">
   <div class="multipleEdit">
-    <div id="loading" style="display:none;">
-      <img src="/plugin_assets/hydra-head/images/ajax-loader.gif" width="32" height="32" alt="Saving..." />
+    
+    <h2 class="section-title">Describe the Asset</h2>
+    <div id="description_editor">
+      <%= render :partial => 'mods_assets/edit_description' %>
     </div>
     
-  <div id="accordion"  style="height:600px;">
+<!-- ### Begin file upload (step 5) ### -->
+    <h2 class="section-title">Upload Files</h2>
+    <div id="uploads">  			
+      <%= render :partial => "file_assets/index", :locals => { :file_assets => @file_assets} %>
+    </div>
+<!-- ### End file upload (step 5) ### -->
 
-     <h2 class="section-title"><a href="#">Describe the Asset</a></h2>
-     <%= render :partial => 'mods_assets/edit_description' %>
 
-     	<h2 class="section-title"><a href="#">Upload Files</a></h2>
-     <div id="uploads">  			
-				<%= render :partial => "file_assets/index", :locals => { :file_assets => @file_assets} %>
-     </div>
+<!-- ### Begin permissions (step 6) ### -->
+    <h2 class="section-title">Set permissions</h2>
+    <div id="permissions_editor">
+      <%= render :partial => "permissions/index", :locals => {:document => document, :asset_id=>params[:id]} %>
+    </div> 
+<!-- ### End permissions (step 6) ### -->
 
-      <h2 class="section-title"><a href="#">Set permissions</a></h2>
-      <div id="permissions_editor">
-        <%= render :partial => "permissions/index", :locals => {:document => document, :asset_id=>params[:id]} %>
-      </div> 
 
-  </div>
-
-    <%#
-    // This hidden form really belongs elsewhere, but putting it inside of an 
-    // accordion section un-hides it, so I stuck it here for now. -MZ
-    %>
-    <form id="new_contributor" action="<%=url_for(:action=>"create", :controller=>"contributors", :asset_id=>params[:id]) %>" method="post" style="display:none;">
+<!-- ### Append to step 1 ### -->
+    <form id="new_contributor" action="<%=url_for(:action=>"create", :controller=>"contributors", :asset_id=>params[:id]) %>" method="post">
       <input class="content_type" type="hidden" name="content_type" value="mods_asset" />
-      <label for="contributor_type">Contributor Type</label>
+      <p><label for="contributor_type">Contributor Type</label>
       <select id="contributor_type" name="contributor_type">
         <option value="person">Person</option>
         <option value="organization">Organization</option>
         <option value="conference">Conference</option>
-      </select>
-      <input type="submit" value="Add Contributor" />
+      </select></p>
+      <p><input type="submit" value="Add Contributor" /></p>
     </form>
-
+<!-- ### End append to step 1 ### -->
       
   </div>
 </div>

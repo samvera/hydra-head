@@ -1,8 +1,6 @@
 @show @articles
-Feature: Show a document
-  In order to [goal]
-  [stakeholder]
-  wants [behaviour]
+Feature: ModsAsset Show View
+  I want to see appropriate information for ModsAsset objects in the show view
   
   @overwritten
   Scenario: Public visit Publicly Viewable Document
@@ -25,7 +23,8 @@ Feature: Show a document
     And I should see "University of Virginia"
     And I should see "white plague"
     And I should see "pediatric nursing"
-    And I should see "UVA Libra Contributor's License"
+    # We're not doing anything with licenses for this version of mods_assets
+    # And I should see "UVA Libra Contributor's License"
     And I should not see a link to "the edit document page for libra-oa:1"
   
   Scenario: Public visit Document Show Page for a private document  
@@ -64,4 +63,28 @@ Feature: Show a document
     Then I should see "Khadzhi-Murat's Silence"
     And I should see "David Herman"
     And I should see "University of Virginia"
+
+
+  Scenario: html5 valid - unauthenticated
+    Given I am on the show document page for hydrangea:fixture_mods_article1
+    Then the page should be HTML5 valid
+
+  Scenario: html5 valid - unauthenticated for restricted document
+    Given I am on the show document page for hydrangea:fixture_archivist_only_mods_article
+    Then the page should be HTML5 valid
+
+  Scenario: html5 valid - authenticated
+    Given I am logged in as "archivist1" 
+    When I am on the show document page for hydrangea:fixture_mods_article1
+    Then the page should be HTML5 valid
+
+  Scenario: html5 valid - authenticated but not authorized for restricted document
+    Given I am logged in as "superuser" 
+    When I am on the show document page for hydrangea:fixture_archivist_only_mods_article
+    Then the page should be HTML5 valid
+
+  Scenario: html5 valid - authenticated for restricted document
+    Given I am logged in as "archivist1" 
+    When I am on the show document page for hydrangea:fixture_archivist_only_mods_article
+    Then the page should be HTML5 valid
 
