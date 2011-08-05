@@ -103,25 +103,29 @@ describe FileAssetsController do
   describe "create" do
     it "should create and save a file asset from the given params" do
       mock_fa = mock("FileAsset")
+      mock_file = mock("File")
+      mock_fa.expects(:label).returns("Foo File")
       mock_fa.stubs(:pid).returns("foo:pid")
-      controller.expects(:create_and_save_file_asset_from_params).returns(mock_fa)
-      xhr :post, :create, :Filedata=>mock("File"), :Filename=>"Foo File"
+      controller.expects(:create_and_save_file_assets_from_params).returns([mock_fa])
+      xhr :post, :create, :Filedata=>[mock_file], :Filename=>"Foo File"
     end
     it "if container_id is provided, should associate the created file asset wtih the container" do
       stub_fa = stub("FileAsset", :save)
       stub_fa.stubs(:pid).returns("foo:pid")
-      controller.expects(:create_and_save_file_asset_from_params).returns(stub_fa)
+      stub_fa.stubs(:label).returns("Foo File")
+      mock_file = mock("File")
+      controller.expects(:create_and_save_file_assets_from_params).returns([stub_fa])
       controller.expects(:associate_file_asset_with_container)      
-      xhr :post, :create, :Filedata=>stub("File"), :Filename=>"Foo File", :container_id=>"_PID_"
+      xhr :post, :create, :Filedata=>[mock_file], :Filename=>"Foo File", :container_id=>"_PID_"
     end
     it "should redirect back to container edit view if no Filedata is provided but container_id is provided" do
       xhr :post, :create, :container_id=>"_PID_"
-      response.should redirect_to(:controller=>"catalog", :id=>"_PID_", :action => 'edit')
-      # flash[:notice].should == "You must specify a file to upload."
+      response.should redirect_to(:controller=>"catalog", :id=>"_PID_", :action => 'edit', :wf_step=>"permissions")
+      response.flash[:notice].should == "You must specify a file to upload."
     end
     it "should display a message that you need to select a file to upload if no Filedata is provided" do
       xhr :post, :create
-      # flash[:notice].should == "You must specify a file to upload."
+      response.flash[:notice].should == "You must specify a file to upload."
     end
     
   end
@@ -177,7 +181,8 @@ describe FileAssetsController do
       it "should set is_part_of relationship on the new File Asset pointing back at the container" do
         test_file = fixture("empty_file.txt")
         filename = "My File Name"
-        post :create, {:Filedata=>test_file, :Filename=>filename, :container_id=>@test_container.pid}
+        test_file.expects(:original_filename).twice.returns("My File Name")
+        post :create, {:Filedata=>[test_file], :Filename=>filename, :container_id=>@test_container.pid}
         assigns(:file_asset).relationships[:self][:is_part_of].should == ["info:fedora/#{@test_container.pid}"] 
         retrieved_fa = FileAsset.load_instance(@test_fa.pid).relationships[:self][:is_part_of].should == ["info:fedora/#{@test_container.pid}"]
       end
