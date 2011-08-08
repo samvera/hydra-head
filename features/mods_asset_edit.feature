@@ -6,13 +6,15 @@ Feature: Edit a ModsAsset object
   Scenario: Edit Page for Mods Asset
     Given I am logged in as "archivist1" 
     And I am on the edit document page for hydrangea:fixture_mods_article1 
-    Then the "title_info_main_title" field should contain "ARTICLE TITLE"    
-    And I should see a "Save Description" button
+    Then the "person_0_first_name" field should contain "GIVEN NAMES"    
+    And I should see a "Continue" button
 
   Scenario: Visit Document Edit Page and see the file assets
      Given I am logged in as "archivist1" 
-     And I am on the edit document page for libra-oa:1
-     Then the "title_info_main_title" field should contain "The Smallest Victims of the "
+     And I am on the edit files page for libra-oa:1
+     And I select "1" from "number_of_files"
+     And I press "Continue"
+#     Then the "title_info_main_title" field should contain "The Smallest Victims of the "
 		 Then I should see "gibson.pdf" within "tr.file_asset"
 		 And I should see "Delete this" within "a.delete_asset_link"
 
