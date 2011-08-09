@@ -22,6 +22,13 @@ Feature: Edit a ModsAsset object
     Given I am logged in as "archivist1" 
     When I am on the edit document page for hydrangea:fixture_mods_article1
     Then I should see a "div" tag with a "class" attribute of "edit-browse"
+    
+  Scenario: Entering a non-valid embargo date
+    Given I am logged in as "archivist1" 
+    When I am on the edit additional_info page for hydrangea:fixture_mods_article1
+    And I fill in "embargo_embargo_release_date" with "25-25-25"
+    And I press "Continue"
+    Then I should see "You must enter a valid release date."
 
   Scenario: html5 valid
     Given I am logged in as "archivist1"
