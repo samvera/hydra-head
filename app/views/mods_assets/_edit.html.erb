@@ -2,7 +2,5 @@
   <%= render_previous_workflow_steps %>
   <%= render_submission_workflow_step -%>
 <% else %>
-  <!-- TODO: render all of 'em at once -->
-  <%= render_previous_workflow_steps %>
-  <%= render_submission_workflow_step -%>  
+  <%= render_all_workflow_steps %>
 <% end %>
