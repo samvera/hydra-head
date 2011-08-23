@@ -10,7 +10,7 @@
   <fieldset class="person contributor" id="<%= base_id %>">
         <%- if @document_fedora.datastreams["descMetadata"].class.terminology.has_term?(:person, :computing_id) %>
         <p id="<%= base_id%>_computing_id_field" class="fedora-text-field">
-          <%= fedora_field_label("descMetadata", [{:person=>person_counter}, :first_name], "Computing ID") %>
+          <%= fedora_field_label("descMetadata", [{:person=>person_counter}, :computing_id], "Computing ID") %>
           <%= fedora_text_field(@document_fedora,"descMetadata", [{:person=>person_counter}, :computing_id], :multiple=>false, :required=>false ) %>
         </p>
         <%- end %>
