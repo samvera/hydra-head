@@ -2,8 +2,9 @@
   <%= render :partial => "file_assets/index", :locals => { :file_assets => @file_assets } %>
 <%- else -%>
   <%- form_tag(url_for(:controller=>"submission_workflow",:action=>"file_assets")) do -%>
+    <%= label_tag "number_of_files", "Number of files to be uploaded:" %>
     <%= select_tag("number_of_files", options_for_select((0...11).to_a) ) -%>
-    <%= hidden_field_tag("id",params[:id])%>
+    <%= hidden_field_tag("id",params[:id], :id => "file_assets_id")%>
     <%= submit_tag("Continue",:name=>"continue")%>
   <%- end -%>
 <%- end -%>
