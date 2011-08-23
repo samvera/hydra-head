@@ -55,7 +55,7 @@ class SubmissionWorkflowController < ApplicationController
   # This method is mostly for handling the number of files drop down.
   def file_assets
     if params.has_key?(:number_of_files) and params[:number_of_files] != "0"
-      redirect_to({:controller => "catalog", :action => "edit", :id => params[:id], :wf_step => :files, :number_of_files => params[:number_of_files]})
+      redirect_to({:controller => "catalog", :action => "edit", :id => params[:id], :wf_step => :files, :number_of_files => params[:number_of_files], :anchor => "uploader"})
     elsif params.has_key?(:number_of_files) and params[:number_of_files] == "0"
       redirect_to({:controller => "catalog", :action => "edit", :id => params[:id], :wf_step => next_step_in_workflow(:files)})
     else
