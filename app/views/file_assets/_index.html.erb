@@ -1,15 +1,13 @@
 <% unless file_assets.hits.empty? %>
     <table class='multipleEdit' id='file_assets'>
       <tr>
-        <th>File</th>
-        <th></th>
+        <th colspan="2">File</th>
       </tr>
-   
       <%= render :partial=>'file_assets/result', :collection=> file_assets %>
 			</table>
 <% end %>
 
-<% if !@document.nil? && editor? %>
+<% if !@document.nil? && editor? && params[:number_of_files].to_i > 0 %>
   <%- container_content_type_param = defined?(container_content_type) ? "?container_content_type=#{container_content_type}" : "" %>
   <fieldset id='uploader'>
     <legend>File Upload</legend>
