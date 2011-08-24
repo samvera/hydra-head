@@ -62,5 +62,6 @@ class ApplicationController
     # We can use this file in the future, however we will want to implement a jQuery plugin architecture as we actually add in JS functionality.
     javascript_includes << ["hydra-head", {:plugin=>"hydra-head"}]
     javascript_includes << ['jquery.form.js', { :plugin=>"hydra-head" } ]
+    javascript_includes << ['spin.min.js', { :plugin=>"hydra-head" } ]
   end
 end
