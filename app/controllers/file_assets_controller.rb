@@ -71,7 +71,7 @@ From file_assets/_new.html.haml
   # * the method will redirect to the container object's edit view after saving
   def create
     if params.has_key?(:number_of_files) and params[:number_of_files] != "0"
-      return redirect_to({:controller => "catalog", :action => "edit", :id => params[:id], :wf_step => :files, :number_of_files => params[:number_of_files]})
+      return redirect_to({:controller => "catalog", :action => "edit", :id => params[:id], :wf_step => :files, :number_of_files => params[:number_of_files], :anchor=>"uploader"})
     elsif params.has_key?(:number_of_files) and params[:number_of_files] == "0"
       return redirect_to({:controller => "catalog", :action => "edit", :id => params[:id], :wf_step => next_step_in_workflow(:files)})
     end

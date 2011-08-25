@@ -18,7 +18,7 @@
       </p>
       
       <p id="citation_issue_field" class="fedora-text-field">
-        <%= fedora_field_label("descMetadata", [{:journal => journal_counter},:issue,:level], "(Issue)") %>
+        <%= fedora_field_label("descMetadata", [{:journal => journal_counter},:issue,:level], "Issue") %>
         <%= fedora_text_field(@document_fedora,"descMetadata", [{:journal => journal_counter},:issue,:level], :multiple=>false, :required=>false ) %>
       </p>
       
