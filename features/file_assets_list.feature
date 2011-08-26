@@ -29,7 +29,7 @@ Feature: List files for a document
     And I am on the file list page for libra-oa:1
     Then I should see a "th" element containing "File"
     Then I should see a link to "the file asset libra-oa:2" with label "gibson.pdf" in the file assets list     
-		Then I should see "Delete this ActiveFedora::Base" in the file assets list  
+		Then I should see "Delete" in the file assets list  
 
   Scenario: html5 valid as editor viewing file list
     Given I am logged in as "archivist1"
