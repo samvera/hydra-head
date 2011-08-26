@@ -19,6 +19,10 @@ class CatalogController
     @document_fedora = the_model.load_instance(params[:id])
     @file_assets = @document_fedora.file_objects(:response_format=>:solr)
     
+    if session[:scripts].blank?
+      session[:scripts] = params[:combined] == "true"
+    end 
+    
     show_without_customizations
     remove_unapi
     enforce_edit_permissions
