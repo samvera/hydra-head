@@ -18,6 +18,7 @@
       <%- params[:number_of_files].to_i.times do -%>
         <%= render :partial=>"file_assets/new"%>
       <%- end -%>
+      <%= hidden_field_tag(:wf_step, params[:wf_step], :id => "files_wf_step") %>
       <%= hidden_field_tag("id",params[:id], :id => "file_upload_id") if params[:id] %>
       <p><%= submit_tag("Upload File", :name=>"upload_file")%></p>
     <%- end -%>
