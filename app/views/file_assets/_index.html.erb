@@ -21,7 +21,10 @@
       <%= hidden_field_tag(:wf_step, params[:wf_step], :id => "files_wf_step") %>
       <%= hidden_field_tag(:new_asset, true, :id => "files_new_asset") if params[:new_asset] %>
       <%= hidden_field_tag("id",params[:id], :id => "file_upload_id") if params[:id] %>
-      <p><%= submit_tag("Upload File", :name=>"upload_file")%></p>
+      <p>
+        <%= submit_tag("Upload File", :name=>"upload_file")%>
+        <%= submit_tag("Upload and Finish", :name=>"finish") unless params[:new_asset] %>
+      </p>
     <%- end -%>
   </fieldset>
 <% end %>

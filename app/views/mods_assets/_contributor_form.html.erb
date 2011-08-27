@@ -9,5 +9,6 @@
 		<%= hidden_field_tag("id",params[:id], :id => "contributor_id") %>
 		<%= submit_tag("Add Another Author", :name=>"add_another_author") %>
 		<%= submit_tag(submit_name, :name=>"continue") %>
+		<%= submit_tag("Save and Finish", :name=>"finish") unless params[:new_asset] %>
 	</fieldset>
 <%- end -%>
