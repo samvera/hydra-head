@@ -3,4 +3,8 @@
   <%= render_submission_workflow_step -%>
 <% else %>
   <%= render_all_workflow_steps %>
+  <div class="all-steps-actions">
+    <button id="all_save_continue" name="all_save_continue">Save and Continue Editing</button>
+    <button id="all_save_finish" name="all_save_finish">Save and Finish</button>
+  </div>
 <% end %>

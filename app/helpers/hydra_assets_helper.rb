@@ -62,4 +62,5 @@ module HydraAssetsHelper
     end
     short_description = desc.capitalize
   end
+  
 end

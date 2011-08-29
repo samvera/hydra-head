@@ -4,27 +4,28 @@
 -%>
 <div id="showHead">
   <div id="showUtils">
-    <div class="tools"><%= render :partial => 'show_tools' %></div>
     <span class="back_to_cat"><%= link_back_to_catalog :label=>'&larr; Return to search results' %></span>
-    <% if @previous_document || @next_document %>
+    <%- if @previous_document || @next_document -%>
       <div id="previousNextDocument">
 	    <span class="previous"><%= link_to_previous_document(@previous_document) %></span>
-    <% end %>
-    <%- if session[:search][:counter].to_i > 0 -%>
-      <%= session[:search][:counter].to_i %> of <%= format_num(session[:search][:total]) %>
     <%- end -%>
-    <% if @previous_document || @next_document %>
+    <%- if session[:search][:counter].to_i > 0 -%>
+      <span class="result-num">
+        <%= session[:search][:counter].to_i %> of <%= format_num(session[:search][:total]) %>
+      </span>
+    <%- end -%>
+    <%- if @previous_document || @next_document -%>
 	    <span class="next"><%= link_to_next_document(@next_document)%></span>	
       </div>
-    <% end %>
+    <%- end -%>
+    <%- if editor? && controller.action_name != "delete" -%>
+    	<span class="edit-browse">
+    		<%= edit_and_browse_links %>
+    	</span>
+    <%- end -%>
   </div>
 </div>
-<% if editor? && controller.action_name != "delete" %>
-	<div class="edit-browse">
-		<%= edit_and_browse_links %>
-	</div>
-<% end -%>
-<div id="document" class="<%= controller.action_name == "edit" ? "document_edit" : "document_show" %>">
+<div id="document" class="<%= controller.action_name == "edit" ? "document_edit" : "document_show" %> <%= "combined_document_view" if session[:scripts] %>">
   <div id="<%= format_pid(@document[:id]) %>">
     <%= "<h1>Add Your Work</h1>" if controller.action_name == "edit" %>
     <div class="document">

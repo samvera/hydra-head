@@ -23,7 +23,7 @@
       <%= hidden_field_tag("id",params[:id], :id => "file_upload_id") if params[:id] %>
       <p>
         <%= submit_tag("Upload File", :name=>"upload_file")%>
-        <%= submit_tag("Upload and Finish", :name=>"finish") unless params[:new_asset] %>
+        <%= submit_tag("Upload and Finish", :name=>"finish") unless params[:new_asset] or session[:scripts] %>
       </p>
     <%- end -%>
   </fieldset>
