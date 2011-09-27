@@ -21,10 +21,18 @@ describe Hydra::AccessControlsEnforcement do
      stub_user = User.new
      stub_user.stubs(:is_being_superuser?).returns false
      helper.stubs(:current_user).returns(stub_user)
-     query = helper.send(:build_lucene_query, "string")
+     query = helper.send(:build_lucene_query, "query_string")
      ["discover","edit","read"].each do |type|
        query.should match(/_query_\:\"#{type}_access_person_t\:#{stub_user.login}/)
      end
+     query.should match /^_query_:"\{!dismax qf=\$qf_dismax pf=\$pf_dismax\}query_string" AND NOT _query_:"info\\\\:fedora\/afmodel\\\\:FileAsset"/
+   end
+   it "should not have dismax clause if no user_query is suplied" do
+     stub_user = User.new
+     stub_user.stubs(:is_being_superuser?).returns false
+     helper.stubs(:current_user).returns(stub_user)
+     query = helper.send(:build_lucene_query, nil)
+     query.should match /^NOT _query_:"info\\\\:fedora\/afmodel\\\\:FileAsset"/
    end
    describe "for superusers" do
      it "should return superuser access level" do
