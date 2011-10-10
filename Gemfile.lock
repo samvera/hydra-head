@@ -69,13 +69,16 @@ GEM
     haml (3.1.1)
     httparty (0.7.7)
       crack (= 0.1.8)
-    jettywrapper (0.0.3)
+    jettywrapper (0.0.10)
+      logger
+      mediashelf-loggable
     json (1.5.1)
     json_pure (1.5.1)
     launchy (0.4.0)
       configuration (>= 0.0.5)
       rake (>= 0.8.1)
     linecache (0.43)
+    logger (1.2.8)
     marc (0.3.0)
     mediashelf-loggable (0.4.7)
     mime-types (1.16)
@@ -144,7 +147,7 @@ PLATFORMS
 
 DEPENDENCIES
   RedCloth (= 4.2.3)
-  active-fedora (>= 2.3.0)
+  active-fedora (~> 2.3.0)
   authlogic (= 2.1.2)
   block_helpers
   builder
@@ -161,7 +164,7 @@ DEPENDENCIES
   gherkin
   haml
   httparty
-  jettywrapper
+  jettywrapper (~> 0.0.10)
   json_pure (> 1.4.3)
   launchy
   linecache (= 0.43)

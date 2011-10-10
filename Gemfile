@@ -3,7 +3,7 @@ source 'http://gemcutter.org'
 
 gem 'rails', '2.3.11'
 
-gem 'active-fedora', '>=2.3.0'  
+gem 'active-fedora', '~>2.3.0'  
 gem 'builder'
 gem 'columnize'
 gem 'crack'
@@ -13,7 +13,7 @@ gem 'diff-lcs'
 gem 'facets', '2.8.4'
 gem 'haml'
 gem 'httparty'
-gem 'jettywrapper'
+gem 'jettywrapper', '~>0.0.10'
 gem 'json_pure', '>1.4.3'
 gem 'launchy'
 gem 'linecache', '0.43' # 0.43 predates the bug described at http://makandra.com/notes/1290-no-such-file-to-load-require_relative-missingsourcefile-after-installing-ruby-debug
