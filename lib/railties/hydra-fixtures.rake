@@ -25,19 +25,36 @@ namespace :repo do
   desc "Load the object located at the provided path or identified by pid."
   override_task :load => :environment do
     ### override the AF provided task to use the correct fixture directory
-    if ENV["pid"].nil? 
-      raise "You must specify a valid pid.  Example: rake repo:load pid=demo:12"
+    if !ENV["path"].nil? and File.file?(ENV["path"])
+      filename = ENV["path"]
+    elsif !ENV["pid"].nil?
+      pid = ENV["pid"]
+      if !ENV["path"].nil? and File.directory?(ENV["path"])
+        filename = File.join(ENV["path"], "#{pid.gsub(":","_")}.foxml.xml")
+      else
+        filename = File.join("test_support","fixtures","#{pid.gsub(":","_")}.foxml.xml")
+      end
+    else   
+      puts "You must specify a path to the object or provide its pid.  Example: rake repo:load path=spec/fixtures/demo_12.foxml.xml"
     end
-puts "loading #{ENV['pid']}" 
-      
-    begin
-      ActiveFedora::FixtureLoader.new('test_support/fixtures').reload(ENV["pid"])
-    rescue Errno::ECONNREFUSED => e
-      puts "Can't connect to Fedora! Are you sure jetty is running?"
-    rescue Exception => e
-      logger.error("Received a Fedora error while loading #{pid}\n#{e}")
+        
+    if !filename.nil?
+      puts "Loading '#{filename}' in #{ActiveFedora.fedora_config[:url]}"
+      file = File.new(filename, "r")
+      result = ActiveFedora::RubydoraConnection.instance.connection.ingest(:file=>file.read)
+      if result
+        puts "The object has been loaded as #{result.body}"
+        if pid.nil?
+          pid = result.body
+        end
+        solrizer = Solrizer::Fedora::Solrizer.new
+        solrizer.solrize(pid)
+      else
+        puts "Failed to load the object."
+      end
     end
   end
+
 end
 namespace :hydra do
   
