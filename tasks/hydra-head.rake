@@ -142,6 +142,10 @@ namespace :hyhead do
       puts "Creating local vendor/cache dir and copying gems from hyhead-rails3 gemset"
       FileUtils.cp_r(File.join('..','..','vendor','cache'), './vendor')
       
+      puts "Copying rake tasks into test app lib/tasks directory"
+      FileUtils.mkdir_p( File.join('.', 'lib', 'tasks') )
+      FileUtils.cp_r(File.join('..','..','test_support','etc','tasks'), File.join('.','lib','tasks'))
+
       puts "Copying fixtures into test app spec/fixtures directory"
       FileUtils.mkdir_p( File.join('.','test_support') )
       FileUtils.cp_r(File.join('..','..','test_support','fixtures'), File.join('.','test_support','fixtures'))
