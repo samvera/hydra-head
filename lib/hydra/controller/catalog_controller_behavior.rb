@@ -1,11 +1,15 @@
+# @deprecated
 # *Using this Module is not necessary if you're writing Controllers in Rails3.*  
+#
+# In Hydra Heads, you should only use CatalogController to handle searches.  Showing & Editing should be handled by Model-specific Controllers (ie. ArticlesController, ETDController, etc.)
+#
 # In a Rails3 app, simply define regular Rails Controllers to expose the Resources & Actions you need and use Hydra::Controller to add Hydra support.
 # For search & discovery in those apps, use Blacklight and customize the "index" partials for each type of content to include links to the show/edit actions of the corresponding Controllers.
 #
 # This Module extends Blacklight Catalog behaviors to give you a "Hydra" Catalog with edit and show behaviors on top of the Blacklight search behaviors.
 # Include this module into any of your Blacklight Catalog classes (ie. CatalogController) to add Hydra functionality.
 #
-module Hydra::Catalog
+module Hydra::Controller::CatalogControllerBehavior
   extend ActiveSupport::Concern
   
   
@@ -24,11 +28,13 @@ module Hydra::Catalog
     rescue_from ActiveFedora::ObjectNotFoundError, :with => :nonexistent_document
   end
   
+  # @deprecated
   def edit
     show
     render "show"
   end
   
+  # @deprecated
   # This will render the "delete" confirmation page and a form to submit a destroy request to the assets controller
   def delete
     show

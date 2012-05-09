@@ -1,5 +1,5 @@
 require "hydra"
-module Hydra::SubmissionWorkflow
+module Hydra::Workflow::SubmissionWorkflow
   
   # When in this module is incuded in a controller (e.g. responds to :before_filter) add the validate_worflow_step method to the before filter chain.
   def self.included(base)

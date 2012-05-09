@@ -9,7 +9,7 @@
 
 module Hydra
   module Datastream
-    module CommonModsIndexMethods
+    module ModsNameBehavior
       # Extracts the first and last names of persons and creates Solr::Field objects with for person_full_name_facet
       #
       # == Returns:

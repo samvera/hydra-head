@@ -1,3 +1,4 @@
+# @todo Ask jkeck or cbeer if we can delete this
 # Custom pagination renderer
 # Call using will_paginate(@results, :renderer => 'PrevNextLinks')
 class PrevNextLinks < WillPaginate::LinkRenderer

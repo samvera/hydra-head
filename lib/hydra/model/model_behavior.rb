@@ -1,4 +1,5 @@
-module Hydra::ModelMethods
+# @deprecated This class should be ditched along with Hydra::Controller::CatalogControllerBehavior.edit and Hydra::Controller::AssetsControllerBehavior
+module Hydra::Model::ModelBehavior
   extend ActiveSupport::Concern
 
   included do
@@ -23,6 +24,7 @@ module Hydra::ModelMethods
   end
 
   #
+  # @deprecated
   # Set the collection type (e.g. hydrangea_article) for the asset
   #
   def set_collection_type(collection)

@@ -1,9 +1,12 @@
+# GenericContent: EXAMPLE Model that conforms to the Hydra genericContent and genericMetadata cModels 
 class GenericContent < ActiveFedora::Base
-
+  
+  # Uses the GenericContent mixin to conform to the Hydra genericContent cModel
+  include Hydra::ModelMixins::GenericContent
+  
   # Uses the Hydra Rights Metadata Schema for tracking access permissions & copyright
   has_metadata :name => "rightsMetadata", :type => Hydra::Datastream::RightsMetadata 
 
-  include Hydra::GenericContent
   has_metadata :name => "descMetadata", :type => Hydra::Datastream::ModsGenericContent
 
   # A place to put extra metadata values

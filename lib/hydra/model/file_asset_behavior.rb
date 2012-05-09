@@ -1,5 +1,7 @@
 module Hydra
-  module Models
+  module ModelMixins
+    # Defines Behaviors for a FileAsset Model
+    # Conforms to the Hydra genericContent cModel -- the "content" is in a datastream called content
     module FileAsset
       extend ActiveSupport::Concern
       included do

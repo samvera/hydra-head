@@ -1,3 +1,4 @@
+# CanCan Integration for Hydra: allows you to grant & test varying permissions for users  
 module Hydra::Ability
   include Hydra::AccessControlsEnforcement
 
