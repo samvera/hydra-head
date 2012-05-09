@@ -15,7 +15,7 @@
 #   
 # end
 #
-module Hydra::RepositoryController
+module Hydra::Controller::RepositoryControllerBehavior
   
   def self.included(c)
     if c.respond_to?(:helper_method)

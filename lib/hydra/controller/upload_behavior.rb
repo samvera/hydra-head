@@ -1,4 +1,4 @@
-module Hydra::FileAssetsHelper
+module Hydra::Controller::UploadBehavior
   
   # Creates a File Asset, adding the posted blob to the File Asset's datastreams and saves the File Asset
   #

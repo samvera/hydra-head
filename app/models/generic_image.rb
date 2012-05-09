@@ -1,4 +1,4 @@
-# GenericImage
+# GenericImage: EXAMPLE Model that conforms to the Hydra genericImage, genericMetadata and genericContent cModels
 #
 # Default content datastreams: content, original (optional), max, thumbnail, screen
 #
@@ -41,13 +41,15 @@ require 'hydra'
 
 class GenericImage < ActiveFedora::Base
 
+  # Uses the GenericImage mixin to conform to the Hydra genericImage cModel (auto-includes on GenericContent behaviors)
+  include Hydra::ModelMixins::GenericImage
+    
   # adds helpful methods for basic hydra objects
   include Hydra::ModelMethods
   
   # Uses the Hydra Rights Metadata Schema for tracking access permissions & copyright
   has_metadata :name => "rightsMetadata", :type => Hydra::Datastream::RightsMetadata 
 
-  include Hydra::GenericImage
   has_metadata :name => "descMetadata", :type => Hydra::Datastream::ModsImage
   
   # A place to put extra metadata values

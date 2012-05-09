@@ -8,7 +8,7 @@
 #   For good sample usage, see the documentation for HydraImage.
 require "hydra"
 
-module Hydra::GenericImage
+module Hydra::ModelMixins::GenericImage
   def self.included klass
     klass.send(:include, Hydra::GenericContent)
   end

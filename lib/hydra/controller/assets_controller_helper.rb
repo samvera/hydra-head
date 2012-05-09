@@ -1,4 +1,5 @@
 require "om"
+# All of this should be moved into AssetsControllerBehavior
 module Hydra::AssetsControllerHelper
   
   # This makes sure that assets have the current user marked as their depositor/owner.  

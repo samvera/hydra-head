@@ -1,7 +1,9 @@
+# Datastream that uses a Generic MODS Terminology
+# Previously Hydra::Datastream::ModsGenericContent - 09 May 2012
 module Hydra
   module Datastream
-  class ModsGenericContent < ActiveFedora::NokogiriDatastream       
-    include Hydra::Datastream::CommonModsIndexMethods
+  class ModsBasic < ActiveFedora::NokogiriDatastream       
+    include Hydra::DatastreamMixins::CommonModsIndexMethods
 
     set_terminology do |t|
       t.root(:path=>"mods", :xmlns=>"http://www.loc.gov/mods/v3", :schema=>"http://www.loc.gov/standards/mods/v3/mods-3-2.xsd")

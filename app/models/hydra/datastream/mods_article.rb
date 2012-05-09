@@ -1,7 +1,8 @@
+# @deprecated Leftover from Hydrangea.  Should use Hydra::Datastream::ModsBasic instead.
 module Hydra
   module Datastream
     class ModsArticle < ActiveFedora::NokogiriDatastream       
-      include Hydra::Datastream::CommonModsIndexMethods
+      include Hydra::DatastreamMixins::CommonModsIndexMethods
 
       set_terminology do |t|
         t.root(:path=>"mods", :xmlns=>"http://www.loc.gov/mods/v3", :schema=>"http://www.loc.gov/standards/mods/v3/mods-3-2.xsd")

@@ -1,3 +1,4 @@
+# @deprecated Was part of the original implementation of Libra.  This type of behavior should be application-specific.
 class UserAttribute < ActiveRecord::Base
   belongs_to :user
 
