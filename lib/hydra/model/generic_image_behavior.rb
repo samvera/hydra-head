@@ -9,6 +9,7 @@
 require "hydra"
 
 module Hydra::Model::GenericImageBehavior
+
   def self.included klass
     klass.send(:include, Hydra::GenericContent)
   end
