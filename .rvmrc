@@ -27,9 +27,9 @@ else
 fi
 
 # Use the specified rubygems_version
-if [[ -n "${rubygems_version}" && ("$(gem --version)" != ${rubygems_version}) ]] ; then
-  rvm rubygems "${rubygems_version}"
-fi
+#if [[ -n "${rubygems_version}" && ("$(gem --version)" != ${rubygems_version}) ]] ; then
+#  rvm rubygems "${rubygems_version}"
+#fi
 
 # Ensure that Bundler is installed, install it if it is not.
 if ! (command -v bundle > /dev/null) ; then
