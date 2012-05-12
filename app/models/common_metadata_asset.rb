@@ -1,3 +1,4 @@
+# @deprecated This is intended as an EXAMPLE of mixing in model behavior and will be moved to hydra-wiki documentation
 # A Basic Model for Assets that conform to Hydra commonMetadata cModel and have basic MODS metadata (currently "Article" is the MODS exemplar)
 class CommonMetadataAsset < ActiveFedora::Base
   

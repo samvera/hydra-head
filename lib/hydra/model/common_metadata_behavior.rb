@@ -10,8 +10,8 @@
 #   RELS-EXT datastream -- Handled by ActiveFedora::Base & ActiveFedora::RelsExtDatastream
 #   optional datastreams (contentMetadata, technicalMetadata, provenanceMetadata, sourceMetadata)
 #
-module Hydra::ModelMixins
-  module CommonMetadata
+module Hydra::Model
+  module CommonMetadataBehavior
   
     def self.included(klazz)
       # Uses the Hydra Rights Metadata Schema for tracking access permissions & copyright

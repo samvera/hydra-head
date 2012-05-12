@@ -8,7 +8,7 @@
 #    include Hydra::Controller
 #  end
 #
-module Hydra::Controllers::ControllerBehavior
+module Hydra::Controller::ControllerBehavior
 
   def self.included(klass)
     # Other modules to auto-include

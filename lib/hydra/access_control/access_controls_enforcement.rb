@@ -1,4 +1,4 @@
-module Hydra::AccessControlsEnforcement
+module Hydra::AccessControl::AccessControlsEnforcement
   
   def self.included(klass)
     klass.send(:include, Hydra::AccessControlsEvaluation)

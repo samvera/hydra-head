@@ -1,5 +1,5 @@
 # Defines Behaviors for a FileAssetsController
-module Hydra::Controler::FileAssetsControllerBehavior
+module Hydra::Controller::FileAssetsControllerBehavior
   extend ActiveSupport::Concern
   
   included do

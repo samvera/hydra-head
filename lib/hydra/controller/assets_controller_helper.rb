@@ -1,6 +1,6 @@
 require "om"
-# All of this should be moved into AssetsControllerBehavior
-module Hydra::AssetsControllerHelper
+# All of this should be moved into Hydra::Controller::AssetsControllerBehavior
+module Hydra::Controller::AssetsControllerHelper
   
   # This makes sure that assets have the current user marked as their depositor/owner.  
   # Relies on the asset's model to define _what_ apply_depositor_metadata should do.  Most Hydra assets will rely on {Hydra::ModelMethods#apply_depositor_metadata}

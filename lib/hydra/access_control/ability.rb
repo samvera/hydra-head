@@ -1,5 +1,5 @@
 # CanCan Integration for Hydra: allows you to grant & test varying permissions for users  
-module Hydra::Ability
+module Hydra::AccessControl::Ability
   include Hydra::AccessControlsEnforcement
 
   def initialize(user, session=nil)

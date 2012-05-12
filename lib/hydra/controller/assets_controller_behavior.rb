@@ -1,6 +1,7 @@
 # @deprecated  Create Model-specific Controllers instead ie. ArticlesController, ETDController, etc.
-# Also see Hydra::Controller::AssetsControllerBehavior for more info.
-module Hydra::Assets
+#   See https://github.com/projecthydra/hydra-head/wiki/Content-Type-Example%3A-Journal-Article/
+#      under "Defining Journal Articles Controller and Views" for more info.
+module Hydra::Controller::AssetsControllerBehavior
   extend ActiveSupport::Concern
   include Blacklight::SolrHelper
   include Hydra::RepositoryController

@@ -3,7 +3,7 @@
 # Explicitly declares:
 #   descMetadata datastream using Hydra::Datastream::ModsArticle Terminology
 #
-module Hydra::ModelMixins::ModsObject
+module Hydra::Model::ModsObjectBehavior
   
   def self.included(klazz)
     # Uses the Hydra MODS Basic profile for tracking descriptive metadata

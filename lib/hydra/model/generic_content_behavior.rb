@@ -2,8 +2,8 @@
 # require "httparty"
 # require "mime/types"
 
-module Hydra::ModelMixins
-  module GenericContent
+module Hydra::Model
+  module GenericContentBehavior
   
     def self.included(klass)
      klass.send :include, Hydra::ModelMethods

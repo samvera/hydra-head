@@ -1,6 +1,6 @@
 # Provides methods for testing permissions
 # If you include this into a Controller, it will also make a number of these methods available as view helpers.
-module Hydra::AccessControlsEvaluation
+module Hydra::AccessControl::AccessControlsEvaluation
   
   def self.included(klass)
     if klass.respond_to?(:helper_method)
