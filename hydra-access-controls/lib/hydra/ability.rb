@@ -29,9 +29,7 @@ module Hydra::Ability
   end
 
   ## You can override this method if you are using a different AuthZ (such as LDAP)
-  def user_groups(deprecated_user=nil, deprecated_session=nil)
-    ActiveSupport::Deprecation.warn("No need to pass user or session to user_groups, use the instance_variables", caller()) if deprecated_user || deprecated_session
-
+  def user_groups
     return @user_groups if @user_groups
     
     @user_groups = default_user_groups
@@ -46,22 +44,18 @@ module Hydra::Ability
   end
   
 
-  # Requires no arguments, but accepts 2 arguments for backwards compatibility
-  def hydra_default_permissions(deprecated_user=nil, deprecated_session=nil)
-    ActiveSupport::Deprecation.warn("No need to pass user or session to hydra_default_permissions, use the instance_variables", caller()) if deprecated_user || deprecated_session
+  def hydra_default_permissions
     logger.debug("Usergroups are " + user_groups.inspect)
     self.ability_logic.each do |method|
       send(method)
     end
   end
 
-  def create_permissions(deprecated_user=nil, deprecated_session=nil)
-    ActiveSupport::Deprecation.warn("No need to pass user or session to create_permissions, use the instance_variables", caller()) if deprecated_user || deprecated_session
+  def create_permissions
     can :create, :all if user_groups.include? 'registered'
   end
 
-  def edit_permissions(deprecated_user=nil, deprecated_session=nil)
-    ActiveSupport::Deprecation.warn("No need to pass user or session to edit_permissions, use the instance_variables", caller()) if deprecated_user || deprecated_session
+  def edit_permissions
     can [:edit, :update, :destroy], String do |pid|
       test_edit(pid)
     end 
@@ -76,8 +70,7 @@ module Hydra::Ability
     end       
   end
 
-  def read_permissions(deprecated_user=nil, deprecated_session=nil)
-    ActiveSupport::Deprecation.warn("No need to pass user or session to read_permissions, use the instance_variables", caller()) if deprecated_user || deprecated_session
+  def read_permissions
     can :read, String do |pid|
       test_read(pid)
     end
@@ -94,8 +87,7 @@ module Hydra::Ability
 
 
   ## Override custom permissions in your own app to add more permissions beyond what is defined by default.
-  def custom_permissions(deprecated_user=nil, deprecated_session=nil)
-    ActiveSupport::Deprecation.warn("No need to pass user or session to custom_permissions, use the instance_variables", caller()) if deprecated_user || deprecated_session
+  def custom_permissions
   end
   
   protected
@@ -107,8 +99,7 @@ module Hydra::Ability
   end
 
 
-  def test_edit(pid, deprecated_user=nil, deprecated_session=nil)
-    ActiveSupport::Deprecation.warn("No need to pass user or session to test_edit, use the instance_variables", caller()) if deprecated_user || deprecated_session
+  def test_edit(pid)
     permissions_doc(pid)
     logger.debug("[CANCAN] Checking edit permissions for user: #{current_user.user_key} with groups: #{user_groups.inspect}")
     group_intersection = user_groups & edit_groups
@@ -117,8 +108,7 @@ module Hydra::Ability
     result
   end   
   
-  def test_read(pid, deprecated_user=nil, deprecated_session=nil)
-    ActiveSupport::Deprecation.warn("No need to pass user or session to test_read, use the instance_variables", caller()) if deprecated_user || deprecated_session
+  def test_read(pid)
     permissions_doc(pid)
     logger.debug("[CANCAN] Checking edit permissions for user: #{current_user.user_key} with groups: #{user_groups.inspect}")
     group_intersection = user_groups & read_groups
@@ -156,14 +146,5 @@ module Hydra::Ability
     logger.debug("[CANCAN] read_persons: #{rp.inspect}")
     return rp
   end
-
-  
-  # get the currently configured user identifier.  Can be overridden to return whatever (ie. login, email, etc)
-  # defaults to using whatever you have set as the Devise authentication_key
-  def user_key(user)
-    ActiveSupport::Deprecation.warn("Ability#user_key is deprecated, call user.user_key instead", caller(1))
-    user.send(Devise.authentication_keys.first)
-  end
-
 
 end
