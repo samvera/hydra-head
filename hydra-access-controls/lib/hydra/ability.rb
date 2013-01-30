@@ -93,9 +93,7 @@ module Hydra::Ability
   protected
 
   def permissions_doc(pid)
-    return @permissions_solr_document if @permissions_solr_document
-    response, @permissions_solr_document = get_permissions_solr_response_for_doc_id(pid)
-    @permissions_solr_document
+    @permissions_solr_document ||= get_permissions_solr_response_for_doc_id(pid)
   end
 
 
@@ -116,7 +114,7 @@ module Hydra::Ability
     logger.debug("[CANCAN] decision: #{result}")
     result
   end 
-  
+
   def edit_groups
     edit_group_field = Hydra.config[:permissions][:edit][:group]
     eg = ((@permissions_solr_document == nil || @permissions_solr_document.fetch(edit_group_field,nil) == nil) ? [] : @permissions_solr_document.fetch(edit_group_field,nil))
