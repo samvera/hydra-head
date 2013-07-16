@@ -15,7 +15,7 @@ describe DownloadsController do
 
   describe "with a file" do
     before do
-      @user = User.create!(email: 'email@example.com', password: 'password')
+      @user = User.new.tap {|u| u.email = 'foo'; u.password = 'password'; u.save}
       @obj = ActiveFedora::Base.new
       @obj = ModsAsset.new
       @obj.label = "world.png"
