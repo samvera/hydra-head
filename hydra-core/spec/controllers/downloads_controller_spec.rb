@@ -132,7 +132,7 @@ describe DownloadsController do
     describe "when not logged in as reader" do
       describe "show" do
         before do
-          sign_in User.create!(email: 'email2@example.com', password: 'password')
+          sign_in User.new.tap {|u| u.email = 'email2@example.com'; u.password = 'password'; u.save}
         end
         it "should deny access" do
           lambda { get "show", :id =>@obj.pid }.should raise_error Hydra::AccessDenied
