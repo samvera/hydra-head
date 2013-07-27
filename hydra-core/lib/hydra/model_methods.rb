@@ -24,6 +24,7 @@ module Hydra::ModelMethods
   # @param [#read] file the IO object that is the blob
   # @param [String] file the IO object that is the blob
   def add_file(file, dsid, file_name)
+    before_add_file(file, dsid, file_name) if defined? before_add_file
     mime_types = MIME::Types.of(file_name)
     mime_type = mime_types.empty? ? "application/octet-stream" : mime_types.first.content_type
     options = {:label=>file_name, :mimeType=>mime_type}
