@@ -139,5 +139,24 @@ describe DownloadsController do
         end
       end
     end
+
+    describe "overriding the default asset param" do
+      before do
+        Rails.application.routes.draw do
+          get 'downloads/:alt_id' => 'downloads#show'
+        end
+        controller do
+          def asset_param
+            params[:bar_id]
+          end
+        end
+        sign_in @user
+      end
+      it "should return the custom param value" do
+        controller.should_receive(:asset_param).and_return(@obj.pid)
+        get "show", :alt_id => @obj.pid
+      end
+    end
+
   end
 end
