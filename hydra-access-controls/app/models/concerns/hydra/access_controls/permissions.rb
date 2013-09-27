@@ -1,148 +1,52 @@
 module Hydra
-  module ModelMixins
-    module RightsMetadata
+  module AccessControls
+    module Permissions
       extend ActiveSupport::Concern
-      extend Deprecation
+      include Hydra::AccessControls::Visibility
 
       included do
-        Deprecation.warn(RightsMetadata, "Hydra::ModelMixins::RightsMetadata has been deprecated and will be removed in hydra-head 7.0. Use Hydra::AccessControls::Permissions instead", caller(3));
+        has_metadata "rightsMetadata", type: Hydra::Datastream::RightsMetadata
       end
-
 
 
       ## Updates those permissions that are provided to it. Does not replace any permissions unless they are provided
       # @example
-      #  obj.permissions= [{:name=>"group1", :access=>"discover", :type=>'group'},
+      #  obj.permissions_attributes= [{:name=>"group1", :access=>"discover", :type=>'group'},
       #  {:name=>"group2", :access=>"discover", :type=>'group'}]
-      def permissions=(params)
+      def permissions_attributes= attributes_collection
         perm_hash = {'person' => rightsMetadata.individuals, 'group'=> rightsMetadata.groups}
 
-        params.each do |row|
+        if attributes_collection.is_a? Hash
+          attributes_collection = attributes_collection.sort_by { |i, _| i.to_i }.map { |_, attributes| attributes }
+        end
+
+        attributes_collection.each do |row|
+          row = row.with_indifferent_access
           if row[:type] == 'user' || row[:type] == 'person'
-            perm_hash['person'][row[:name]] = row[:access]
+            if has_destroy_flag? row
+              perm_hash['person'].delete(row[:name])
+            else
+              perm_hash['person'][row[:name]] = row[:access]
+            end
           elsif row[:type] == 'group'
             perm_hash['group'][row[:name]] = row[:access]
+            if has_destroy_flag? row
+              perm_hash['group'].delete(row[:name])
+            else
+              perm_hash['group'][row[:name]] = row[:access]
+            end
           else
             raise ArgumentError, "Permission type must be 'user', 'person' (alias for 'user'), or 'group'"
           end
         end
         
-        rightsMetadata.update_permissions(perm_hash)
+        rightsMetadata.permissions = perm_hash
       end
-
 
       ## Returns a list with all the permissions on the object.
-      # @example
-      #  [{:name=>"group1", :access=>"discover", :type=>'group'},
-      #  {:name=>"group2", :access=>"discover", :type=>'group'},
-      #  {:name=>"user2", :access=>"read", :type=>'user'},
-      #  {:name=>"user1", :access=>"edit", :type=>'user'},
-      #  {:name=>"user3", :access=>"read", :type=>'user'}]
       def permissions
-        (rightsMetadata.groups.map {|x| {:type=>'group', :access=>x[1], :name=>x[0] }} + 
-          rightsMetadata.individuals.map {|x| {:type=>'user', :access=>x[1], :name=>x[0]}})
-
-      end
-    
-      # Return a list of groups that have discover permission
-      def discover_groups
-        rightsMetadata.groups.map {|k, v| k if v == 'discover'}.compact
-      end
-
-      # Grant discover permissions to the groups specified. Revokes discover permission for all other groups.
-      # @param[Array] groups a list of group names
-      # @example
-      #  r.discover_groups= ['one', 'two', 'three']
-      #  r.discover_groups 
-      #  => ['one', 'two', 'three']
-      #
-      def discover_groups=(groups)
-        set_discover_groups(groups, discover_groups)
-      end
-
-      # Grant discover permissions to the groups specified. Revokes discover permission for all other groups.
-      # @param[String] groups a list of group names
-      # @example
-      #  r.discover_groups_string= 'one, two, three'
-      #  r.discover_groups 
-      #  => ['one', 'two', 'three']
-      #
-      def discover_groups_string=(groups)
-        self.discover_groups=groups.split(/[\s,]+/)
-      end
-
-      # Display the groups a comma delimeted string
-      def discover_groups_string
-        self.discover_groups.join(', ')
-      end
-
-      # Grant discover permissions to the groups specified. Revokes discover permission for
-      # any of the eligible_groups that are not in groups.
-      # This may be used when different users are responsible for setting different
-      # groups.  Supply the groups the current user is responsible for as the 
-      # 'eligible_groups'
-      # @param[Array] groups a list of groups
-      # @param[Array] eligible_groups the groups that are eligible to have their discover permssion revoked. 
-      # @example
-      #  r.discover_groups = ['one', 'two', 'three']
-      #  r.discover_groups 
-      #  => ['one', 'two', 'three']
-      #  r.set_discover_groups(['one'], ['three'])
-      #  r.discover_groups
-      #  => ['one', 'two']  ## 'two' was not eligible to be removed
-      #
-      def set_discover_groups(groups, eligible_groups)
-        set_entities(:discover, :group, groups, eligible_groups)
-      end
-
-      def discover_users
-        rightsMetadata.individuals.map {|k, v| k if v == 'discover'}.compact
-      end
-
-      # Grant discover permissions to the users specified. Revokes discover permission for all other users.
-      # @param[Array] users a list of usernames
-      # @example
-      #  r.discover_users= ['one', 'two', 'three']
-      #  r.discover_users 
-      #  => ['one', 'two', 'three']
-      #
-      def discover_users=(users)
-        set_discover_users(users, discover_users)
-      end
-
-      # Grant discover permissions to the groups specified. Revokes discover permission for all other users.
-      # @param[String] users a list of usernames
-      # @example
-      #  r.discover_users_string= 'one, two, three'
-      #  r.discover_users 
-      #  => ['one', 'two', 'three']
-      #
-      def discover_users_string=(users)
-        self.discover_users=users.split(/[\s,]+/)
-      end
-
-      # Display the users as a comma delimeted string
-      def discover_users_string
-        self.discover_users.join(', ')
-      end
-
-      # Grant discover permissions to the users specified. Revokes discover permission for
-      # any of the eligible_users that are not in users.
-      # This may be used when different users are responsible for setting different
-      # users.  Supply the users the current user is responsible for as the 
-      # 'eligible_users'
-      # @param[Array] users a list of users
-      # @param[Array] eligible_users the users that are eligible to have their discover permssion revoked. 
-      # @example
-      #  r.discover_users = ['one', 'two', 'three']
-      #  r.discover_users 
-      #  => ['one', 'two', 'three']
-      #  r.set_discover_users(['one'], ['three'])
-      #  r.discover_users
-      #  => ['one', 'two']  ## 'two' was not eligible to be removed
-      #
-      def set_discover_users(users, eligible_users)
-        set_entities(:discover, :person, users, eligible_users)
+        (rightsMetadata.groups.map {|x| Permission.new(type: 'group', access: x[1], name: x[0] )} + 
+          rightsMetadata.individuals.map {|x|  Permission.new(type: 'user', access: x[1], name: x[0] )})
       end
 
       # Return a list of groups that have discover permission
@@ -332,8 +236,15 @@ module Hydra
         set_entities(:edit, :person, users, eligible_users)
       end
 
+      protected 
+
+      def has_destroy_flag?(hash)
+        ["1", "true"].include?(hash['_destroy'].to_s)
+      end
 
       private 
+
+
 
       # @param  permission either :discover, :read or :edit
       # @param  type either :person or :group
