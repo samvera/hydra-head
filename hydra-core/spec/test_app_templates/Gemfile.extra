@@ -1,5 +1,5 @@
 group :develop do
-  gem 'active-fedora', github: "projecthydra/active_fedora"
+  gem 'active-fedora', github: 'projecthydra/active_fedora', branch: 'fedora-4'
 end
 # Temporary fix for https://github.com/twbs/bootstrap-sass/issues/647 on Rails 3
 gem 'bootstrap-sass', github: 'twbs/bootstrap-sass', ref: '540ad23'
