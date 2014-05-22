@@ -43,9 +43,20 @@ module Hydra
           t.human_readable(:path=>"human")
           t.machine{
             t.date(:type =>"release")
+            t.visibility_during(:path=>"visibility", :attributes=>{:scope=>'during'})
+            t.visibility_after(:path=>"visibility", :attributes=>{:scope=>'after'})
           }
           t.embargo_release_date(:proxy => [:machine, :date])
-        }    
+        }
+        t.lease {
+          t.human_readable(:path=>"human")
+          t.machine{
+            t.date(:type =>"expire")
+            t.visibility_during(:path=>"visibility", :attributes=>{:scope=>'during'})
+            t.visibility_after(:path=>"visibility", :attributes=>{:scope=>'after'})
+          }
+          t.lease_expiration_date(:proxy => [:machine, :date])
+        }
 
         t.license(:ref=>[:copyright])
       end
@@ -75,7 +86,11 @@ module Hydra
             xml.embargo{
               xml.human
               xml.machine
-            }        
+            }
+            xml.lease{
+              xml.human
+              xml.machine
+            }
           }
         end
         return builder.doc
@@ -172,6 +187,11 @@ module Hydra
         return result
       end
 
+      #
+      # Embargo
+      # NOTE: This feature simply allows you to assert visibility_during_embargo and visibility_after_embargo.  There is not any code that users enforces it in this gem.
+      #       For an example of code that does use it, see curationexperts/worthwhile and look in app/models/concerns/curation_concern/embargoable.rb
+      #
       attr_reader :embargo_release_date
       def embargo_release_date=(release_date)
         release_date = release_date.to_s if release_date.is_a? Date
@@ -192,6 +212,56 @@ module Hydra
       def under_embargo?
         (embargo_release_date && Date.today < embargo_release_date.to_date) ? true : false
       end
+      def visibility_during_embargo=(visibility)
+        self.update_values({[:embargo,:machine,:visibility_during]=>visibility})
+      end
+      def visibility_during_embargo
+        self.embargo.machine.visibility_during.first
+      end
+      def visibility_after_embargo=(visibility)
+        self.update_values({[:embargo,:machine,:visibility_after]=>visibility})
+      end
+      def visibility_after_embargo
+        self.embargo.machine.visibility_after.first
+      end
+
+      #
+      # Leases
+      # NOTE: This feature simply allows you to assert this information.  There is not any code that users enforces it in this gem.
+      #       For an example of code that does use it, see curationexperts/worthwhile and look in app/models/concerns/curation_concern/embargoable.rb
+      #
+      attr_reader :lease_expiration_date
+      def lease_expiration_date=(expiration_date)
+        expiration_date = expiration_date.to_s if expiration_date.is_a? Date
+        begin
+          expiration_date.nil? || Date.parse(expiration_date)
+        rescue
+          return "INVALID DATE"
+        end
+        self.update_values({[:lease,:machine,:date]=>expiration_date})
+      end
+      def lease_expiration_date(opts={})
+        lease_expiration_date = self.find_by_terms(*[:lease,:machine,:date]).first ? self.find_by_terms(*[:lease,:machine,:date]).first.text : nil
+        if lease_expiration_date.present? && opts[:format] && opts[:format] == :solr_date
+          lease_expiration_date << "T23:59:59Z"
+        end
+        lease_expiration_date
+      end
+      def lease_expired?
+        (lease_expiration_date && Date.today > lease_expiration_date.to_date) ? true : false
+      end
+      def visibility_during_lease=(visibility)
+        self.update_values({[:lease,:machine,:visibility_during]=>visibility})
+      end
+      def visibility_during_lease
+        self.lease.machine.visibility_during.first
+      end
+      def visibility_after_lease=(visibility)
+        self.update_values({[:lease,:machine,:visibility_after]=>visibility})
+      end
+      def visibility_after_lease
+        self.lease.machine.visibility_after.first
+      end
 
       def to_solr(solr_doc=Hash.new)
         [:discover, :read, :edit].each do |access|
@@ -203,6 +273,10 @@ module Hydra
         if embargo_release_date
           ::Solrizer::Extractor.insert_solr_field_value(solr_doc, Hydra.config[:permissions][:embargo_release_date], embargo_release_date(:format=>:solr_date))
         end
+        solr_doc[::Solrizer.solr_name("visibility_during_embargo", :symbol)] = visibility_during_embargo unless visibility_during_embargo.nil?
+        solr_doc[::Solrizer.solr_name("visibility_after_embargo", :symbol)] = visibility_after_embargo unless visibility_after_embargo.nil?
+        solr_doc[::Solrizer.solr_name("visibility_during_lease", :symbol)] = visibility_during_lease unless visibility_during_lease.nil?
+        solr_doc[::Solrizer.solr_name("visibility_after_lease", :symbol)] = visibility_after_lease unless visibility_after_lease.nil?
         solr_doc
       end
 
