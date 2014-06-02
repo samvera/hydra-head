@@ -12,7 +12,7 @@ console
 
 *.sqlite3
 *.log
-
+*.lock
 log/*
 
 public/plugin_assets
