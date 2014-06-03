@@ -114,7 +114,7 @@ describe Hydra::Datastream::RightsMetadata do
     it "should return a hash of all individuals with permissions set, along with their permission levels" do
       @sample.permissions({"person"=>"person_123"}, "read")
       @sample.permissions({"person"=>"person_456"}, "edit")
-      @sample.individuals.should == {"person_123"=>"read", "person_456"=>"edit"}
+      @sample.users.should == {"person_123"=>"read", "person_456"=>"edit"}
     end
   end
   
@@ -140,7 +140,7 @@ describe Hydra::Datastream::RightsMetadata do
     end
     it "clears permissions" do
       @sample.clear_permissions!
-      @sample.individuals.should == {}
+      @sample.users.should == {}
       @sample.groups.should == {}
     end
   end
@@ -167,7 +167,21 @@ describe Hydra::Datastream::RightsMetadata do
       solr_doc["read_access_group_ssim"].should == ["public"]
       solr_doc["discover_access_group_ssim"].should == ["bob"]
     end
+    it "should solrize embargo information if set" do
+      @sample.embargo_release_date=("2010-12-01")
+      solr_doc = @sample.to_solr
+      solr_doc["embargo_release_date_dtsi"].should == "2010-12-01T23:59:59Z"
+    end
+    it "should solrize lease information if set" do
+      @sample.lease_expiration_date=("2010-12-01")
+      solr_doc = @sample.to_solr
+      solr_doc["lease_expiration_date_dtsi"].should == "2010-12-01T23:59:59Z"
+    end
   end
+
+  #
+  # Embargo
+  #
   describe "embargo_release_date=" do
     it "should update the appropriate node with the value passed" do
       @sample.embargo_release_date=("2010-12-01")
@@ -203,8 +217,87 @@ describe Hydra::Datastream::RightsMetadata do
       @sample.embargo_release_date=Date.today-1.month
       @sample.under_embargo?.should be_false
     end
-    it "should return false if there is no embargo date" do
-      @sample.under_embargo?.should be_false
+    it "should return false if there is no embargo dateor expiration date is not valid" do
+        @sample.embargo_release_date = nil
+        @sample.under_embargo?.should be_false
+        @sample.embargo_release_date = ""
+        @sample.under_embargo?.should be_false
+        @sample.embargo_release_date = "foo"
+        @sample.under_embargo?.should be_false
+      end
+  end
+  describe "visibility during/after embargo" do
+    it "should track visibility values and index them into solr" do
+      expect(@sample.visibility_during_embargo).to be_nil
+      expect(@sample.visibility_after_embargo).to be_nil
+      @sample.visibility_during_embargo = "private"
+      @sample.visibility_after_embargo = "restricted"
+      expect(@sample.visibility_during_embargo).to eq "private"
+      expect(@sample.visibility_after_embargo).to eq "restricted"
+      solr_doc = @sample.to_solr
+      expect(solr_doc["visibility_during_embargo_ssim"]).to eq "private"
+      expect(solr_doc["visibility_after_embargo_ssim"]).to eq "restricted"
+    end
+  end
+
+  #
+  # Leases
+  #
+  describe "lease_expiration_date=" do
+    it "should update the appropriate node with the value passed" do
+      @sample.lease_expiration_date=("2010-12-01")
+      @sample.lease_expiration_date.should == "2010-12-01"
+    end
+    it "should only accept valid date values" do
+
+    end
+    it "should accept a nil value after having a date value" do
+      @sample.lease_expiration_date=("2010-12-01")
+      @sample.lease_expiration_date=(nil)
+      @sample.lease_expiration_date.should == nil
+    end
+  end
+  describe "lease_expiration_date" do
+    it "should return solr formatted date" do
+      @sample.lease_expiration_date=("2010-12-01")
+      @sample.lease_expiration_date(:format=>:solr_date).should == "2010-12-01T23:59:59Z"
+    end
+
+    # this test was returning '' under 1.9 and returning nil under ree and 1.8.7
+    it "should not return anything if the date is empty string" do
+      @sample.update_values({[:lease,:machine,:date]=>''})
+      @sample.lease_expiration_date(:format=>:solr_date).should be_blank
+    end
+  end
+  describe "lease_active?" do
+    it "should return true if the current date is after the lease expiration date" do
+      @sample.lease_expiration_date=Date.today-1.month
+      @sample.lease_active?.should be_false
+    end
+    it "should return false if the current date is before the lease expiration date" do
+      @sample.lease_expiration_date=Date.today+1.month
+      @sample.lease_active?.should be_true
+    end
+    it "should return false if there is no lease expiration date or expiration date is not valid" do
+      @sample.lease_expiration_date = nil
+      @sample.lease_active?.should be_false
+      @sample.lease_expiration_date = ""
+      @sample.lease_active?.should be_false
+      @sample.lease_expiration_date = "foo"
+      @sample.lease_active?.should be_false
+    end
+  end
+  describe "visibility during/after lease" do
+    it "should track visibility values and index them into solr" do
+      expect(@sample.visibility_during_lease).to be_nil
+      expect(@sample.visibility_after_lease).to be_nil
+      @sample.visibility_during_lease = "restricted"
+      @sample.visibility_after_lease = "private"
+      expect(@sample.visibility_during_lease).to eq "restricted"
+      expect(@sample.visibility_after_lease).to eq "private"
+      solr_doc = @sample.to_solr
+      expect(solr_doc["visibility_during_lease_ssim"]).to eq "restricted"
+      expect(solr_doc["visibility_after_lease_ssim"]).to eq "private"
     end
   end
 end

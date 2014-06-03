@@ -44,6 +44,7 @@ module Hydra
             individual: solr_name("#{prefix}#{key}_access_person", :symbol))
         end
         @embargo_release_date = solr_name("#{prefix}embargo_release_date", Solrizer::Descriptor.new(:date, :stored, :indexed))
+        @lease_expiration_date = solr_name("#{prefix}lease_expiration_date", Solrizer::Descriptor.new(:date, :stored, :indexed))
       end
 
       def merge! values
@@ -73,6 +74,8 @@ module Hydra
             inheritable
           when :embargo_release_date
             @embargo_release_date
+          when :lease_expiration_date
+            @lease_expiration_date
           when :policy_class
             @policy_class
           else
