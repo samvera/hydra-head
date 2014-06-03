@@ -167,6 +167,16 @@ describe Hydra::Datastream::RightsMetadata do
       solr_doc["read_access_group_ssim"].should == ["public"]
       solr_doc["discover_access_group_ssim"].should == ["bob"]
     end
+    it "should solrize embargo information if set" do
+      @sample.embargo_release_date=("2010-12-01")
+      solr_doc = @sample.to_solr
+      solr_doc["embargo_release_date_dtsi"].should == "2010-12-01T23:59:59Z"
+    end
+    it "should solrize lease information if set" do
+      @sample.lease_expiration_date=("2010-12-01")
+      solr_doc = @sample.to_solr
+      solr_doc["lease_expiration_date_dtsi"].should == "2010-12-01T23:59:59Z"
+    end
   end
 
   #
@@ -207,9 +217,14 @@ describe Hydra::Datastream::RightsMetadata do
       @sample.embargo_release_date=Date.today-1.month
       @sample.under_embargo?.should be_false
     end
-    it "should return false if there is no embargo date" do
-      @sample.under_embargo?.should be_false
-    end
+    it "should return false if there is no embargo dateor expiration date is not valid" do
+        @sample.embargo_release_date = nil
+        @sample.under_embargo?.should be_false
+        @sample.embargo_release_date = ""
+        @sample.under_embargo?.should be_false
+        @sample.embargo_release_date = "foo"
+        @sample.under_embargo?.should be_false
+      end
   end
   describe "visibility during/after embargo" do
     it "should track visibility values and index them into solr" do
@@ -254,17 +269,22 @@ describe Hydra::Datastream::RightsMetadata do
       @sample.lease_expiration_date(:format=>:solr_date).should be_blank
     end
   end
-  describe "lease_expired?" do
+  describe "lease_active?" do
     it "should return true if the current date is after the lease expiration date" do
       @sample.lease_expiration_date=Date.today-1.month
-      @sample.lease_expired?.should be_true
+      @sample.lease_active?.should be_false
     end
     it "should return false if the current date is before the lease expiration date" do
       @sample.lease_expiration_date=Date.today+1.month
-      @sample.lease_expired?.should be_false
+      @sample.lease_active?.should be_true
     end
-    it "should return false if there is no lease expiration date" do
-      @sample.lease_expired?.should be_false
+    it "should return false if there is no lease expiration date or expiration date is not valid" do
+      @sample.lease_expiration_date = nil
+      @sample.lease_active?.should be_false
+      @sample.lease_expiration_date = ""
+      @sample.lease_active?.should be_false
+      @sample.lease_expiration_date = "foo"
+      @sample.lease_active?.should be_false
     end
   end
   describe "visibility during/after lease" do

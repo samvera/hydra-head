@@ -7,8 +7,8 @@ module Hydra
         @under_embargo ||= rightsMetadata.under_embargo?
       end
 
-      def lease_expired?
-        @lease_expired ||= rightsMetadata.lease_expired?
+      def lease_active?
+        @lease_active ||= rightsMetadata.lease_active?
       end
 
       delegate :open_access?, :open_access_with_embargo_release_date?, 

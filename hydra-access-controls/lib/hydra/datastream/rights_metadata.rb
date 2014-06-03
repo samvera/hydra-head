@@ -43,6 +43,7 @@ module Hydra
           t.human_readable(:path=>"human")
           t.machine{
             t.date(:type =>"release")
+            t.date_deactivated(:type =>"deactivated")
             t.visibility_during(:path=>"visibility", :attributes=>{:scope=>'during'})
             t.visibility_after(:path=>"visibility", :attributes=>{:scope=>'after'})
           }
@@ -52,6 +53,7 @@ module Hydra
           t.human_readable(:path=>"human")
           t.machine{
             t.date(:type =>"expire")
+            t.date_deactivated(:type =>"deactivated")
             t.visibility_during(:path=>"visibility", :attributes=>{:scope=>'during'})
             t.visibility_after(:path=>"visibility", :attributes=>{:scope=>'after'})
           }
@@ -224,6 +226,12 @@ module Hydra
       def visibility_after_embargo
         self.embargo.machine.visibility_after.first
       end
+      def embargo_history
+        self.embargo.human_readable
+      end
+      def embargo_deactivation_date
+        self.embargo.machine.date_deactivated
+      end
 
       #
       # Leases
@@ -243,12 +251,18 @@ module Hydra
       def lease_expiration_date(opts={})
         lease_expiration_date = self.find_by_terms(*[:lease,:machine,:date]).first ? self.find_by_terms(*[:lease,:machine,:date]).first.text : nil
         if lease_expiration_date.present? && opts[:format] && opts[:format] == :solr_date
+          # ensure that the lease_expiration_date is a Date before passing into solr
+          lease_expiration_date = Date.parse(lease_expiration_date).to_s
           lease_expiration_date << "T23:59:59Z"
         end
         lease_expiration_date
       end
-      def lease_expired?
-        (lease_expiration_date && Date.today > lease_expiration_date.to_date) ? true : false
+      def lease_active?
+        if lease_expiration_date && lease_expiration_date.to_date
+          lease_expiration_date && Date.today < lease_expiration_date.to_date
+        else
+          false
+        end
       end
       def visibility_during_lease=(visibility)
         self.update_values({[:lease,:machine,:visibility_during]=>visibility})
@@ -262,6 +276,12 @@ module Hydra
       def visibility_after_lease
         self.lease.machine.visibility_after.first
       end
+      def lease_history
+        self.lease.human_readable
+      end
+      def lease_deactivation_date
+        self.embargo.machine.date_deactivated
+      end
 
       def to_solr(solr_doc=Hash.new)
         [:discover, :read, :edit].each do |access|
@@ -273,10 +293,15 @@ module Hydra
         if embargo_release_date
           ::Solrizer::Extractor.insert_solr_field_value(solr_doc, Hydra.config[:permissions][:embargo_release_date], embargo_release_date(:format=>:solr_date))
         end
+        if lease_expiration_date
+          ::Solrizer::Extractor.insert_solr_field_value(solr_doc, Hydra.config[:permissions][:lease_expiration_date], lease_expiration_date(:format=>:solr_date))
+        end
         solr_doc[::Solrizer.solr_name("visibility_during_embargo", :symbol)] = visibility_during_embargo unless visibility_during_embargo.nil?
         solr_doc[::Solrizer.solr_name("visibility_after_embargo", :symbol)] = visibility_after_embargo unless visibility_after_embargo.nil?
         solr_doc[::Solrizer.solr_name("visibility_during_lease", :symbol)] = visibility_during_lease unless visibility_during_lease.nil?
         solr_doc[::Solrizer.solr_name("visibility_after_lease", :symbol)] = visibility_after_lease unless visibility_after_lease.nil?
+        solr_doc[::Solrizer.solr_name("embargo_history", :symbol)] = embargo_history unless embargo_history.nil?
+        solr_doc[::Solrizer.solr_name("lease_history", :symbol)] = lease_history unless lease_history.nil?
         solr_doc
       end
 
