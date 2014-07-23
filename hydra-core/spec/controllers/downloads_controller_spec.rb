@@ -18,6 +18,7 @@ describe DownloadsController do
   describe "with a file" do
     before do
       class ContentHolder < ActiveFedora::Base
+        include Hydra::ModelMethods
         include Hydra::AccessControls::Permissions
         has_file_datastream 'thumbnail'
       end
@@ -113,12 +114,14 @@ describe DownloadsController do
         end
       end
       describe "stream" do
+        let(:inner_object) { ActiveFedora::Base.new('/changeme:test') }
         before do
           stub_response = double()
           stub_response.stub(:read_body).and_yield("one1").and_yield('two2').and_yield('thre').and_yield('four')
           stub_repo = double()
           stub_repo.stub(:datastream_dissemination).and_yield(stub_response)
-          stub_ds = ActiveFedora::Datastream.new
+          
+          stub_ds = ActiveFedora::Datastream.new(inner_object, 'webm')
           stub_ds.stub(:repository).and_return(stub_repo)
           stub_ds.stub(:mimeType).and_return('video/webm')
           stub_ds.stub(:dsSize).and_return(16)
