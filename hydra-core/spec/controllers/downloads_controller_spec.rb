@@ -23,22 +23,25 @@ describe DownloadsController do
         has_file_datastream 'thumbnail'
       end
       @user = User.new.tap {|u| u.email = 'email@example.com'; u.password = 'password'; u.save}
-      @obj = ContentHolder.new
-      @obj.label = "world.png"
-      @obj.add_file_datastream('fizz', :dsid=>'buzz', :mimeType => 'image/png')
-      @obj.add_file_datastream('foobarfoobarfoobar', :dsid=>'content', :mimeType => 'image/png')
-      @obj.add_file_datastream("It's a stream", :dsid=>'descMetadata', :mimeType => 'text/plain')
-      @obj.read_users = [@user.user_key]
-      @obj.save!
     end
+    let(:obj) do
+      ContentHolder.new.tap do |obj|
+        obj.add_file_datastream('fizz', dsid: 'buzz', mime_type: 'image/png', original_name: 'buzz.png')
+        obj.add_file_datastream('foobarfoobarfoobar', dsid: 'content', mime_type: 'image/png', original_name: 'world.png')
+        obj.add_file_datastream("It's a stream", dsid: 'descMetadata', mime_type: 'text/plain', original_name: 'metadata.xml')
+        obj.read_users = [@user.user_key]
+        obj.save!
+      end
+    end
+
     after do
-      @obj.destroy
+      obj.destroy
       Object.send(:remove_const, :ContentHolder)
     end 
     context "when not logged in" do
       context "when a specific datastream is requested" do
         it "should redirect to the root path and display an error" do
-          get "show", id: @obj.pid, datastream_id: "descMetadata"
+          get "show", id: obj.pid, datastream_id: "descMetadata"
           expect(response).to redirect_to new_user_session_path
           expect(flash[:alert]).to eq "You are not authorized to access this page."
         end
@@ -51,7 +54,7 @@ describe DownloadsController do
       end
       context "when a specific datastream is requested" do
         it "should redirect to the root path and display an error" do
-          get "show", id: @obj.pid, datastream_id: "descMetadata"
+          get "show", id: obj.pid, datastream_id: "descMetadata"
           expect(response).to redirect_to root_path
           expect(flash[:alert]).to eq "You are not authorized to access this page."
         end
@@ -61,114 +64,103 @@ describe DownloadsController do
     context "when logged in as reader" do
       before do
         sign_in @user
-        User.any_instance.stub(:groups).and_return([])
+        allow_any_instance_of(User).to receive(:groups).and_return([])
       end
       describe "#show" do
         it "should default to returning default download configured by object" do
-          ContentHolder.stub(:default_content_ds).and_return('buzz')
-          get "show", :id => @obj.pid
-          response.should be_success
-          response.headers['Content-Type'].should == "image/png"
-          response.headers["Content-Disposition"].should == "inline; filename=\"world.png\""
-          response.body.should == 'fizz'
+          allow(ContentHolder).to receive(:default_content_ds).and_return('buzz')
+          get "show", :id => obj.pid
+          expect(response).to be_successful
+          expect(response.headers['Content-Type']).to eq "image/png"
+          expect(response.headers["Content-Disposition"]).to eq "inline; filename=\"buzz.png\""
+          expect(response.body).to eq 'fizz'
         end
         it "should default to returning default download configured by controller" do
-          DownloadsController.default_content_dsid.should == "content"
-          get "show", :id => @obj.pid
-          response.should be_success
-          response.headers['Content-Type'].should == "image/png"
-          response.headers["Content-Disposition"].should == "inline; filename=\"world.png\""
-          response.body.should == 'foobarfoobarfoobar'
+          expect(DownloadsController.default_content_dsid).to eq "content"
+          get "show", :id => obj.pid
+          expect(response).to be_successful
+          expect(response.headers['Content-Type']).to eq "image/png"
+          expect(response.headers["Content-Disposition"]).to eq "inline; filename=\"world.png\""
+          expect(response.body).to eq 'foobarfoobarfoobar'
         end
 
         context "when a specific datastream is requested" do
           context "and it doesn't exist" do
             it "should return :not_found when the datastream doesn't exist" do
-              get "show", :id => @obj.pid, :datastream_id => "thumbnail"
-              response.should be_not_found
+              get "show", :id => obj.pid, :datastream_id => "thumbnail"
+              expect(response).to be_not_found
             end
           end
           context "and it exists" do
             it "should return it" do
-              get "show", :id => @obj.pid, :datastream_id => "descMetadata"
-              response.should be_success
-              response.headers['Content-Type'].should == "text/plain"
-              response.headers["Content-Disposition"].should == "inline; filename=\"world.png\""
-              response.body.should == "It's a stream"
+              get "show", :id => obj.pid, :datastream_id => "descMetadata"
+              expect(response).to be_successful
+              expect(response.headers['Content-Type']).to eq "text/plain"
+              expect(response.headers["Content-Disposition"]).to eq "inline; filename=\"metadata.xml\""
+              expect(response.body).to eq "It's a stream"
             end
           end
         end
         it "should support setting disposition to inline" do
-          get "show", :id => @obj.pid, :disposition => "inline"
-          response.should be_success
-          response.headers['Content-Type'].should == "image/png"
-          response.headers["Content-Disposition"].should == "inline; filename=\"world.png\""
-          response.body.should == 'foobarfoobarfoobar'
+          get "show", :id => obj.pid, :disposition => "inline"
+          expect(response).to be_successful
+          expect(response.headers['Content-Type']).to eq "image/png"
+          expect(response.headers["Content-Disposition"]).to eq "inline; filename=\"world.png\""
+          expect(response.body).to eq 'foobarfoobarfoobar'
         end
         it "should allow you to specify filename for download" do
-          get "show", :id => @obj.pid, "filename" => "my%20dog.png"
-          response.should be_success
-          response.headers['Content-Type'].should == "image/png"
-          response.headers["Content-Disposition"].should == "inline; filename=\"my%20dog.png\""
-          response.body.should == 'foobarfoobarfoobar'
+          get "show", :id => obj.pid, "filename" => "my%20dog.png"
+          expect(response).to be_successful
+          expect(response.headers['Content-Type']).to eq "image/png"
+          expect(response.headers["Content-Disposition"]).to eq "inline; filename=\"my%20dog.png\""
+          expect(response.body).to eq 'foobarfoobarfoobar'
         end
       end
       describe "stream" do
-        let(:inner_object) { ActiveFedora::Base.new('/changeme:test') }
+        let(:parent) { ActiveFedora::Base.new(pid: '1234') }
+
         before do
-          stub_response = double()
-          stub_response.stub(:read_body).and_yield("one1").and_yield('two2').and_yield('thre').and_yield('four')
-          stub_repo = double()
-          stub_repo.stub(:datastream_dissemination).and_yield(stub_response)
-          
-          stub_ds = ActiveFedora::Datastream.new(inner_object, 'webm')
-          stub_ds.stub(:repository).and_return(stub_repo)
-          stub_ds.stub(:mimeType).and_return('video/webm')
-          stub_ds.stub(:dsSize).and_return(16)
-          stub_ds.stub(:dsid).and_return('webm')
-          stub_ds.stub(:new?).and_return(false)
-          stub_ds.stub(:pid).and_return('changeme:test')
-          stub_file = double('stub object', datastreams: {'webm' => stub_ds}, pid:'changeme:test', label: "MyVideo.webm")
-          ActiveFedora::Base.should_receive(:load_instance_from_solr).with('changeme:test').and_return(stub_file)
-          controller.stub(:authorize!).with(:download, stub_ds).and_return(true)
-          controller.stub(:log_download)
+          parent.add_file_datastream('one1two2threfour', dsid: 'webm', mime_type: 'video/webm', original_name: 'MyVideo.webm')
+          parent.save!
+          expect(controller).to receive(:authorize!).with(:download, instance_of(ActiveFedora::Datastream)).and_return(true)
         end
         it "head request" do
           request.env["HTTP_RANGE"] = 'bytes=0-15'
-          head :show, id: 'changeme:test', datastream_id: 'webm'
-          response.headers['Content-Length'].should == 16
-          response.headers['Accept-Ranges'].should == 'bytes'
-          response.headers['Content-Type'].should == 'video/webm'
+          head :show, id: parent.id, datastream_id: 'webm'
+          expect(response.headers['Content-Length']).to eq 16
+          expect(response.headers['Accept-Ranges']).to eq 'bytes'
+          expect(response.headers['Content-Type']).to eq 'video/webm'
         end
         it "should send the whole thing" do
           request.env["HTTP_RANGE"] = 'bytes=0-15'
-          get :show, id: 'changeme:test', datastream_id: 'webm'
-          response.body.should == 'one1two2threfour'
-          response.headers["Content-Range"].should == 'bytes 0-15/16'
-          response.headers["Content-Length"].should == '16'
-          response.headers['Accept-Ranges'].should == 'bytes'
-          response.headers['Content-Type'].should == "video/webm"
-          response.headers["Content-Disposition"].should == "inline; filename=\"MyVideo.webm\""
-          response.status.should == 206
+          get :show, id: '1234', datastream_id: 'webm'
+          expect(response.body).to eq 'one1two2threfour'
+          expect(response.headers["Content-Range"]).to eq 'bytes 0-15/16'
+          expect(response.headers["Content-Length"]).to eq '16'
+          expect(response.headers['Accept-Ranges']).to eq 'bytes'
+          expect(response.headers['Content-Type']).to eq "video/webm"
+          expect(response.headers["Content-Disposition"]).to eq "inline; filename=\"MyVideo.webm\""
+          expect(response.status).to eq 206
         end
         it "should send the whole thing when the range is open ended" do
-          request.env["Range"] = 'bytes=0-'
-          get :show, id: 'changeme:test', datastream_id: 'webm'
-          response.body.should == 'one1two2threfour'
+          pending "Fedora 4b1 has a bug here. https://github.com/fcrepo4/fcrepo4/issues/426"
+          request.env["HTTP_RANGE"] = 'bytes=0-'
+          get :show, id: '1234', datastream_id: 'webm'
+          expect(response.body).to eq 'one1two2threfour'
         end
         it "should get a range not starting at the beginning" do
           request.env["HTTP_RANGE"] = 'bytes=3-15'
-          get :show, id: 'changeme:test', datastream_id: 'webm'
-          response.body.should == '1two2threfour'
-          response.headers["Content-Range"].should == 'bytes 3-15/16'
-          response.headers["Content-Length"].should == '13'
+          get :show, id: '1234', datastream_id: 'webm'
+          expect(response.body).to eq '1two2threfour'
+          expect(response.headers["Content-Range"]).to eq 'bytes 3-15/16'
+          expect(response.headers["Content-Length"]).to eq '13'
         end
         it "should get a range not ending at the end" do
           request.env["HTTP_RANGE"] = 'bytes=4-11'
-          get :show, id: 'changeme:test', datastream_id: 'webm'
-          response.body.should == 'two2thre'
-          response.headers["Content-Range"].should == 'bytes 4-11/16'
-          response.headers["Content-Length"].should == '8'
+          get :show, id: '1234', datastream_id: 'webm'
+          expect(response.body).to eq 'two2thre'
+          expect(response.headers["Content-Range"]).to eq 'bytes 4-11/16'
+          expect(response.headers["Content-Length"]).to eq '8'
         end
       end
     end
@@ -183,39 +175,10 @@ describe DownloadsController do
         sign_in @user
       end
       it "should use the custom param value to retrieve the asset" do
-        controller.stub(:asset_param_key).and_return(:object_id)
-        get "show", :object_id => @obj.pid
-        response.should be_successful
+        allow(controller).to receive(:asset_param_key).and_return(:object_id)
+        get "show", :object_id => obj.pid
+        expect(response).to be_successful
       end
     end
-
-    describe "overriding the can_download? method" do
-      before { sign_in @user }
-      context "current_ability.can? returns true / can_download? returns false" do
-        it "should authorize according to can_download?" do
-          controller.current_ability.can?(:download, @obj.datastreams['buzz']).should be true
-          controller.stub(:can_download?).and_return(false)
-          Deprecation.silence(Hydra::Controller::DownloadBehavior) do
-            get :show, id: @obj, datastream_id: 'buzz'
-          end
-          expect(response).to redirect_to root_url
-        end
-      end
-      context "current_ability.can? returns false / can_download? returns true" do
-        before do
-          @obj.rightsMetadata.clear_permissions!
-          @obj.save
-        end
-        it "should authorize according to can_download?" do
-          controller.current_ability.can?(:download, @obj.datastreams['buzz']).should be false
-          controller.stub(:can_download?).and_return(true)
-          Deprecation.silence(Hydra::Controller::DownloadBehavior) do
-            get :show, id: @obj, datastream_id: 'buzz'
-          end
-          response.should be_successful           
-        end
-      end
-    end
-
   end
 end
