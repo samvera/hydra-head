@@ -1,12 +1,13 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Hydra::ModelMethods do
-  
+
   before :all do
     class TestModel < ActiveFedora::Base
       include Hydra::AccessControls::Permissions
       include Hydra::ModelMethods
       has_metadata "properties", type: Hydra::Datastream::Properties
+      has_attributes :depositor, datastream: :properties, multiple: false
     end
   end
 
