@@ -112,6 +112,7 @@ describe DownloadsController do
           response.body.should == 'foobarfoobarfoobar'
         end
       end
+
       describe "stream" do
         before do
           stub_response = double()
@@ -149,7 +150,7 @@ describe DownloadsController do
           response.status.should == 206
         end
         it "should send the whole thing when the range is open ended" do
-          request.env["Range"] = 'bytes=0-'
+          request.env["HTTP_RANGE"] = 'bytes=0-'
           get :show, id: 'changeme:test', datastream_id: 'webm'
           response.body.should == 'one1two2threfour'
         end
@@ -166,6 +167,24 @@ describe DownloadsController do
           response.body.should == 'two2thre'
           response.headers["Content-Range"].should == 'bytes 4-11/16'
           response.headers["Content-Length"].should == '8'
+        end
+        context "not requesting a range" do
+          it "should not stream" do
+            expect(stub_ds).to receive(:content)
+            expect(stub_ds).not_to receive(:stream)
+            get :show, id: 'changeme:test', datastream_id: 'webm'
+          end
+          it "should set the Content-Length header if dsSize != 0" do
+            get :show, id: 'changeme:test', datastream_id: 'webm'
+            expect(response).to be_successful
+            expect(response.headers["Content-Length"]).to eq "16"
+          end
+          it "should not set the Content-Length header if dsSize == 0" do
+            allow(stub_ds).to receive(:dsSize) { 0 }
+            get :show, id: 'changeme:test', datastream_id: 'webm'
+            expect(response).to be_successful
+            expect(response.headers).to_not include "Content-Length"
+          end
         end
       end
     end
@@ -213,6 +232,30 @@ describe DownloadsController do
         end
       end
     end
-
   end
+
+  describe "external datastream compatibility" do
+    before(:all) do
+      class ExternalContentHolder < ActiveFedora::Base
+        has_file_datastream name: 'image', control_group: 'E'
+      end
+    end
+    after(:all) do
+      Object.send(:remove_const, :ExternalContentHolder)
+    end
+    let(:obj) { ExternalContentHolder.new }
+    let(:file) { File.absolute_path(File.join(File.dirname(__FILE__), '..', 'fixtures', 'hydra_logo.png')) }
+    before(:each) do
+      controller.current_ability.can(:download, ExternalContentHolder)
+      obj.image.dsLocation = "file:/#{URI.escape(file)}"
+      obj.image.mimeType = "image/png"
+      obj.save
+      get :show, id: obj, datastream_id: "image"
+    end
+    it "should download the datastream content" do
+      expect(response).to be_successful
+      expect(response.response_body.length).to eq File.size(file)
+    end
+  end
+
 end

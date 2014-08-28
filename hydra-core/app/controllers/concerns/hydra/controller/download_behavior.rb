@@ -98,7 +98,6 @@ module Hydra
         params[:filename] || asset.label
       end
 
-
       # render an HTTP HEAD response
       def content_head
         response.headers['Content-Length'] = datastream.dsSize
@@ -106,7 +105,6 @@ module Hydra
         head :ok
       end
       
-
       # render an HTTP Range response
       def send_range
         _, range = request.headers['HTTP_RANGE'].split('bytes=')
@@ -123,12 +121,14 @@ module Hydra
       def send_file_contents
         self.status = 200
         prepare_file_headers
-        self.response_body = datastream.stream
+        self.response_body = datastream.content
       end
       
       def prepare_file_headers
         send_file_headers! content_options
         response.headers['Content-Type'] = datastream.mimeType
+        # http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.13
+        response.headers['Content-Length'] = datastream.dsSize.to_s if datastream.dsSize != 0
         self.content_type = datastream.mimeType
       end
 
