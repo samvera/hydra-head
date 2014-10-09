@@ -1,5 +1,9 @@
 group :develop do
   gem 'active-fedora', github: 'projecthydra/active_fedora', branch: 'fedora-4'
+  # Waiting on fixes in ActiveTriples
+  gem 'active-triples', github: 'no-reply/ActiveTriples', ref: '4bec618710f7c87369e4e0960742d3943dec0fab'
+
+  gem 'ldp', '0.0.8'
 end
 # Temporary fix for https://github.com/twbs/bootstrap-sass/issues/647 on Rails 3
 gem 'bootstrap-sass', github: 'twbs/bootstrap-sass', ref: '540ad23'
