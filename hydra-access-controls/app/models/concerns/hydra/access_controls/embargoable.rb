@@ -7,19 +7,52 @@ module Hydra
       included do
         validates :embargo_release_date, :lease_expiration_date, :'hydra/future_date' => true
 
-        has_attributes :visibility_during_embargo, :visibility_after_embargo, :embargo_release_date,
-          :visibility_during_lease, :visibility_after_lease, :lease_expiration_date,
-          datastream: 'rightsMetadata', multiple: false
+        belongs_to :embargo, property: Hydra::ACL.hasEmbargo, class_name: 'Hydra::AccessControls::Embargo'
+        belongs_to :lease, property: Hydra::ACL.hasLease, class_name: 'Hydra::AccessControls::Lease'
 
-        has_attributes :embargo_history, :lease_history, datastream: 'rightsMetadata', multiple:true
+        delegate :visibility_during_embargo, :visibility_during_embargo=, :visibility_after_embargo, :visibility_after_embargo=, :embargo_release_date, :embargo_release_date=, :embargo_history, :embargo_history=, to: :existing_or_new_embargo
+        delegate :visibility_during_lease, :visibility_during_lease=, :visibility_after_lease, :visibility_after_lease=, :lease_expiration_date, :lease_expiration_date=, :lease_history, :lease_history=, to: :existing_or_new_lease
       end
 
+      # if the embargo exists return it, if not, build one and return it
+      def existing_or_new_embargo
+        embargo || build_embargo
+      end
+
+      # if the lease exists return it, if not, build one and return it
+      def existing_or_new_lease
+        lease || build_lease
+      end
+
+
+      def to_solr(solr_doc = {})
+        super.tap do |doc|
+          if embargo_release_date.present?
+            doc[Hydra.config.permissions.embargo.release_date] = embargo_release_date
+            # key = Hydra.config.permissions.embargo.release_date.sub(/_[^_]+$/, '') #Strip off the suffix
+            # ::Solrizer.insert_field(solr_doc, key, embargo_release_date, :stored_sortable)
+          end
+          if lease_expiration_date.present?
+            doc[Hydra.config.permissions.lease.expiration_date] = lease_expiration_date
+            # key = Hydra.config.permissions.lease.expiration_date.sub(/_[^_]+$/, '') #Strip off the suffix
+            # ::Solrizer.insert_field(solr_doc, key, lease_expiration_date, :stored_sortable)
+          end
+          doc[::Solrizer.solr_name("visibility_during_embargo", :symbol)] = visibility_during_embargo unless visibility_during_embargo.nil?
+          doc[::Solrizer.solr_name("visibility_after_embargo", :symbol)] = visibility_after_embargo unless visibility_after_embargo.nil?
+          doc[::Solrizer.solr_name("visibility_during_lease", :symbol)] = visibility_during_lease unless visibility_during_lease.nil?
+          doc[::Solrizer.solr_name("visibility_after_lease", :symbol)] = visibility_after_lease unless visibility_after_lease.nil?
+          doc[::Solrizer.solr_name("embargo_history", :symbol)] = embargo_history unless embargo_history.nil?
+          doc[::Solrizer.solr_name("lease_history", :symbol)] = lease_history unless lease_history.nil?
+        end
+      end
+
+
       def under_embargo?
-        rightsMetadata.under_embargo?
+        (embargo_release_date.present? && Date.today < embargo_release_date) ? true : false
       end
 
       def active_lease?
-        rightsMetadata.active_lease?
+        lease_expiration_date.present? && Date.today < lease_expiration_date
       end
 
       # If changing away from embargo or lease, this will deactivate the lease/embargo before proceeding.
