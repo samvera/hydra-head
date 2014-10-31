@@ -20,8 +20,14 @@ end
 require 'support/rails'
 
 # Since we're not doing a Rails Engine test, we have to load these classes manually:
+require_relative '../app/vocabularies/acl'
+require_relative '../app/vocabularies/hydra/acl'
 require_relative '../app/models/role_mapper'
 require_relative '../app/models/ability'
+require_relative '../app/models/hydra/access_controls/access_control_list'
+require_relative '../app/models/hydra/access_controls/permission'
+require_relative '../app/models/hydra/access_controls/embargo'
+require_relative '../app/models/hydra/access_controls/lease'
 require_relative '../app/services/hydra/lease_service'
 require_relative '../app/services/hydra/embargo_service'
 require_relative '../app/validators/hydra/future_date_validator'
@@ -31,14 +37,16 @@ require "support/user"
 require "factory_girl"
 require "factories"
 
+# HttpLogger.logger = Logger.new(STDOUT)
+# HttpLogger.ignore = [/localhost:8983\/solr/]
+# HttpLogger.colorize = false
 
+ActiveFedora::Base.logger = Logger.new(STDOUT)
+
+require 'active_fedora/cleaner'
 RSpec.configure do |config|
   config.before(:each) do
-    begin
-      ActiveFedora.fedora.connection.delete(ActiveFedora.fedora.base_path.sub('/', ''))
-    rescue StandardError
-    end
-    ActiveFedora.fedora.connection.put(ActiveFedora.fedora.base_path.sub('/', ''),"")
+    ActiveFedora::Cleaner.clean!
   end
 end
 
