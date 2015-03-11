@@ -11,7 +11,10 @@ Requires system('unzip... ') to work, probably won't work on Windows.
 
 """
 
+    class_option :version, type: :string, desc: 'The version of hydra-jetty to install'
+
     def download_jetty
+      Jettywrapper.hydra_jetty_version = options[:version] unless options[:version].nil?
       Jettywrapper.unzip
     end
 
