@@ -23,7 +23,6 @@ Gem::Specification.new do |gem|
   gem.add_dependency "blacklight", '~> 4.0'  
   gem.add_dependency "devise"
   gem.add_dependency "active-fedora", '~> 5.3'
-  gem.add_dependency 'RedCloth', '=4.2.9'
   gem.add_dependency 'block_helpers'
   gem.add_dependency 'sanitize'
   gem.add_dependency 'hydra-mods', ">= 0.0.6"
