@@ -1,5 +1,6 @@
 # -*- encoding: utf-8 -*-
-version = File.read(File.expand_path("../../HYDRA_VERSION", __FILE__)).strip
+$:.push File.expand_path("../lib", File.dirname(__FILE__))
+require 'hydra_head'
 
 Gem::Specification.new do |gem|
   gem.authors       = ["Chris Beer", "Justin Coyne", "Matt Zumwalt"]
@@ -13,7 +14,7 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.name          = "hydra-access-controls"
   gem.require_paths = ["lib"]
-  gem.version       = version
+  gem.version       = HydraHead.version
   gem.license       = "APACHE2"
 
   gem.required_ruby_version = '>= 1.9.3'
