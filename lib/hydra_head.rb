@@ -1,4 +1,5 @@
-require_relative 'hydra_head/version'
+require File.expand_path('hydra_head/version', File.dirname(__FILE__))
+
 module HydraHead
   require 'hydra-core'
 
