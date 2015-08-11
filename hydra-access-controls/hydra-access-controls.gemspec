@@ -1,6 +1,6 @@
 # -*- encoding: utf-8 -*-
 $:.push File.expand_path("../lib", File.dirname(__FILE__))
-require 'hydra_head'
+require 'hydra_head/version'
 
 Gem::Specification.new do |gem|
   gem.authors       = ["Chris Beer", "Justin Coyne", "Matt Zumwalt"]
