@@ -1,6 +1,6 @@
 ### Follow these instructions to release a new version of hydra-head, including the contained gems: hydra-core and hydra-access-controls.
 
-1. Bump version number in [HYDRA_VERSION](https://github.com/projecthydra/hydra-head/blob/master/HYDRA_VERSION).
+1. Bump version number in [lib/hydra_head/version.rb](https://github.com/projecthydra/hydra-head/blob/master/lib/hydra_head/version.rb).
 1. Modify [the changelog](https://github.com/projecthydra/hydra-head/blob/master/HISTORY.textile) to include changes in the version (which can usually be pulled from commit messages).
 1. Push your changes: `git push`
 1. Create a [GitHub release](https://github.com/projecthydra/hydra-head/releases/new) and copy/paste the changes from the changelog in the prior step. If steps are required to upgrade to the new version, make sure to include these changes.

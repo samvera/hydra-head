@@ -1,5 +1,6 @@
 # -*- encoding: utf-8 -*-
-version = File.read(File.expand_path("../../HYDRA_VERSION", __FILE__)).strip
+$:.push File.expand_path("../lib", File.dirname(__FILE__))
+require 'hydra_head/version'
 
 Gem::Specification.new do |gem|
   gem.authors     = ["Matt Zumwalt, Bess Sadler, Julie Meloni, Naomi Dushay, Jessie Keck, John Scofield, Justin Coyne & many more.  See https://github.com/projecthydra/hydra-head/contributors"]
@@ -13,13 +14,13 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.name          = "hydra-core"
   gem.require_paths = ["lib"]
-  gem.version       = version
+  gem.version       = HydraHead.version
   gem.license       = "APACHE2"
 
   gem.required_ruby_version = '>= 1.9.3'
 
   gem.add_dependency "rails", '~> 4.0'
-  gem.add_dependency 'hydra-access-controls', version
+  gem.add_dependency 'hydra-access-controls', HydraHead.version
   gem.add_dependency 'jettywrapper', '>= 2.0.0'
   gem.add_dependency 'active-fedora', '~> 9.1'
 

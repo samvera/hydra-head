@@ -1,12 +1,3 @@
-module HydraHead 
-  require 'hydra-core'
+warn "[DEPRECATION] `require 'hydra/head'` is deprecated.  Please use `require 'hydra_head'` instead."
 
-  def self.version
-    HydraHead::VERSION
-  end
-
-  def self.root
-    @root ||= File.expand_path(File.dirname(File.dirname(__FILE__)))
-  end
-  
-end
+require File.expand_path("../hydra_head", File.dirname(__FILE__))

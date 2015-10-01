@@ -43,8 +43,11 @@ directory 'pkg'
 
 FRAMEWORKS = ['hydra-access-controls', 'hydra-core']
 
-root    = File.expand_path('../', __FILE__)
-version = File.read("#{root}/HYDRA_VERSION").strip
+root    = File.expand_path('', File.dirname(__FILE__))
+
+$:.push File.expand_path("lib", File.dirname(__FILE__))
+require 'hydra_head/version'
+version = HydraHead.version
 tag     = "v#{version}"
 
 (FRAMEWORKS  + ['hydra-head']).each do |framework|
@@ -99,7 +102,7 @@ namespace :all do
   task :push    => FRAMEWORKS.map { |f| "#{f}:push"    } + ['hydra-head:push']
 
   task :ensure_clean_state do
-    unless `git status -s | grep -v HYDRA_VERSION | grep -v HISTORY.textile`.strip.empty?
+    unless `git status -s | grep -v lib/hydra_head/version.rb | grep -v HISTORY.textile`.strip.empty?
       abort "[ABORTING] `git status` reports a dirty tree. Make sure all changes are committed"
     end
 
