@@ -1,3 +1,6 @@
+h3. 9.4.1.rc1 (2015-09-20)
+* Support ActiveFedora 9.4.x [Benjamin Armintor]
+
 h3. 9.2.2 (2015-08-03)
 * 2015-07-30: Moved condition logic to its own method to give app developer a chance to configure it to not perform future date validation [val99erie]
 
