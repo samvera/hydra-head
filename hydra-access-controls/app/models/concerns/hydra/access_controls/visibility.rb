@@ -13,6 +13,8 @@ module Hydra
           registered_visibility!
         when Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE
           private_visibility!
+        when Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_LEASE
+          lease_visibility!
         else
           raise ArgumentError, "Invalid visibility: #{value.inspect}"
         end
@@ -49,6 +51,11 @@ module Hydra
 
       def private_visibility!
         visibility_will_change! unless visibility == Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE
+        set_read_groups([], [Hydra::AccessControls::AccessRight::PERMISSION_TEXT_VALUE_AUTHENTICATED, Hydra::AccessControls::AccessRight::PERMISSION_TEXT_VALUE_PUBLIC])
+      end
+
+      def lease_visibility!
+        visibility_will_change! unless visibility == Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_LEASE
         set_read_groups([], [Hydra::AccessControls::AccessRight::PERMISSION_TEXT_VALUE_AUTHENTICATED, Hydra::AccessControls::AccessRight::PERMISSION_TEXT_VALUE_PUBLIC])
       end
 
