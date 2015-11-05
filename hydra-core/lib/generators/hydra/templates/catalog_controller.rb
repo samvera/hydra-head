@@ -10,7 +10,6 @@ class CatalogController < ApplicationController
   # This applies appropriate access controls to all solr queries
   Hydra::SearchBuilder.default_processor_chain += [:add_access_controls_to_solr_params]
 
-
   configure_blacklight do |config|
     config.search_builder_class = Hydra::SearchBuilder
     config.default_solr_params = {
