@@ -9,6 +9,5 @@ module Hydra
     def permissions_document_class
       Hydra::PermissionsSolrDocument
     end
-
   end
 end
