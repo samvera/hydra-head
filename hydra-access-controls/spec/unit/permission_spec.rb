@@ -29,6 +29,11 @@ describe Hydra::AccessControls::Permission do
       subject { permission.type }
       it { should eq 'person' }
     end
+
+    describe "::type" do
+      subject { permission.class.type }
+      it { should eq ::RDF::Vocab::ACL.Authorization }
+    end
   end
 
   describe "equality comparison" do
