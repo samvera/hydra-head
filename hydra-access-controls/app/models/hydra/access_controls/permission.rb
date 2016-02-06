@@ -49,6 +49,54 @@ module Hydra::AccessControls
       parsed_agent.first
     end
 
+    # @param (optional) [Hash] opts will return the actual modes if { actual: true } is supplied
+    def mode(opts={})
+      return super if opts.fetch(:actual, false)
+      effective_mode(super)
+    end
+
+    def effective_mode(actual_modes)
+      [ModeMap.new(actual_modes).resulting_mode]
+    end
+
+    # Internal class used to determine the resulting mode, either ACL.Write, ACL.Read, or Hydra::ACL.Discover,
+    # based on the actual modes found in Hydra::AccessControls::Permission::mode
+    # The resulting mode versus the actual modes are defined as follows:
+    #   Actual modes                             | Resulting mode
+    #   ---------------------------------------- | --------------------          
+    #   Hydra::ACL.Discover                      | Hydra::ACL.Discover
+    #   Hydra::ACL.Discover, ACL.Read            | ACL.Read
+    #   ACL.Read                                 | ACL.Read
+    #   Hydra::ACL.Discover, ACL.Read, ACL.Write | ACL.Write
+    #   ACL.Write                                | ACL.Write
+    #   nil                                      | nil
+    #   anything other than one of these above   | nil
+    class ModeMap
+      attr_reader :modes
+
+      # @param [ActiveTriples::Relation] modes listing one or more of AccessControlList::Mode
+      def initialize(modes)
+        @modes = modes
+      end
+
+      def resulting_mode
+        return map[ACL.Write.to_s] if map.keys.include?(ACL.Write)
+        return map[ACL.Read.to_s] if map.keys.include?(ACL.Read)
+        return map[Hydra::ACL.Discover.to_s] if map.keys.include?(Hydra::ACL.Discover)
+      end
+
+      def map
+        @map ||= new_map
+      end
+
+      private
+        def new_map
+          result = {}
+          modes.each { |mode| result[mode.id] = mode }
+          result
+        end
+    end
+
     protected
 
       def parsed_agent
@@ -71,9 +119,9 @@ module Hydra::AccessControls
         raise "Can't build access #{inspect}" unless access
         self.mode = case access
                     when "read"
-                      Mode.new(::ACL.Read)
+                      [Mode.new(::ACL.Read), Mode.new(Hydra::ACL.Discover)]
                     when "edit"
-                      Mode.new(::ACL.Write)
+                      [Mode.new(::ACL.Write), Mode.new(::ACL.Read), Mode.new(Hydra::ACL.Discover)]
                     when "discover"
                       Mode.new(Hydra::ACL.Discover)
                     else

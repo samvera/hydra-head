@@ -1,13 +1,36 @@
 require 'spec_helper'
 
 describe Hydra::AccessControls::Permission do
+  let(:agents) { permission.agent.map(&:rdf_subject) }
+  let(:effective_modes) { permission.mode.map(&:rdf_subject) }
+  let(:actual_modes) { permission.mode(actual: true).map(&:rdf_subject) }
 
   describe "an initialized instance" do
     let(:permission) { described_class.new(type: 'person', name: 'bob', access: 'read') }
+    context "with read access" do
+      it "sets predicates for both read and discover" do
+        expect(agents).to contain_exactly ::RDF::URI.new('http://projecthydra.org/ns/auth/person#bob')
+        expect(actual_modes).to eq [ACL.Read, Hydra::ACL.Discover]
+        expect(effective_modes).to eq [ACL.Read]
+      end
+    end
 
-    it "should set predicates" do
-      expect(permission.agent.first.rdf_subject).to eq ::RDF::URI.new('http://projecthydra.org/ns/auth/person#bob')
-      expect(permission.mode.first.rdf_subject).to eq ACL.Read
+    context "with edit access" do
+      let(:permission) { described_class.new(type: 'person', name: 'joe', access: 'edit') }
+      it "sets predicates for edit, read, and discover" do
+        expect(agents).to contain_exactly ::RDF::URI.new('http://projecthydra.org/ns/auth/person#joe')
+        expect(actual_modes).to eq [ACL.Write, ACL.Read, Hydra::ACL.Discover]
+        expect(effective_modes).to eq [ACL.Write]
+      end
+    end
+
+    context "with discover access" do
+      let(:permission) { described_class.new(type: 'person', name: 'dave', access: 'discover') }
+      it "sets predicates for discover" do
+        expect(agents).to contain_exactly ::RDF::URI.new('http://projecthydra.org/ns/auth/person#dave')
+        expect(actual_modes).to eq [Hydra::ACL.Discover]
+        expect(effective_modes).to eq [Hydra::ACL.Discover]
+      end
     end
 
     describe "#to_hash" do
@@ -33,6 +56,42 @@ describe Hydra::AccessControls::Permission do
     describe "::type" do
       subject { permission.class.type }
       it { should eq ::RDF::Vocab::ACL.Authorization }
+    end
+  end
+
+  describe "existing instances with single predicates" do
+    let(:permission) { described_class.new(type: 'person', name: 'bob', access: 'read') }
+    context "with read access" do
+      before do
+        permission.mode = [ACL.Read]
+        permission.save
+      end
+      it "interprets a single predicate for read" do
+        expect(actual_modes).to eq [ACL.Read]
+        expect(effective_modes).to eq [ACL.Read]
+      end
+    end
+
+    context "with edit access" do
+      before do
+        permission.mode = [ACL.Write]
+        permission.save
+      end
+      it "interprets a single predicate for write" do
+        expect(actual_modes).to eq [ACL.Write]
+        expect(effective_modes).to eq [ACL.Write]
+      end
+    end
+
+    context "with discover access" do
+      before do
+        permission.mode = [Hydra::ACL.Discover]
+        permission.save
+      end
+      it "interprets a single predicate for discover" do
+        expect(actual_modes).to eq [Hydra::ACL.Discover]
+        expect(effective_modes).to eq [Hydra::ACL.Discover]
+      end
     end
   end
 
