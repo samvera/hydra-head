@@ -6,7 +6,7 @@ namespace :hydra do
     with_server('development',
                 fcrepo_port: ENV.fetch('FCREPO_PORT', '8984'),
                 solr_port: ENV.fetch('SOLR_PORT', '8983')) do
-      `rails server`
+      `rails server -b 0.0.0.0`
     end
   end
 end
