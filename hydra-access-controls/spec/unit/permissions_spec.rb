@@ -19,11 +19,12 @@ describe Hydra::AccessControls::Permissions do
     subject.read_groups=['group1', 'group2']
     subject.edit_users=['user1']
     subject.read_users=['user2', 'user3']
-    expect(subject.permissions).to match_array [Hydra::AccessControls::Permission.new(type: "group", access: "read", name: "group1"),
-        Hydra::AccessControls::Permission.new({ type: "group", access: "read", name: "group2" }),
-        Hydra::AccessControls::Permission.new({ type: "person", access: "read", name: "user2" }),
-        Hydra::AccessControls::Permission.new({ type: "person", access: "read", name: "user3" }),
-        Hydra::AccessControls::Permission.new({ type: "person", access: "edit", name: "user1" })]
+    expect(subject.permissions.to_a).to all(be_kind_of(Hydra::AccessControls::Permission))
+    expect(subject.permissions.map(&:to_hash)).to match_array [{type: "group", access: "read", name: "group1"},
+        { type: "group", access: "read", name: "group2" },
+        { type: "person", access: "read", name: "user2" },
+        { type: "person", access: "read", name: "user3" },
+        { type: "person", access: "edit", name: "user1" }]
   end
 
   describe "building a new permission" do
@@ -101,6 +102,7 @@ describe Hydra::AccessControls::Permissions do
           expect(subject.permissions.to_a).to all(be_a(Hydra::AccessControls::Permission))
           expect(subject.permissions[0].to_hash).to eq(type: "person", access: "edit", name: "jcoyne")
           expect(subject.permissions[1].to_hash).to eq(type: "person", access: "edit", name: "user1")
+          # expect(subject.permissions[2].to_hash).to eq(type: "person", access: "edit", name: "user1")
         end
 
         it "updates permissions on existing groups" do
@@ -113,14 +115,14 @@ describe Hydra::AccessControls::Permissions do
       end
 
       context "when the destroy flag is set" do
-        let(:reloaded) { subject.permissions.reload.map(&:to_hash) }
+        let(:reloaded) { subject.reload.permissions.map(&:to_hash) }
         let(:permissions_id) { ActiveFedora::Base.uri_to_id(subject.permissions.last.rdf_subject.to_s) }
 
         context "to a truthy value" do
           context "when updating users" do
             before do
               subject.update permissions_attributes: [{ type: "person", access: "read", name: "user1" }]
-              subject.update permissions_attributes: [{ id: permissions_id, type: "person", access: "edit", name: "user1", _destroy: true}]
+              subject.update permissions_attributes: [{ id: permissions_id, type: "person", access: "edit", name: "user1", _destroy: 'true' }]
             end
 
             it "removes permissions on existing users" do
@@ -214,7 +216,7 @@ describe Hydra::AccessControls::Permissions do
   context "when the original object is destroyed" do
     before do
       subject.save!
-      subject.permissions.build(type: 'person', access: 'read', name: 'person1')
+      subject.permissions.create(type: 'person', access: 'read', name: 'person1')
       subject.save!
     end
 
