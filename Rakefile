@@ -14,7 +14,6 @@ task :ci => ['engine_cart:generate'] do
   with_test_server do
     Rake::Task['spec'].invoke
   end
-  Rake::Task["doc"].invoke
 end
 
 task :default => [:ci]
