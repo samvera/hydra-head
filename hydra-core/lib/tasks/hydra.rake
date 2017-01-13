@@ -4,7 +4,8 @@ namespace :hydra do
   desc "Start a solr, fedora and rails instance"
   task :server do
     with_server('development') do
-      IO.popen('rails server') do |io|
+      # Specifying HYDRA_BIND_ALL=true will bind to all IPs
+      IO.popen("rails server #{'-b 0.0.0.0' if ENV['HYDRA_BIND_ALL']}") do |io|
         begin
           io.each do |line|
             puts line
