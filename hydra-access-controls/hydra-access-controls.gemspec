@@ -16,9 +16,9 @@ Gem::Specification.new do |gem|
   gem.version       = version
   gem.license       = "APACHE2"
 
-  gem.required_ruby_version = '>= 2.0.0'
+  gem.required_ruby_version = '>= 2.1.0'
 
-  gem.add_dependency 'activesupport', '~> 4.0'
+  gem.add_dependency 'activesupport', '~> 4.1'
   gem.add_dependency "active-fedora", '~> 8.0'
   gem.add_dependency "om", '~> 3.0', '>= 3.0.7'
   gem.add_dependency 'cancancan', '~> 1.8'
