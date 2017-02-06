@@ -1,13 +1,12 @@
 language: ruby
 rvm:
+  - 2.3.1
   - 2.2
   - 2.1
-  - 2.0
 
 gemfile:
   - gemfiles/gemfile.rails42
   - gemfiles/gemfile.rails41
-  - gemfiles/gemfile.rails40
 
 notifications:
   irc: "irc.freenode.org#projecthydra"

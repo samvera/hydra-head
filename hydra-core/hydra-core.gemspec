@@ -17,10 +17,10 @@ Gem::Specification.new do |gem|
   gem.version       = version
   gem.license       = "APACHE2"
 
-  gem.required_ruby_version = '>= 2.0.0'
+  gem.required_ruby_version = '>= 2.1.0'
 
 
-  gem.add_dependency "rails", '~> 4.0'
+  gem.add_dependency "rails", '~> 4.1'
   gem.add_dependency 'block_helpers'
   gem.add_dependency 'hydra-access-controls', version
   gem.add_dependency 'jettywrapper', "~> 1.5"
