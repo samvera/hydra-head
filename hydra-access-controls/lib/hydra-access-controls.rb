@@ -2,6 +2,7 @@ require 'rails'
 require 'active-fedora'
 require 'blacklight'
 require 'cancan'
+require 'action_view' # https://github.com/haml/haml/issues/695
 
 module Hydra
   extend ActiveSupport::Autoload
