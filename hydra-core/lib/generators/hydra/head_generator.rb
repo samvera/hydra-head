@@ -111,5 +111,13 @@ module Hydra
         puts "     \e[31mFailure\e[0m  Hydra requires a user object in order to apply access controls. This generators assumes that the model is defined in the file #{file_path}, which does not exist.  If you used a different name, please re-run the generator and provide that name as an argument. Such as \b  rails -g hydra:head client"
       end
     end
+    
+    def create_wrapper_configuration
+      copy_file "config/fcrepo_wrapper_development.yml", "config/fcrepo_wrapper_development.yml"
+      copy_file "config/fcrepo_wrapper_test.yml", "config/fcrepo_wrapper_test.yml"
+      copy_file "config/solr_wrapper_development.yml", "config/solr_wrapper_development.yml"
+      copy_file "config/solr_wrapper_test.yml", "config/solr_wrapper_test.yml"
+    end
+    
   end # HeadGenerator
 end # Hydra
