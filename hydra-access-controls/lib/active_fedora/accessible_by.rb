@@ -11,7 +11,7 @@ ActiveFedora::QueryMethods.module_eval do
       when :update, :edit, :create, :new, :destroy then [:edit]
     end
 
-    filters = gated_discovery_filters(permission_types, ability).join(" OR ")
+    filters = gated_discovery_filters(permission_types, ability).reject(&:blank?).join(" OR ")
     spawn.where!(filters)
   end
 end
