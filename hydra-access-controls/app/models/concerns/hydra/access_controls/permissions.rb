@@ -48,17 +48,21 @@ module Hydra
         end
 
         attributes_collection = attributes_collection.map(&:with_indifferent_access)
-        attributes_collection.each do |prop|
-          existing = case prop[:type]
-                     when 'group'
-                       search_by_type(:group)
-                     when 'person'
-                       search_by_type(:person)
-          end
 
-          next if existing.blank?
-          selected = existing.find { |perm| perm.agent_name == prop[:name] }
-          prop['id'] = selected.id if selected
+        # Associate all existing permissions to an updated permission attribute.
+        permissions.to_a.each do |perm|
+          # Skip if already linked to a permission update
+          next if attributes_collection.find { |prop| perm.id == prop[:id] }
+
+          # Find matches based on common agent name and type, ignoring
+          # permissions_attributes that already have an ID.
+          selected = attributes_collection.find_all { |prop| perm.agent_name == prop[:name] && perm.type == prop[:type] && prop[:id].blank? }
+
+          # If there is an exact match, then that is the permission that should
+          # be updated, otherwise just update the first of the previous match.
+          selected = selected.find { |prop| perm.access == prop[:access] } || selected.first
+
+          selected[:id] = perm.id if selected
         end
 
         clean_collection = remove_bad_deletes(attributes_collection)

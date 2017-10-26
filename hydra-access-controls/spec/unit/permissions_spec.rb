@@ -131,6 +131,16 @@ describe Hydra::AccessControls::Permissions do
                                             { type: "group", access: "edit", name: "group1" },
                                             { type: "person", access: "edit", name: "jcoyne" }]
         end
+
+        it "updates multiple permissions for a user" do
+          subject.update permissions_attributes: [{ type: "person", access: "edit", name: "user1" }, { type: "person", access: "read", name: "user1" }]
+          subject.update permissions_attributes: [{ type: "person", access: "edit", name: "user1" }, { type: "person", access: "read", name: "user1" }]
+          expect(subject.permissions.size).to eq 3
+          expect(subject.permissions.to_a).to all(be_a(Hydra::AccessControls::Permission))
+          expect(subject.permissions[0].to_hash).to eq(type: "person", access: "edit", name: "jcoyne")
+          expect(subject.permissions[1].to_hash).to eq(type: "person", access: "edit", name: "user1")
+          expect(subject.permissions[2].to_hash).to eq(type: "person", access: "read", name: "user1")
+        end
       end
 
       context "when the destroy flag is set" do
