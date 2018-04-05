@@ -125,11 +125,7 @@ module Hydra
         unless response.headers["Last-Modified"] || response.headers["ETag"]
           Rails.logger.warn("Response may be buffered instead of streaming, best to set a Last-Modified or ETag header")
         end
-        iostream.each do |in_buff|
-          response.stream.write in_buff
-        end
-      ensure
-        response.stream.close
+        self.response_body = iostream
       end
 
       def default_file
