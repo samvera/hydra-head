@@ -19,4 +19,4 @@ Changes proposed in this pull request:
 * 
 * 
 
-@projecthydra/hydra-contributors
+@samvera/hydra-head
