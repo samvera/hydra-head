@@ -29,12 +29,7 @@ module Hydra
     alias :config :configure
   end
 
-  class Engine < Rails::Engine
-    # autoload_paths is only necessary for Rails 3
-    config.autoload_paths += %W(
-      #{config.root}/app/models/concerns
-    )
-  end
+  class Engine < Rails::Engine; end
 
   # This error is raised when a user isn't allowed to access a given controller action.
   # This usually happens within a call to AccessControlsEnforcement#enforce_access_controls but can be
