@@ -1,12 +1,33 @@
 # Hydra-Head
 
+Code: [![Version](https://badge.fury.io/rb/hydra-head.png)](http://badge.fury.io/rb/hydra-head)
 [![Build Status](https://travis-ci.org/samvera/hydra-head.png?branch=master)](https://travis-ci.org/samvera/hydra-head)
-[![Version](https://badge.fury.io/rb/hydra-head.png)](http://badge.fury.io/rb/hydra-head)
-[![Dependencies](https://gemnasium.com/samvera/hydra-head.png)](https://gemnasium.com/samvera/hydra-head)
-[![Coverage Status](https://img.shields.io/coveralls/samvera/hydra-head.svg)](https://coveralls.io/r/samvera/hydra-head)
+[![Coverage Status](https://coveralls.io/repos/github/samvera/hydra-head/badge.svg?branch=master)](https://coveralls.io/github/samvera/hydra-head?branch=master)
+
+Docs: [![Contribution Guidelines](http://img.shields.io/badge/CONTRIBUTING-Guidelines-blue.svg)](./CONTRIBUTING.md)
+[![Apache 2.0 License](http://img.shields.io/badge/APACHE2-license-blue.svg)](./LICENSE)
+
+Jump in: [![Slack Status](http://slack.samvera.org/badge.svg)](http://slack.samvera.org/)
+
+
+# What is Hydra-Head?
 
 Hydra-Head is a Ruby-on-Rails gem containing the core code for a web
 application using the full stack of Samvera building blocks.
+
+## Product Owner & Maintenance
+
+hydra-head is a Core Component of the Samvera community. The documentation for
+what this means can be found
+[here](http://samvera.github.io/core_components.html#requirements-for-a-core-component).
+
+### Product Owner
+
+[cjcolvar](https://github.com/cjcolvar)
+
+# Help
+
+The Samvera community is here to help. Please see our [support guide](./.github/SUPPORT.md).
 
 See the Github wikis for information targeted to developers:
 <http://github.com/samvera/hydra-head/wiki>
@@ -17,17 +38,9 @@ See the Duraspace Hydra wikis for information at the architecture level:
 Additionally, new adopters and potential adopters may find the pages
 here useful: <http://samvera.org/>
 
-If you are new to Hydra and looking to start a new Hydra head with a set
-of components that have been tested for compatibility, and for which
-there will be a documented upgrade path to the next versions, we
-recommend you use the Hydra gem: https://github.com/samvera/hydra
-
 Further questions? [Get in touch](https://wiki.duraspace.org/pages/viewpage.action?pageId=87460391)
 
 ## Installation/Setup
-
-This process is covered step-by-step in the [Tutorial: Dive Into
-Hydra](https://github.com/samvera/hydra/wiki/Dive-into-Hydra)
 
 ### Installation Prerequisites
 
@@ -91,10 +104,9 @@ For those developers who want to or need to work on the hydra-head gem
 itself, see the [Instructions for
 Contributors](http://github.com/samvera/hydra-head/wiki/For-Contributors)
 
-## Acknowledgments
+# Acknowledgments
 
-### Design & Strategic Contributions
+This software has been developed by and is brought to you by the Samvera community.  Learn more at the
+[Samvera website](http://samvera.org/).
 
-The Hydra Framework would not exist without the extensive design effort undertaken by representatives of repository initiatives from Stanford University, University of Virginia, University of Hull and MediaShelf LLC.  Contributors to that effort include Tom Cramer, Lynn McRae, Martha Sites, Richard Green, Chris Awre, and Matt Zumwalt.
-
-Thorny Staples from Fedora Commons & DuraSpace deserves special thanks for putting all of these people in the same room together.
+![Samvera Logo](https://wiki.duraspace.org/download/thumbnails/87459292/samvera-fall-font2-200w.png?version=1&modificationDate=1498550535816&api=v2)

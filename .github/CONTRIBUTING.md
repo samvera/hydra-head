@@ -1,21 +1,21 @@
 # How to Contribute
 
-We want your help to make Samvera great. There are a few guidelines
+We want your help to make the Samvera community great. There are a few guidelines
 that we need contributors to follow so that we can have a chance of
 keeping on top of things.
 
 ## Code of Conduct
 
-The Samvera Community is dedicated to providing a welcoming and positive 
+The Samvera Community is dedicated to providing a welcoming and positive
 experience for all its members, whether they are at a formal gathering, in
-a social setting, or taking part in activities online. Please see our 
+a social setting, or taking part in activities online. Please see our
 [Code of Conduct](CODE_OF_CONDUCT.md) for more information.
 
 ## Samvera Community Intellectual Property Licensing and Ownership
 
-All code contributors must have an Individual Contributor License Agreement 
-(iCLA) on file with the Samvera Steering Group. If the contributor works for 
-an institution, the institution must have a Corporate Contributor License 
+All code contributors must have an Individual Contributor License Agreement
+(iCLA) on file with the Samvera Steering Group. If the contributor works for
+an institution, the institution must have a Corporate Contributor License
 Agreement (cCLA) on file.
 
 https://wiki.duraspace.org/display/samvera/Samvera+Community+Intellectual+Property+Licensing+and+Ownership
@@ -34,7 +34,7 @@ You should also add yourself to the `CONTRIBUTORS.md` file in the root of the pr
 ### Reporting Issues
 
 * Make sure you have a [GitHub account](https://github.com/signup/free)
-* Submit a [Github issue](./issues) by:
+* Submit a [Github issue](https://github.com/samvera/hydra-head/issues/) by:
   * Clearly describing the issue
     * Provide a descriptive summary
     * Explain the expected behavior
@@ -63,15 +63,11 @@ You should also add yourself to the `CONTRIBUTORS.md` file in the root of the pr
   * If you don't know exactly what a bit of code does, it is extra likely that it needs to be documented. Take a stab at it and ask for feedback in your pull request. You can use the 'blame' button on GitHub to identify the original developer of the code and @mention them in your comment.
   * This work greatly increases the usability of the code base and supports the on-ramping of new committers.
   * We will all be understanding of one another's time constraints in this area.
-* YARD examples:
-  * [Hydra::Works::RemoveGenericFile](https://github.com/projecthydra-labs/hydra-works/blob/master/lib/hydra/works/services/generic_work/remove_generic_file.rb)
-  * [ActiveTriples::LocalName::Minter](https://github.com/ActiveTriples/active_triples-local_name/blob/master/lib/active_triples/local_name/minter.rb)
 * [Getting started with YARD](http://www.rubydoc.info/gems/yard/file/docs/GettingStarted.md)
 
 ### Committing changes
 
 * Make commits of logical units.
-  * Your commit should include a high level description of your work in HISTORY.textile
 * Check for unnecessary whitespace with `git diff --check` before committing.
 * Make sure your commit messages are [well formed](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html).
 * If you created an issue, you can close it by including "Closes #issue" in your commit message. See [Github's blog post for more details](https://github.com/blog/1386-closing-issues-via-commit-messages)
@@ -112,8 +108,6 @@ You should also add yourself to the `CONTRIBUTORS.md` file in the root of the pr
 
 ### Submitting Changes
 
-[Detailed Walkthrough of One Pull Request per Commit](http://ndlib.github.io/practices/one-commit-per-pull-request/)
-
 * Read the article ["Using Pull Requests"](https://help.github.com/articles/using-pull-requests) on GitHub.
 * Make sure your branch is up to date with its parent branch (i.e. master)
   * `git checkout master`
@@ -134,9 +128,7 @@ We adopted [Github's Pull Request Review](https://help.github.com/articles/about
 Common checks that may occur in our repositories:
 
 1. Travis CI - where our automated tests are running
-2. Hound CI - where we check for style violations
-3. Approval Required - Github enforces at least one person approve a pull request. Also, all reviewers that have chimed in must approve.
-4. CodeClimate - is our code remaining healthy (at least according to static code analysis)
+2. Approval Required - Github enforces at least one person approve a pull request. Also, all reviewers that have chimed in must approve.
 
 If one or more of the required checks failed (or are incomplete), the code should not be merged (and the UI will not allow it). If all of the checks have passed, then anyone on the project (including the pull request submitter) may merge the code.
 
@@ -163,7 +155,7 @@ If you are uncertain, bring other contributors into the conversation by assignin
 
 # Additional Resources
 
-* [General GitHub documentation](https://help.github.com/)
+* [General GitHub documentation](http://help.github.com/)
 * [GitHub pull request documentation](https://help.github.com/articles/about-pull-requests/)
 * [Pro Git](http://git-scm.com/book) is both a free and excellent book about Git.
 * [A Git Config for Contributing](http://ndlib.github.io/practices/my-typical-per-project-git-config/)
