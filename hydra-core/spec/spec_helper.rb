@@ -10,12 +10,22 @@ require 'hydra-core'
 require "factory_bot"
 require "factories"
 
-if ENV['COVERAGE']
-  require 'simplecov'
-  require 'simplecov-rcov'
+def coverage_needed?
+  ENV['COVERAGE'] || ENV['TRAVIS']
+end
 
-  SimpleCov.formatter = SimpleCov::Formatter::RcovFormatter
-  SimpleCov.start
+if coverage_needed?
+  require 'simplecov'
+  require 'coveralls'
+
+  SimpleCov.root(File.expand_path('../../../', __FILE__))
+  SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new(
+    [
+      SimpleCov::Formatter::HTMLFormatter,
+      Coveralls::SimpleCov::Formatter
+    ]
+  )
+  SimpleCov.start('rails')
 end
 
 ActiveFedora::Base.logger = Logger.new(STDOUT)
