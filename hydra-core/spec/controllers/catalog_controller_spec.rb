@@ -42,6 +42,13 @@ describe CatalogController do
   end
 
   describe "content negotiation" do
+    before do
+      Rails.application.routes.draw do
+        scope 'catalog/:id' do
+          get 'search' => 'catalog#show'
+        end
+      end
+    end
     describe "show" do
       before do
         allow(controller).to receive(:enforce_show_permissions)
@@ -77,7 +84,7 @@ describe CatalogController do
 
         it "is able to negotiate ttl" do
           get 'show', params: { id: asset.id, format: :ttl }
-          
+
           expect(response).to be_success
           graph = RDF::Reader.for(:ttl).new(response.body)
           expect(graph.statements.to_a.length).to eq 3
@@ -111,6 +118,13 @@ describe CatalogController do
   end
 
   describe "filters" do
+    before do
+      Rails.application.routes.draw do
+        scope 'catalog/:id' do
+          get 'search' => 'catalog#show'
+        end
+      end
+    end
     describe "show" do
       it "triggers enforce_show_permissions" do
         allow(controller).to receive(:current_user).and_return(nil)
