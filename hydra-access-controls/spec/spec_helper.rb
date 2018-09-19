@@ -11,12 +11,22 @@ Hydra::Engine.config.autoload_paths.each { |path| $LOAD_PATH.unshift path }
 
 require 'byebug' unless ENV['CI']
 
-if ENV['COVERAGE'] and RUBY_VERSION =~ /^1.9/
-  require 'simplecov'
-  require 'simplecov-rcov'
+def coverage_needed?
+  ENV['COVERAGE'] || ENV['TRAVIS']
+end
 
-  SimpleCov.formatter = SimpleCov::Formatter::RcovFormatter
-  SimpleCov.start
+if RUBY_VERSION =~ /^1.9/ && coverage_needed?
+  require 'simplecov'
+  require 'coveralls'
+
+  SimpleCov.root(File.expand_path('../../../', __FILE__))
+  SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new(
+    [
+      SimpleCov::Formatter::HTMLFormatter,
+      Coveralls::SimpleCov::Formatter
+    ]
+  )
+  SimpleCov.start('rails')
 end
 
 # Since we're not doing a Rails Engine test, we have to load these classes manually:
@@ -52,4 +62,3 @@ RSpec.configure do |config|
     ActiveFedora::Cleaner.clean!
   end
 end
-
