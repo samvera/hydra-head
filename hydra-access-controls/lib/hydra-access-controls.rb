@@ -38,3 +38,11 @@ module Hydra
 end
 
 require 'active_fedora/accessible_by'
+
+# While we support ActiveFedora 10 and 11, alias ActiveFedora::Indexing and
+# ActiveFedora::Indexing::Inserter to Solrizer
+require 'active_fedora/version'
+if ActiveFedora.version.split('.').first.to_i < 12
+  ActiveFedora::Indexing::Inserter   = Solrizer
+  ActiveFedora::Indexing::Descriptor = Solrizer::Descriptor
+end
