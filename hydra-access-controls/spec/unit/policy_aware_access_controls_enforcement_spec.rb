@@ -138,6 +138,7 @@ describe Hydra::PolicyAwareAccessControlsEnforcement do
       before { subject.apply_gated_discovery(@solr_parameters) }
 
       it "builds a query that includes all the policies" do
+        skip if ActiveFedora.version.split('.').first.to_i < 11
         (1..11).each do |p|
           expect(policy_queries).to include(/_query_:\"{!raw f=#{governed_field}}test-policy#{p}\"/)
         end
