@@ -2,12 +2,6 @@ module Hydra::AccessControlsEnforcement
   extend ActiveSupport::Concern
   include Blacklight::AccessControls::Enforcement
 
-  included do
-    Deprecation.warn(self, 'Hydra::AccessControlsEnforcement is deprecated ' \
-      'and will be removed in version 11. Use ' \
-      'Hydra::AccessControls::SearchBuilder instead.')
-  end
-
   protected
 
   def under_embargo?

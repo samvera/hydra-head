@@ -18,12 +18,12 @@ Gem::Specification.new do |gem|
 
   gem.required_ruby_version = '>= 1.9.3'
 
-  gem.add_dependency "active-fedora", '~> 12.0'
   gem.add_dependency 'activesupport', '>= 4', '< 6'
-  gem.add_dependency "blacklight", '>= 5.16'
-  gem.add_dependency "blacklight-access_controls", '~> 0.7.0.rc1'
+  gem.add_dependency "active-fedora", '>= 10.0.0', '< 13'
   gem.add_dependency 'cancancan', '~> 1.8'
   gem.add_dependency 'deprecation', '~> 1.0'
+  gem.add_dependency "blacklight", '>= 5.16'
+  gem.add_dependency "blacklight-access_controls", '~> 0.6'
 
   gem.add_development_dependency "rake", '~> 10.1'
   gem.add_development_dependency 'rspec', '~> 3.1'

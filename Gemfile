@@ -1,10 +1,5 @@
 source "https://rubygems.org"
 
-git_source(:github) do |repo_name|
-  repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
-  "https://github.com/#{repo_name}.git"
-end
-
 gem 'rspec-its'
 # Specify gem dependencies in hydra-head.gemspec
 gemspec
@@ -46,4 +41,8 @@ end
 
 if !ENV['RAILS_VERSION'] || ENV['RAILS_VERSION'] =~ /^5/
   gem 'rails-controller-testing'
+end
+
+if ENV['ACTIVE_FEDORA_VERSION']
+  gem 'active-fedora', ENV['ACTIVE_FEDORA_VERSION']
 end
