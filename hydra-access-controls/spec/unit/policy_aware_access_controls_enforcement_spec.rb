@@ -6,8 +6,10 @@ describe Hydra::PolicyAwareAccessControlsEnforcement do
 
     class PolicyMockSearchBuilder < Blacklight::SearchBuilder
       include Blacklight::Solr::SearchBuilderBehavior
-      include Hydra::AccessControlsEnforcement
-      include Hydra::PolicyAwareAccessControlsEnforcement
+      Deprecation.silence(PolicyMockSearchBuilder) do
+        include Hydra::AccessControlsEnforcement
+        include Hydra::PolicyAwareAccessControlsEnforcement
+      end
       attr_accessor :params
 
       def initialize(current_ability)
@@ -134,7 +136,7 @@ describe Hydra::PolicyAwareAccessControlsEnforcement do
 
     context "when policies are included" do
       before { subject.apply_gated_discovery(@solr_parameters) }
-      
+
       it "builds a query that includes all the policies" do
         skip if ActiveFedora.version.split('.').first.to_i < 11
         (1..11).each do |p|
@@ -142,7 +144,7 @@ describe Hydra::PolicyAwareAccessControlsEnforcement do
         end
       end
     end
-    
+
     context "when policies are not included" do
       before do
         allow(subject).to receive(:policy_clauses).and_return(nil)
