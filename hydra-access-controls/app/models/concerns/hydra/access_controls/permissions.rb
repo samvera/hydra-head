@@ -22,7 +22,7 @@ module Hydra
       end
 
       def permission_delegate
-        (access_control || create_access_control).tap { |d| d.owner = self }
+        (access_control || build_access_control).tap { |d| d.owner = self }
       end
 
       def to_solr(solr_doc = {})
