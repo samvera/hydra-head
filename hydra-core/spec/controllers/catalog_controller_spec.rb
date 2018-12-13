@@ -38,7 +38,11 @@ describe CatalogController do
         fq = "read_access_group_ssim:public OR edit_access_group_ssim:public OR discover_access_group_ssim:public"
         solr_opts = { fq: fq }
         response = ActiveFedora::SolrService.instance.conn.get('select', params: solr_opts)
-        @public_only_results = Blacklight::SolrResponse.new(response, solr_opts)
+        @public_only_results = if Blacklight.const_defined?(:SolrResponse)
+                                 Blacklight::SolrResponse.new(response, solr_opts) # Blacklight 5
+                               else
+                                 Blacklight::Solr::Response.new(response, solr_opts) # Blacklight 6
+                               end
       end
 
       it "should only return public documents if role does not have permissions" do

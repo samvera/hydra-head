@@ -23,7 +23,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency "om", '~> 3.0', '>= 3.0.7'
   gem.add_dependency 'cancancan', '~> 1.8'
   gem.add_dependency 'deprecation', '~> 0.1'
-  gem.add_dependency "blacklight", '~> 5.10'
+  gem.add_dependency "blacklight", '< 7', '>= 5.10'
 
   # sass-rails is typically generated into the app's gemfile by `rails new`
   # In rails 3 it's put into the "assets" group and thus not available to the
