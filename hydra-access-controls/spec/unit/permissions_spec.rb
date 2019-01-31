@@ -28,9 +28,8 @@ describe Hydra::AccessControls::Permissions do
   end
 
   describe "building a new permission" do
-    before { subject.save! }
-
     it "sets the accessTo association" do
+      subject.save!
       perm = subject.permissions.build(name: 'user1', type: 'person', access: 'read')
       expect(perm.access_to_id).to eq subject.id
     end
@@ -38,9 +37,13 @@ describe Hydra::AccessControls::Permissions do
     it "autosaves the permissions" do
       subject.permissions.build(name: 'user1', type: 'person', access: 'read')
       subject.save!
-      subject.reload
       foo = Foo.find(subject.id)
-      expect(foo.permissions.to_a).not_to eq []
+
+      expect(foo.permissions)
+        .to contain_exactly(have_attributes(access:       'read',
+                                            access_to_id: subject.id,
+                                            agent_name:   'user1',
+                                            type:         'person'))
     end
   end
 
