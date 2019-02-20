@@ -32,7 +32,7 @@ describe User do
   end
 
   describe "#groups" do
-    let(:user) { FactoryBot.create(:user) }
+    let(:user) { described_class.new }
     let(:mock_service) { double }
     before do
       user.group_service = mock_service

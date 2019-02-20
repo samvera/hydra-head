@@ -7,8 +7,6 @@ EngineCart.load_application! path
 require 'bundler/setup'
 require 'rspec/rails'
 require 'hydra-core'
-require "factory_bot"
-require "factories"
 
 def coverage_needed?
   ENV['COVERAGE'] || ENV['TRAVIS']
