@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ACL < RDF::StrictVocabulary('http://www.w3.org/ns/auth/acl#')
   property :accessTo
   property :mode

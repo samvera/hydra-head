@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Hydra
   class Config
     def initialize
@@ -5,29 +7,29 @@ module Hydra
       @user_model = 'User'
     end
 
-    def []= key, value
+    def []=(key, value)
       case key
-        when :permissions
-          self.permissions = value
-        when :user_model
-          self.user_model = value
-        when :id_to_resource_uri
-          self.id_to_resource_uri = value
-        else
-          raise "Unknown key"
+      when :permissions
+        self.permissions = value
+      when :user_model
+        self.user_model = value
+      when :id_to_resource_uri
+        self.id_to_resource_uri = value
+      else
+        raise 'Unknown key'
       end
     end
 
-    def [] key
+    def [](key)
       case key
-        when :permissions
-          permissions
-        when :user_model
-          user_model
-        when :id_to_resource_uri
-          id_to_resource_uri
-        else
-          raise "Unknown key #{key}"
+      when :permissions
+        permissions
+      when :user_model
+        user_model
+      when :id_to_resource_uri
+        id_to_resource_uri
+      else
+        raise "Unknown key #{key}"
       end
     end
 
@@ -50,10 +52,10 @@ module Hydra
     #
     # @return [Lambda] a method to convert ID to a URI
     def id_to_resource_uri
-      @id_to_resource_uri ||= lambda { |id, _graph| ActiveFedora::Base.translate_id_to_uri.call(id) }
+      @id_to_resource_uri ||= ->(id, _graph) { ActiveFedora::Base.translate_id_to_uri.call(id) }
     end
 
-    def permissions= values
+    def permissions=(values)
       @permissions.merge! values
     end
 
@@ -61,44 +63,45 @@ module Hydra
       attr_accessor :policy_class, :embargo, :lease
       def initialize
         @values = {}
-        [:discover, :read, :edit].each do |key|
+        %i[discover read edit].each do |key|
           @values[key] = GroupPermission.new(
-            group:      solr_name("#{prefix}#{key}_access_group", :symbol),
-            individual: solr_name("#{prefix}#{key}_access_person", :symbol))
+            group: solr_name("#{prefix}#{key}_access_group", :symbol),
+            individual: solr_name("#{prefix}#{key}_access_person", :symbol)
+          )
         end
         @embargo = EmbargoConfig.new({}, prefix: prefix)
         @lease = LeaseConfig.new({}, prefix: prefix)
       end
 
-      def merge! values
-        values.each {|k, v| self[k] = v }
+      def merge!(values)
+        values.each { |k, v| self[k] = v }
       end
 
-      def []= key, value
+      def []=(key, value)
         case key
-          when :discover, :read, :edit
-            self.assign_value key, value
-          when :inheritable
-            inheritable.merge! value
-          when :policy_class
-            self.policy_class = value
-          when :owner
-            Rails.logger.warn "':owner' is no longer a valid configuration for Hydra. Please remove it from your configuration."
-          else
-            raise "Unknown key `#{key.inspect}`"
+        when :discover, :read, :edit
+          assign_value key, value
+        when :inheritable
+          inheritable.merge! value
+        when :policy_class
+          self.policy_class = value
+        when :owner
+          Rails.logger.warn "':owner' is no longer a valid configuration for Hydra. Please remove it from your configuration."
+        else
+          raise "Unknown key `#{key.inspect}`"
         end
       end
 
-      def [] key
+      def [](key)
         case key
-          when :discover, :read, :edit
-            @values[key]
-          when :inheritable
-            inheritable
-          when :policy_class
-            @policy_class
-          else
-            raise "Unknown key #{key}"
+        when :discover, :read, :edit
+          @values[key]
+        when :inheritable
+          inheritable
+        when :policy_class
+          @policy_class
+        else
+          raise "Unknown key #{key}"
         end
       end
 
@@ -118,24 +121,23 @@ module Hydra
         @values[:edit]
       end
 
-      def discover= val
+      def discover=(val)
         assign_value :discover, val
       end
 
-      def read= val
+      def read=(val)
         assign_value :read, val
       end
 
-      def edit= val
+      def edit=(val)
         assign_value :edit, val
       end
 
       protected
 
-      def prefix
-      end
+      def prefix; end
 
-      def assign_value key, val
+      def assign_value(key, val)
         @values[key].merge!(val)
       end
 
@@ -145,11 +147,11 @@ module Hydra
 
       class EmbargoConfig
         attr_accessor :release_date, :visibility_during, :visibility_after, :history
-        def initialize(values = {}, attributes={prefix:''})
+        def initialize(_values = {}, attributes = { prefix: '' })
           @release_date = solr_name("#{attributes[:prefix]}embargo_release_date", :stored_sortable, type: :date)
-          @visibility_during = solr_name("visibility_during_embargo", :symbol)
-          @visibility_after = solr_name("visibility_after_embargo", :symbol)
-          @history = solr_name("embargo_history", :symbol)
+          @visibility_during = solr_name('visibility_during_embargo', :symbol)
+          @visibility_after = solr_name('visibility_after_embargo', :symbol)
+          @history = solr_name('embargo_history', :symbol)
         end
 
         def solr_name(*args)
@@ -159,11 +161,11 @@ module Hydra
 
       class LeaseConfig
         attr_accessor :expiration_date, :visibility_during, :visibility_after, :history
-        def initialize(values = {}, attributes={prefix:''})
+        def initialize(_values = {}, attributes = { prefix: '' })
           @expiration_date = solr_name("#{attributes[:prefix]}lease_expiration_date", :stored_sortable, type: :date)
-          @visibility_during = solr_name("visibility_during_lease", :symbol)
-          @visibility_after = solr_name("visibility_after_lease", :symbol)
-          @history = solr_name("lease_history", :symbol)
+          @visibility_during = solr_name('visibility_during_lease', :symbol)
+          @visibility_after = solr_name('visibility_after_lease', :symbol)
+          @history = solr_name('lease_history', :symbol)
         end
 
         def solr_name(*args)
@@ -176,16 +178,18 @@ module Hydra
         def initialize(values = {})
           merge! values
         end
-        def merge! values
+
+        def merge!(values)
           @group = values[:group]
           @individual = values[:individual]
         end
-        def [] key
+
+        def [](key)
           case key
-            when :group, :individual
-              send key
-            else
-              raise "Unknown key"
+          when :group, :individual
+            send key
+          else
+            raise 'Unknown key'
           end
         end
       end
@@ -193,9 +197,10 @@ module Hydra
 
     class InheritablePermissionsConfig < PermissionsConfig
       protected
-        def prefix
-          'inheritable_'
-        end
+
+      def prefix
+        'inheritable_'
+      end
     end
   end
 end

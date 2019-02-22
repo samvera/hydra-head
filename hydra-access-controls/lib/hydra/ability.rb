@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Code for [CANCAN] access to Hydra models
 
 module Hydra
@@ -14,11 +16,11 @@ module Hydra
       include Hydra::PermissionsQuery
       include Blacklight::SearchHelper
 
-      self.ability_logic = [:create_permissions, :edit_permissions, :read_permissions, :discover_permissions, :download_permissions, :custom_permissions]
+      self.ability_logic = %i[create_permissions edit_permissions read_permissions discover_permissions download_permissions custom_permissions]
     end
 
     def self.user_class
-      Hydra.config[:user_model] ?  Hydra.config[:user_model].constantize : ::User
+      Hydra.config[:user_model] ? Hydra.config[:user_model].constantize : ::User
     end
 
     def initialize(user, options = {})
@@ -26,7 +28,7 @@ module Hydra
       @user = @current_user # just in case someone was using this in an override. Just don't.
       @options = options
       @cache = Blacklight::AccessControls::PermissionsCache.new
-      hydra_default_permissions()
+      hydra_default_permissions
     end
 
     def hydra_default_permissions
@@ -72,15 +74,14 @@ module Hydra
     # Download permissions are exercised in Hydra::Controller::DownloadBehavior
     def download_permissions
       can :download, ActiveFedora::File do |file|
-        parent_uri = file.uri.to_s.sub(/\/[^\/]*$/, '')
+        parent_uri = file.uri.to_s.sub(%r{/[^/]*$}, '')
         parent_id = ActiveFedora::Base.uri_to_id(parent_uri)
         can? :read, parent_id # i.e, can download if can read parent resource
       end
     end
 
     ## Override custom permissions in your own app to add more permissions beyond what is defined by default.
-    def custom_permissions
-    end
+    def custom_permissions; end
 
     protected
 
@@ -95,9 +96,10 @@ module Hydra
     def edit_groups(id)
       doc = permissions_doc(id)
       return [] if doc.nil?
+
       eg = doc[self.class.edit_group_field] || []
       Rails.logger.debug("[CANCAN] edit_groups: #{eg.inspect}")
-      return eg
+      eg
     end
 
     # edit implies read, so read_groups is the union of edit and read groups
@@ -111,9 +113,10 @@ module Hydra
     def edit_users(id)
       doc = permissions_doc(id)
       return [] if doc.nil?
+
       ep = doc[self.class.edit_user_field] ||  []
       Rails.logger.debug("[CANCAN] edit_users: #{ep.inspect}")
-      return ep
+      ep
     end
 
     # edit implies read, so read_users is the union of edit and read users
@@ -123,7 +126,6 @@ module Hydra
       Rails.logger.debug("[CANCAN] read_users: #{rp.inspect}")
       rp
     end
-
 
     module ClassMethods
       def read_group_field

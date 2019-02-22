@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Hydra
   module AdminPolicyBehavior
     extend ActiveSupport::Concern
@@ -7,15 +9,15 @@ module Hydra
       belongs_to :default_embargo, predicate: Hydra::ACL.hasEmbargo, class_name: 'Hydra::AccessControls::Embargo'
     end
 
-    def to_solr(solr_doc=Hash.new)
+    def to_solr(solr_doc = {})
       f = merged_policies
       super.tap do |doc|
-        ['discover'.freeze, 'read'.freeze, 'edit'.freeze].each do |access|
-          doc[Hydra.config.permissions.inheritable[access.to_sym][:group]] = f[access]['group'.freeze] if f[access]
-          doc[Hydra.config.permissions.inheritable[access.to_sym][:individual]] = f[access]['person'.freeze] if f[access]
+        %w[discover read edit].each do |access|
+          doc[Hydra.config.permissions.inheritable[access.to_sym][:group]] = f[access]['group'] if f[access]
+          doc[Hydra.config.permissions.inheritable[access.to_sym][:individual]] = f[access]['person'] if f[access]
         end
         if default_embargo
-          key = Hydra.config.permissions.inheritable.embargo.release_date.sub(/_[^_]+$/, '') #Strip off the suffix
+          key = Hydra.config.permissions.inheritable.embargo.release_date.sub(/_[^_]+$/, '') # Strip off the suffix
           ActiveFedora::Indexing::Inserter.insert_field(doc, key, default_embargo.embargo_release_date, :stored_sortable)
         end
       end
@@ -31,13 +33,12 @@ module Hydra
       end
     end
 
-
     ## Updates those permissions that are provided to it. Does not replace any permissions unless they are provided
     # @example
     #  obj.default_permissions= [{:name=>"group1", :access=>"discover", :type=>'group'},
     #  {:name=>"group2", :access=>"discover", :type=>'group'}]
     def default_permissions=(params)
-      perm_hash = {'person' => defaultRights.users, 'group'=> defaultRights.groups}
+      perm_hash = { 'person' => defaultRights.users, 'group' => defaultRights.groups }
       params.each do |row|
         if row[:type] == 'user' || row[:type] == 'person'
           perm_hash['person'][row[:name]] = row[:access]

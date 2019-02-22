@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe Hydra::AccessControls::Embargoable do
-
   before do
     class TestModel < ActiveFedora::Base
       def save(returning_value = true)
@@ -14,8 +15,8 @@ describe Hydra::AccessControls::Embargoable do
 
   after { Object.send(:remove_const, :TestModel) }
 
-  let(:future_date) { Date.today+2 }
-  let(:past_date) { Date.today-2 }
+  let(:future_date) { Date.today + 2 }
+  let(:past_date) { Date.today - 2 }
   let(:model) { TestModel.new }
   subject { model }
 
@@ -30,16 +31,16 @@ describe Hydra::AccessControls::Embargoable do
   end
 
   describe 'validations' do
-    context "with dates" do
+    context 'with dates' do
       subject { ModsAsset.new(lease_expiration_date: past_date, embargo_release_date: past_date) }
-      it "validates embargo_release_date and lease_expiration_date" do
+      it 'validates embargo_release_date and lease_expiration_date' do
         expect(subject).to_not be_valid
         expect(subject.errors[:lease_expiration_date]).to eq ['Must be a future date']
         expect(subject.errors[:embargo_release_date]).to eq ['Must be a future date']
       end
     end
 
-    context "without an embargo" do
+    context 'without an embargo' do
       subject { ModsAsset.new }
 
       before { subject.valid? }
@@ -55,7 +56,7 @@ describe Hydra::AccessControls::Embargoable do
   end
 
   context 'visibility=' do
-    context "when the object is not under embargo or lease" do
+    context 'when the object is not under embargo or lease' do
       before do
         subject.visibility = Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE
       end
@@ -65,22 +66,22 @@ describe Hydra::AccessControls::Embargoable do
       end
     end
 
-    context "when changing from embargo" do
+    context 'when changing from embargo' do
       before do
         subject.embargo_release_date = future_date.to_s
       end
-      it "wipes out associated embargo metadata" do
+      it 'wipes out associated embargo metadata' do
         expect(subject).to receive(:deactivate_embargo!)
         subject.visibility = Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC
       end
     end
 
-    context "when changing from lease" do
+    context 'when changing from lease' do
       before do
         subject.apply_lease(future_date.to_s, Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_AUTHENTICATED, Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE)
       end
 
-      it "wipes out associated lease metadata and marks visibility as changed" do
+      it 'wipes out associated lease metadata and marks visibility as changed' do
         expect(subject).to receive(:deactivate_lease!)
         subject.visibility = Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC
         expect(subject).to be_visibility_changed
@@ -89,27 +90,27 @@ describe Hydra::AccessControls::Embargoable do
   end
 
   describe '#apply_embargo' do
-    it "applies appropriate embargo_visibility settings" do
-      expect {
+    it 'applies appropriate embargo_visibility settings' do
+      expect do
         subject.apply_embargo(future_date.to_s, Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE, Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC)
-      }.to change { subject.visibility_changed? }.from(false).to(true)
+      end.to change { subject.visibility_changed? }.from(false).to(true)
       expect(subject).to be_under_embargo
-      expect(subject.visibility).to eq  Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE
+      expect(subject.visibility).to eq Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE
       expect(subject.embargo_release_date).to eq future_date
       expect(subject.visibility_after_embargo).to eq Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC
     end
 
-    context "when no before/after visibility is provided" do
-      it "relies on defaults" do
+    context 'when no before/after visibility is provided' do
+      it 'relies on defaults' do
         subject.apply_embargo(future_date.to_s)
         expect(subject).to be_under_embargo
-        expect(subject.visibility).to eq  Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE
+        expect(subject.visibility).to eq Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE
         expect(subject.embargo_release_date).to eq future_date
         expect(subject.visibility_after_embargo).to eq Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_AUTHENTICATED
       end
     end
 
-    context "when the same embargo is applied" do
+    context 'when the same embargo is applied' do
       before do
         subject.apply_embargo(future_date.to_s)
         if ActiveModel.version < Gem::Version.new('4.2.0')
@@ -133,7 +134,7 @@ describe Hydra::AccessControls::Embargoable do
       subject.embargo_release_date = release_date
     end
 
-    context "when the embargo is expired" do
+    context 'when the embargo is expired' do
       let(:release_date) { past_date.to_s }
 
       it "should remove the associated embargo information and record it in the object's embargo history" do
@@ -146,14 +147,15 @@ describe Hydra::AccessControls::Embargoable do
       end
     end
 
-    context "when the embargo is active" do
+    context 'when the embargo is active' do
       let(:release_date) { future_date.to_s }
 
       it "should remove the associated embargo information and record it in the object's embargo history" do
-        expect {
+        expect do
           subject.deactivate_embargo!
-        }.to change { subject.under_embargo? }.from(true).to(false).and change {
-          subject.visibility_changed? }.from(false).to(true)
+        end.to change { subject.under_embargo? }.from(true).to(false).and change {
+                                                                            subject.visibility_changed?
+                                                                          } .from(false).to(true)
         expect(subject.embargo_release_date).to be_nil
         expect(subject.visibility_during_embargo).to be_nil
         expect(subject.visibility_after_embargo).to be_nil
@@ -162,10 +164,10 @@ describe Hydra::AccessControls::Embargoable do
       end
     end
 
-    context "when there is no embargo" do
+    context 'when there is no embargo' do
       let(:release_date) { nil }
 
-      it "should not do anything" do
+      it 'should not do anything' do
         subject.deactivate_embargo!
         expect(subject.embargo_history).to eq []
       end
@@ -173,26 +175,26 @@ describe Hydra::AccessControls::Embargoable do
   end
 
   context 'apply_lease' do
-    context "when the initial value is restricted" do
-      it "applies appropriate embargo_visibility settings" do
+    context 'when the initial value is restricted' do
+      it 'applies appropriate embargo_visibility settings' do
         subject.apply_lease(future_date.to_s, Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC, Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE)
         expect(subject).to be_active_lease
         expect(subject).to be_visibility_changed
-        expect(subject.visibility).to eq  Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC
+        expect(subject.visibility).to eq Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC
         expect(subject.lease_expiration_date).to eq future_date
         expect(subject.visibility_after_lease).to eq Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE
       end
 
-      context "when before/after visibility is not provided" do
-        it "sets default values" do
+      context 'when before/after visibility is not provided' do
+        it 'sets default values' do
           subject.apply_lease(future_date.to_s)
-          expect(subject.visibility_during_lease).to eq  Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_AUTHENTICATED
+          expect(subject.visibility_during_lease).to eq Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_AUTHENTICATED
           expect(subject.lease_expiration_date).to eq future_date
           expect(subject.visibility_after_lease).to eq Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE
         end
       end
 
-      context "when the same lease is applied" do
+      context 'when the same lease is applied' do
         before do
           subject.apply_lease(future_date.to_s)
           if ActiveModel.version < Gem::Version.new('4.2.0')
@@ -209,19 +211,19 @@ describe Hydra::AccessControls::Embargoable do
       end
     end
 
-    context "when the initial value is public" do
+    context 'when the initial value is public' do
       before do
         subject.visibility = Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC
         # reset the changed log
         subject.send(:instance_variable_set, :@visibility_will_change, false)
       end
 
-      it "applies appropriate embargo_visibility settings" do
-        expect {
+      it 'applies appropriate embargo_visibility settings' do
+        expect do
           subject.apply_lease(future_date.to_s, Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC, Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE)
-        }.to change { subject.visibility_changed? }.from(false).to(true)
+        end.to change { subject.visibility_changed? }.from(false).to(true)
         expect(subject).to be_active_lease
-        expect(subject.visibility).to eq  Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC
+        expect(subject.visibility).to eq Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC
         expect(subject.lease_expiration_date).to eq future_date
         expect(subject.visibility_after_lease).to eq Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE
       end
@@ -235,13 +237,13 @@ describe Hydra::AccessControls::Embargoable do
       subject.visibility_after_lease = Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE
     end
 
-    context "when the lease is expired" do
+    context 'when the lease is expired' do
       let(:expiration_date) { past_date.to_s }
 
       it "should remove the associated lease information and record it in the object's lease history" do
-        expect {
+        expect do
           subject.deactivate_lease!
-        }.to change { subject.visibility_changed? }.from(false).to(true)
+        end.to change { subject.visibility_changed? }.from(false).to(true)
         expect(subject.lease_expiration_date).to be_nil
         expect(subject.visibility_during_lease).to be_nil
         expect(subject.visibility_after_lease).to be_nil
@@ -250,13 +252,13 @@ describe Hydra::AccessControls::Embargoable do
       end
     end
 
-    context "when the lease is active" do
+    context 'when the lease is active' do
       let(:expiration_date) { future_date.to_s }
 
       it "should remove the associated lease information and record it in the object's lease history" do
-        expect {
+        expect do
           subject.deactivate_lease!
-        }.to change { subject.active_lease? }.from(true).to(false)
+        end.to change { subject.active_lease? }.from(true).to(false)
         expect(subject.lease_expiration_date).to be_nil
         expect(subject.visibility_during_lease).to be_nil
         expect(subject.visibility_after_lease).to be_nil
@@ -265,10 +267,10 @@ describe Hydra::AccessControls::Embargoable do
       end
     end
 
-    context "when there is no lease" do
+    context 'when there is no lease' do
       let(:expiration_date) { nil }
 
-      it "should not do anything" do
+      it 'should not do anything' do
         subject.deactivate_lease!
         expect(subject.lease_history).to eq []
       end
@@ -276,14 +278,14 @@ describe Hydra::AccessControls::Embargoable do
   end
 
   context 'under_embargo?' do
-    context "when embargo date is past" do
-      it "should return false" do
+    context 'when embargo date is past' do
+      it 'should return false' do
         subject.embargo_release_date = past_date.to_s
         expect(subject).to_not be_under_embargo
       end
     end
-    context "when embargo date is in future" do
-      it "should return true" do
+    context 'when embargo date is in future' do
+      it 'should return true' do
         subject.embargo_release_date = future_date.to_s
         expect(subject).to be_under_embargo
       end
@@ -295,7 +297,7 @@ describe Hydra::AccessControls::Embargoable do
       subject.visibility_during_embargo = Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE
       subject.visibility_after_embargo = Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC
     end
-    context "(embargo still in effect)" do
+    context '(embargo still in effect)' do
       it 'returns true if current visibility matches visibility_during_embargo' do
         subject.visibility = subject.visibility_during_embargo
         subject.embargo_release_date = future_date.to_s
@@ -308,7 +310,7 @@ describe Hydra::AccessControls::Embargoable do
         expect(subject.errors[:embargo].first).to eq "An embargo is in effect for this object until #{subject.embargo_release_date}.  Until that time the visibility should be #{Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE} but it is currently #{Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_AUTHENTICATED}.  Call embargo_visibility! on this object to repair."
       end
     end
-    context "(embargo expired)" do
+    context '(embargo expired)' do
       it 'returns true if current visibility matches visibility_after_embargo' do
         subject.visibility = subject.visibility_after_embargo
         subject.embargo_release_date = past_date.to_s
@@ -322,7 +324,6 @@ describe Hydra::AccessControls::Embargoable do
       end
     end
   end
-
 
   context 'embargo_visibility!' do
     let(:future_date) { 2.days.from_now }
@@ -339,7 +340,7 @@ describe Hydra::AccessControls::Embargoable do
         subject.embargo_visibility!
         expect(subject.visibility).to eq Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC
       end
-      it "defaults to private if visibility_after_embargo is not set" do
+      it 'defaults to private if visibility_after_embargo is not set' do
         subject.visibility_after_embargo = nil
         subject.embargo_release_date = past_date.to_s
         subject.embargo_visibility!
@@ -373,7 +374,7 @@ describe Hydra::AccessControls::Embargoable do
       subject.visibility_during_lease = Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC
       subject.visibility_after_lease = Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE
     end
-    context "(lease expired)" do
+    context '(lease expired)' do
       it 'returns true if current visibility matches visibility_after_lease' do
         subject.visibility = subject.visibility_after_lease
         subject.lease_expiration_date = past_date.to_s
@@ -386,7 +387,7 @@ describe Hydra::AccessControls::Embargoable do
         expect(subject.errors[:lease].first).to eq "The lease expired on #{subject.lease_expiration_date}.  The visibility should be #{Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE} but it is currently #{Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC}.  Call lease_visibility! on this object to repair."
       end
     end
-    context "(lease still in effect)" do
+    context '(lease still in effect)' do
       it 'returns true if current visibility matches visibility_during_embargo' do
         subject.visibility = subject.visibility_during_lease
         subject.lease_expiration_date = future_date.to_s
@@ -399,9 +400,7 @@ describe Hydra::AccessControls::Embargoable do
         expect(subject.errors[:lease].first).to eq "A lease is in effect for this object until #{subject.lease_expiration_date}.  Until that time the visibility should be #{Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC} but it is currently #{Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_AUTHENTICATED}.  Call lease_visibility! on this object to repair."
       end
     end
-
   end
-
 
   context 'lease_visibility!' do
     before do
@@ -416,7 +415,7 @@ describe Hydra::AccessControls::Embargoable do
         subject.lease_visibility!
         expect(subject.visibility).to eq Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE
       end
-      it "defaults to private if visibility_after_lease is not set" do
+      it 'defaults to private if visibility_after_lease is not set' do
         subject.visibility_after_lease = nil
         subject.lease_expiration_date = past_date.to_s
         subject.lease_visibility!
@@ -442,7 +441,6 @@ describe Hydra::AccessControls::Embargoable do
     end
   end
 
-
   context 'persistence' do
     let(:the_date) { 2.days.from_now }
 
@@ -457,16 +455,15 @@ describe Hydra::AccessControls::Embargoable do
     end
 
     it 'raises an error on an empty string' do
-      expect {
+      expect do
         subject.embargo_release_date = ''
-      }.to raise_error(ArgumentError, "invalid date")
+      end.to raise_error(ArgumentError, 'invalid date')
     end
 
     it 'does not persist an invalid string' do
-      expect {
-        subject.embargo_release_date = "Tim"
-      }.to raise_error(ArgumentError, "invalid date")
+      expect do
+        subject.embargo_release_date = 'Tim'
+      end.to raise_error(ArgumentError, 'invalid date')
     end
   end
-
 end

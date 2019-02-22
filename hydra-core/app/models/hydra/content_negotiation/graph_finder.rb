@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Hydra::ContentNegotiation
   # Finds a graph given a connection and ID.
   class GraphFinder

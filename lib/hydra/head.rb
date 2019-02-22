@@ -1,4 +1,6 @@
-module HydraHead 
+# frozen_string_literal: true
+
+module HydraHead
   require 'hydra-core'
 
   def self.version
@@ -8,5 +10,4 @@ module HydraHead
   def self.root
     @root ||= File.expand_path(File.dirname(File.dirname(__FILE__)))
   end
-  
 end

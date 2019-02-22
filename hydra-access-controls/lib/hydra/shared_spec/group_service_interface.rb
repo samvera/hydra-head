@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.shared_examples 'a Hydra group_service interface' do
   before do
     raise 'adapter must be set with `let(:group_service)`' unless
@@ -10,7 +12,7 @@ RSpec.shared_examples 'a Hydra group_service interface' do
 
   describe '#fetch_groups' do
     it 'requires a user: keyword arg' do
-      expect(group_service.method(:fetch_groups).parameters).to eq([[:keyreq, :user]])
+      expect(group_service.method(:fetch_groups).parameters).to eq([%i[keyreq user]])
     end
   end
 end

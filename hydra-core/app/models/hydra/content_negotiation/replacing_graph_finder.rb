@@ -1,8 +1,9 @@
+# frozen_string_literal: true
+
 module Hydra::ContentNegotiation
-  # Decorator for Finder which replaces Fedora subjects in the graph with a 
+  # Decorator for Finder which replaces Fedora subjects in the graph with a
   # configured URI
   class ReplacingGraphFinder < SimpleDelegator
-
     attr_reader :replacer
     def initialize(graph_finder, replacer)
       super(graph_finder)

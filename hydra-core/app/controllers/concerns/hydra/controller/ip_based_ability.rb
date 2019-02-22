@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Hydra::Controller
   module IpBasedAbility
     # Overriding the default method provided by cancan

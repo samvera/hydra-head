@@ -1,5 +1,5 @@
-# -*- encoding : utf-8 -*-
-class SolrDocument 
+# frozen_string_literal: true
 
+class SolrDocument
   include Blacklight::Solr::Document
 end

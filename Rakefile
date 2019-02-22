@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rake/testtask'
 begin
   require 'bundler/setup'
@@ -6,31 +8,31 @@ rescue LoadError
 end
 Bundler::GemHelper.install_tasks
 
-APP_ROOT= File.dirname(__FILE__)
+APP_ROOT = File.dirname(__FILE__)
 require 'solr_wrapper'
 require 'fcrepo_wrapper'
 require 'active_fedora/rake_support'
 require 'engine_cart/rake_task'
 
-desc "Run Continuous Integration"
-task :ci => ['engine_cart:generate'] do
-  ENV['environment'] = "test"
+desc 'Run Continuous Integration'
+task ci: ['engine_cart:generate'] do
+  ENV['environment'] = 'test'
   with_test_server do
     Rake::Task['spec'].invoke
   end
 end
 
-task :default => [:ci]
+task default: [:ci]
 
 directory 'pkg'
 
-FRAMEWORKS = ['hydra-access-controls', 'hydra-core']
+FRAMEWORKS = ['hydra-access-controls', 'hydra-core'].freeze
 
-root    = File.expand_path('../', __FILE__)
+root    = File.expand_path(__dir__)
 version = File.read("#{root}/HYDRA_VERSION").strip
 tag     = "v#{version}"
 
-(FRAMEWORKS  + ['hydra-head']).each do |framework|
+(FRAMEWORKS + ['hydra-head']).each do |framework|
   namespace framework do
     gem     = "pkg/#{framework}-#{version}.gem"
     gemspec = "#{framework}.gemspec"
@@ -41,54 +43,55 @@ tag     = "v#{version}"
 
     task :update_version_rb do
       glob = root.dup
-      glob << "/#{framework}/lib/*" unless framework == "hydra-head"
-      glob << "/version.rb"
+      glob << "/#{framework}/lib/*" unless framework == 'hydra-head'
+      glob << '/version.rb'
 
       file = Dir[glob].first
       if file
         ruby = File.read(file)
 
         major, minor, tiny, pre = version.split('.')
-        pre = pre ? pre.inspect : "nil"
+        pre = pre ? pre.inspect : 'nil'
 
         ruby.gsub!(/^(\s*)VERSION = ".*?"$/, "\\1VERSION = \"#{version}\"")
-        raise "Could not insert VERSION in #{file}" unless $1
+        raise "Could not insert VERSION in #{file}" unless Regexp.last_match(1)
+
         File.open(file, 'w') { |f| f.write ruby }
       end
     end
-    task gem => %w(update_version_rb pkg) do
-      cmd = ""
-      cmd << "cd #{framework} && " unless framework == "hydra-head"
+    task gem => %w[update_version_rb pkg] do
+      cmd = ''
+      cmd << "cd #{framework} && " unless framework == 'hydra-head'
       cmd << "gem build #{gemspec} && mv #{framework}-#{version}.gem #{root}/pkg/"
       sh cmd
     end
 
-    task :build => [:clean, gem]
-    task :install => :build do
+    task build: [:clean, gem]
+    task install: :build do
       sh "gem install #{gem}"
     end
 
-    task :prep_release => [:ensure_clean_state, :build]
+    task prep_release: %i[ensure_clean_state build]
 
-    task :push => :build do
+    task push: :build do
       sh "gem push #{gem}"
     end
   end
 end
 
 namespace :all do
-  task :build   => FRAMEWORKS.map { |f| "#{f}:build"   } + ['hydra-head:build']
-  task :install => FRAMEWORKS.map { |f| "#{f}:install" } + ['hydra-head:install']
-  task :push    => FRAMEWORKS.map { |f| "#{f}:push"    } + ['hydra-head:push']
+  task build: FRAMEWORKS.map { |f| "#{f}:build" } + ['hydra-head:build']
+  task install: FRAMEWORKS.map { |f| "#{f}:install" } + ['hydra-head:install']
+  task push: FRAMEWORKS.map { |f| "#{f}:push" } + ['hydra-head:push']
 
   task :ensure_clean_state do
     unless `git status -s | grep -v HYDRA_VERSION | grep -v HISTORY.textile`.strip.empty?
-      abort "[ABORTING] `git status` reports a dirty tree. Make sure all changes are committed"
+      abort '[ABORTING] `git status` reports a dirty tree. Make sure all changes are committed'
     end
 
     unless ENV['SKIP_TAG'] || `git tag | grep "#{tag}$"`.strip.empty?
       abort "[ABORTING] `git tag` shows that #{tag} already exists. Has this version already\n"\
-            "           been released? Git tagging can be skipped by setting SKIP_TAG=1"
+            '           been released? Git tagging can be skipped by setting SKIP_TAG=1'
     end
   end
 
@@ -96,29 +99,29 @@ namespace :all do
     File.open('pkg/commit_message.txt', 'w') do |f|
       f.puts "# Preparing for #{version} release\n"
       f.puts
-      f.puts "# UNCOMMENT THE LINE ABOVE TO APPROVE THIS COMMIT"
+      f.puts '# UNCOMMENT THE LINE ABOVE TO APPROVE THIS COMMIT'
     end
 
-    sh "git add . && git commit --verbose --template=pkg/commit_message.txt"
-    rm_f "pkg/commit_message.txt"
+    sh 'git add . && git commit --verbose --template=pkg/commit_message.txt'
+    rm_f 'pkg/commit_message.txt'
   end
 
   task :tag do
     sh "git tag #{tag}"
-    sh "git push --tags"
+    sh 'git push --tags'
   end
 
-  task :release => %w(ensure_clean_state build commit tag push)
+  task release: %w[ensure_clean_state build commit tag push]
 end
 
-desc "run all specs"
+desc 'run all specs'
 task :spec do
-  raise "test failures" unless all_modules("FCREPO_TEST_PORT=#{ENV['FCREPO_TEST_PORT']} SOLR_TEST_PORT=#{ENV['SOLR_TEST_PORT']} bundle exec rake spec")
+  raise 'test failures' unless all_modules("FCREPO_TEST_PORT=#{ENV['FCREPO_TEST_PORT']} SOLR_TEST_PORT=#{ENV['SOLR_TEST_PORT']} bundle exec rake spec")
 end
 
-desc "Remove any existing test deploys"
+desc 'Remove any existing test deploys'
 task :clean do
-  raise "test failures" unless all_modules('rake clean')
+  raise 'test failures' unless all_modules('rake clean')
 end
 
 def all_modules(cmd)
@@ -133,25 +136,23 @@ end
 begin
   require 'yard'
   require 'yard/rake/yardoc_task'
-  project_root = File.expand_path(".")
+  project_root = File.expand_path('.')
   doc_destination = File.join(project_root, 'doc')
-  if !File.exists?(doc_destination)
-    FileUtils.mkdir_p(doc_destination)
-  end
+  FileUtils.mkdir_p(doc_destination) unless File.exist?(doc_destination)
 
   YARD::Rake::YardocTask.new(:doc) do |yt|
-    yt.files   = ['*/lib/**/*.rb', project_root+"*", '*/app/**/*.rb']
+    yt.files = ['*/lib/**/*.rb', project_root + '*', '*/app/**/*.rb']
 
-    yt.options << "-m" << "textile"
-    yt.options << "--protected"
-    yt.options << "--no-private"
-    yt.options << "-r" << "README.textile"
-    yt.options << "-o" << "doc"
-    yt.options << "--files" << "*.textile"
+    yt.options << '-m' << 'textile'
+    yt.options << '--protected'
+    yt.options << '--no-private'
+    yt.options << '-r' << 'README.textile'
+    yt.options << '-o' << 'doc'
+    yt.options << '--files' << '*.textile'
   end
 rescue LoadError
-  desc "Generate YARD Documentation"
+  desc 'Generate YARD Documentation'
   task :doc do
-    abort "Please install the YARD gem to generate rdoc."
+    abort 'Please install the YARD gem to generate rdoc.'
   end
 end

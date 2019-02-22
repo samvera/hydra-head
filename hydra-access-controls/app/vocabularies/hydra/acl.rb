@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Hydra
   class ACL < RDF::StrictVocabulary('http://projecthydra.org/ns/auth/acl#')
     property :Discover # extends http://www.w3.org/ns/auth/acl#Access

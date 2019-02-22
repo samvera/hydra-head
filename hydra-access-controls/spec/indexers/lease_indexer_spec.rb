@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe Hydra::AccessControls::LeaseIndexer do
@@ -12,7 +14,7 @@ describe Hydra::AccessControls::LeaseIndexer do
   let(:indexer) { described_class.new(lease) }
   subject { indexer.generate_solr_document }
 
-  it "has the fields" do
+  it 'has the fields' do
     expect(subject['visibility_during_lease_ssim']).to eq 'open'
     expect(subject['visibility_after_lease_ssim']).to eq 'authenticated'
     expect(subject['lease_expiration_date_dtsi']).to eq '2010-10-10T00:00:00Z'

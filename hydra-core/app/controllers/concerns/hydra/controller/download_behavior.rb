@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Hydra
   module Controller
     module DownloadBehavior
@@ -21,7 +23,7 @@ module Hydra
 
       def render_404
         respond_to do |format|
-          format.html { render :file => "#{Rails.root}/public/404", :layout => false, :status => :not_found }
+          format.html { render file: "#{Rails.root}/public/404", layout: false, status: :not_found }
           format.any  { head :not_found }
         end
       end
@@ -55,12 +57,12 @@ module Hydra
         f = asset.attached_files[file_path] if file_path
         f ||= default_file
         raise "Unable to find a file for #{asset}" if f.nil?
+
         f
       end
 
       # Handle the HTTP show request
       def send_content
-
         response.headers['Accept-Ranges'] = 'bytes'
 
         if request.head?
@@ -83,7 +85,6 @@ module Hydra
         params[:filename] || file.original_name || (asset.respond_to?(:label) && asset.label) || file.id
       end
 
-
       # render an HTTP HEAD response
       def content_head
         response.headers['Content-Length'] = file.size
@@ -94,10 +95,10 @@ module Hydra
       def send_range
         _, range = request.headers['HTTP_RANGE'].split('bytes=')
         from, to = range.split('-').map(&:to_i)
-        to = file.size - 1 unless to
+        to ||= file.size - 1
         length = to - from + 1
         response.headers['Content-Range'] = "bytes #{from}-#{to}/#{file.size}"
-        response.headers['Content-Length'] = "#{length}"
+        response.headers['Content-Length'] = length.to_s
         self.status = 206
         prepare_file_headers
         stream_body file.stream(request.headers['HTTP_RANGE'])
@@ -114,7 +115,7 @@ module Hydra
         response.headers['Content-Type'] = file.mime_type
         response.headers['Content-Length'] ||= file.size.to_s
         # Prevent Rack::ETag from calculating a digest over body
-        response.headers['Last-Modified'] = asset.modified_date.utc.strftime("%a, %d %b %Y %T GMT")
+        response.headers['Last-Modified'] = asset.modified_date.utc.strftime('%a, %d %b %Y %T GMT')
         self.content_type = file.mime_type
       end
 
@@ -122,8 +123,8 @@ module Hydra
 
       def stream_body(iostream)
         # see https://github.com/rails/rails/issues/18714#issuecomment-96204444
-        unless response.headers["Last-Modified"] || response.headers["ETag"]
-          Rails.logger.warn("Response may be buffered instead of streaming, best to set a Last-Modified or ETag header")
+        unless response.headers['Last-Modified'] || response.headers['ETag']
+          Rails.logger.warn('Response may be buffered instead of streaming, best to set a Last-Modified or ETag header')
         end
         self.response_body = iostream
       end
@@ -138,7 +139,7 @@ module Hydra
 
       module ClassMethods
         def default_file_path
-          "content"
+          'content'
         end
       end
     end

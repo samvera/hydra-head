@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 module Hydra::AccessControls
-  AGENT_URL_PREFIX = 'http://projecthydra.org/ns/auth/'.freeze
-  GROUP_AGENT_URL_PREFIX = 'http://projecthydra.org/ns/auth/group'.freeze
-  PERSON_AGENT_URL_PREFIX = 'http://projecthydra.org/ns/auth/person'.freeze
+  AGENT_URL_PREFIX = 'http://projecthydra.org/ns/auth/'
+  GROUP_AGENT_URL_PREFIX = 'http://projecthydra.org/ns/auth/group'
+  PERSON_AGENT_URL_PREFIX = 'http://projecthydra.org/ns/auth/person'
   class Permission < AccessControlList
     has_many :admin_policies, inverse_of: :default_permissions, class_name: 'Hydra::AdminPolicy'
 
@@ -69,6 +71,7 @@ module Hydra::AccessControls
 
     def build_agent(name, type)
       raise "Can't build agent #{inspect}" unless name && type
+
       self.agent = case type
                    when 'group'
                      build_agent_resource(GROUP_AGENT_URL_PREFIX, name)
@@ -85,6 +88,7 @@ module Hydra::AccessControls
 
     def build_access(access)
       raise "Can't build access #{inspect}" unless access
+
       self.mode = case access
                   when 'read'
                     [Mode.new(::ACL.Read)]

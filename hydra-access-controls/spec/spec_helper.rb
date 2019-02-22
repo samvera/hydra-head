@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ENV['RAILS_ENV'] ||= 'test'
 require 'engine_cart'
 path = File.expand_path(File.join('..', '..', '..', '.internal_test_app'), __FILE__)
@@ -19,7 +21,7 @@ if RUBY_VERSION =~ /^1.9/ && coverage_needed?
   require 'simplecov'
   require 'coveralls'
 
-  SimpleCov.root(File.expand_path('../../../', __FILE__))
+  SimpleCov.root(File.expand_path('../..', __dir__))
   SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new(
     [
       SimpleCov::Formatter::HTMLFormatter,
@@ -34,21 +36,21 @@ require 'active_support'
 require 'active_support/dependencies'
 relative_load_paths = ["#{Blacklight.root}/app/controllers/concerns",
                        "#{Blacklight.root}/app/models",
-                       "app/models",
-                       "app/models/concerns",
-                       "app/indexers",
-                       "app/services",
-                       "app/validators",
-                       "app/vocabularies"]
+                       'app/models',
+                       'app/models/concerns',
+                       'app/indexers',
+                       'app/services',
+                       'app/validators',
+                       'app/vocabularies']
 ActiveSupport::Dependencies.autoload_paths += relative_load_paths
 
 require 'support/mods_asset'
 require 'support/solr_document'
-require "support/user"
-require "factory_bot"
+require 'support/user'
+require 'factory_bot'
 require 'rspec/mocks'
 require 'rspec/its'
-require "factories"
+require 'factories'
 
 # HttpLogger.logger = Logger.new(STDOUT)
 # HttpLogger.ignore = [/localhost:8983\/solr/]
