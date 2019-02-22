@@ -1,22 +1,24 @@
 #!/usr/bin/env rake
-require "bundler/gem_tasks"
+# frozen_string_literal: true
+
+require 'bundler/gem_tasks'
 require 'rspec/core/rake_task'
 
-APP_ROOT= File.expand_path(File.join(File.dirname(__FILE__),".."))
-import "tasks/hydra-access-controls.rake"
+APP_ROOT = File.expand_path(File.join(File.dirname(__FILE__), '..'))
+import 'tasks/hydra-access-controls.rake'
 
 desc 'Default: run specs.'
-task :default => :spec
+task default: :spec
 
-desc "Run specs"
+desc 'Run specs'
 RSpec::Core::RakeTask.new do |t|
-  if ENV['COVERAGE'] and RUBY_VERSION =~ /^1.8/
+  if ENV['COVERAGE'] && RUBY_VERSION =~ /^1.8/
     t.rcov = true
-    t.rcov_opts = %w{--exclude spec\/*,gems\/*,ruby\/* --aggregate coverage.data}
+    t.rcov_opts = %w[--exclude spec\/*,gems\/*,ruby\/* --aggregate coverage.data]
   end
 end
 
-desc "clean"
+desc 'clean'
 task :clean do
-  #nop, required by hydra-head ci
+  # nop, required by hydra-head ci
 end

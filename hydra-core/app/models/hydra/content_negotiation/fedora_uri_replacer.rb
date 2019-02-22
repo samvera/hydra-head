@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Hydra::ContentNegotiation
   # Replaces Fedora URIs in a graph with a Hydra-configured alternative.
   class FedoraUriReplacer

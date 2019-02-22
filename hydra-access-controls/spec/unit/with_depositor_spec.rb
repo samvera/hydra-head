@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe Hydra::WithDepositor do
@@ -15,24 +17,24 @@ describe Hydra::WithDepositor do
 
   subject { TestClass.new }
 
-  describe "#apply_depositor_metadata" do
-    it "should add edit access" do
+  describe '#apply_depositor_metadata' do
+    it 'should add edit access' do
       subject.apply_depositor_metadata('naomi')
       expect(subject.edit_users).to eq ['naomi']
     end
 
-    it "should not overwrite people with edit access" do
+    it 'should not overwrite people with edit access' do
       subject.edit_users = ['jessie']
       subject.apply_depositor_metadata('naomi')
-      expect(subject.edit_users).to match_array ['naomi', 'jessie']
+      expect(subject.edit_users).to match_array %w[naomi jessie]
     end
 
-    it "should set depositor" do
+    it 'should set depositor' do
       subject.apply_depositor_metadata('chris')
       expect(subject.depositor).to eq 'chris'
     end
 
-    it "should accept objects that respond_to? :user_key" do
+    it 'should accept objects that respond_to? :user_key' do
       stub_user = double(:user, user_key: 'monty')
       subject.apply_depositor_metadata(stub_user)
       expect(subject.depositor).to eq 'monty'

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Hydra::AccessControls
   class EmbargoIndexer
     def initialize(object)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Include this module into any of your Controller classes to add Hydra functionality
 #
 # @example
@@ -16,17 +18,17 @@ module Hydra::Controller::ControllerBehavior
   # get the currently configured user identifier.  Can be overridden to return whatever (ie. login, email, etc)
   # defaults to using whatever you have set as the Devise authentication_key
   def user_key
-    current_user.user_key if current_user
+    current_user&.user_key
   end
 
   # Override this method if you wish to customize the way access is denied
   def deny_access(exception)
     if exception.action == :edit
       redirect_to(main_app.url_for(action: 'show'), alert: exception.message)
-    elsif current_user and current_user.persisted?
+    elsif current_user&.persisted?
       redirect_to main_app.root_path, alert: exception.message
     else
-      session['user_return_to'.freeze] = request.url
+      session['user_return_to'] = request.url
       redirect_to main_app.new_user_session_path, alert: exception.message
     end
   end

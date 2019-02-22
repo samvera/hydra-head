@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe SearchBuilder do
@@ -11,12 +13,12 @@ describe SearchBuilder do
     search_builder.new(processor_chain, context)
   end
 
-  it "extends classes with the necessary Hydra modules" do
+  it 'extends classes with the necessary Hydra modules' do
     expect(described_class.included_modules).to include(Hydra::AccessControlsEnforcement)
   end
 
-  context "when a query is generated" do
-    it "triggers add_access_controls_to_solr_params" do
+  context 'when a query is generated' do
+    it 'triggers add_access_controls_to_solr_params' do
       expect(subject).to receive(:add_access_controls_to_solr_params)
       subject.query
     end

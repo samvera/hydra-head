@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Hydra::ContentNegotiation
   # CleanGraphRepository has a #find interface which returns a graph for use
   # with content negotiation.

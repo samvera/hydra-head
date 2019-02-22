@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 require 'rails'
 require 'active-fedora'
 require 'blacklight'
 require 'cancan'
-require "deprecation"
+require 'deprecation'
 require 'blacklight-access_controls'
 
 module Hydra
@@ -26,7 +28,7 @@ module Hydra
       yield @config if block_given?
       @config
     end
-    alias :config :configure
+    alias config configure
   end
 
   class Engine < Rails::Engine; end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Hydra
   module AccessControls
     module Permissions
@@ -6,8 +8,8 @@ module Hydra
 
       included do
         belongs_to :access_control, predicate: ::ACL.accessControl, class_name: 'Hydra::AccessControl'
-        before_destroy do |obj|
-          access_control.destroy unless access_control.nil?
+        before_destroy do |_obj|
+          access_control&.destroy
         end
         after_save do
           # Only force save if autosave woudn't be called normally
@@ -27,7 +29,7 @@ module Hydra
 
       def to_solr(solr_doc = {})
         super.tap do |doc|
-          [:discover, :read, :edit].each do |access|
+          %i[discover read edit].each do |access|
             vals = send("#{access}_groups")
             doc[Hydra.config.permissions[access].group] = vals unless vals.empty?
             vals = send("#{access}_users")
@@ -57,6 +59,7 @@ module Hydra
           end
 
           next if existing.blank?
+
           selected = existing.find { |perm| perm.agent_name == prop[:name] }
           prop['id'] = selected.id if selected
         end
@@ -356,7 +359,7 @@ module Hydra
       protected
 
       def has_destroy_flag?(hash)
-        %w(1 true).include?(hash['_destroy'].to_s)
+        %w[1 true].include?(hash['_destroy'].to_s)
       end
 
       private
@@ -432,24 +435,27 @@ module Hydra
 
       def group_agent?(agent)
         raise 'no agent' unless agent.present?
+
         agent.first.rdf_subject.to_s.start_with?(GROUP_AGENT_URL_PREFIX)
       end
 
       def person_agent?(agent)
         raise 'no agent' unless agent.present?
+
         agent.first.rdf_subject.to_s.start_with?(PERSON_AGENT_URL_PREFIX)
       end
 
       # Removes any permissions if both a delete and an update are found for the same id
       # or if a delete is present without an id.
       def remove_bad_deletes(collection)
-        collection.delete_if { |permission| (has_destroy_flag?(permission) && !permission.has_key?(:id)) }
+        collection.delete_if { |permission| (has_destroy_flag?(permission) && !permission.key?(:id)) }
         collection.each do |permission|
           next unless has_destroy_flag?(permission)
+
           delete_id = permission.fetch(:id, nil)
-           if collection.map { |c| c if c.fetch(:id, nil) == delete_id }.compact.count > 1
+          if collection.map { |c| c if c.fetch(:id, nil) == delete_id }.compact.count > 1
             collection.delete_if { |permission| permission.fetch(:id, nil) == delete_id }
-          end
+         end
         end
       end
     end

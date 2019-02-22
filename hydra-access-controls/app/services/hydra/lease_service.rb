@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Hydra
   module LeaseService
     class << self
@@ -20,4 +22,3 @@ module Hydra
     end
   end
 end
-

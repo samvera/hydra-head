@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Hydra::AccessControls
   class LeaseIndexer
     def initialize(object)
@@ -9,4 +11,3 @@ module Hydra::AccessControls
     end
   end
 end
-

@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 module Hydra
   class AdminPolicy < ActiveFedora::Base
-
     include Hydra::AdminPolicyBehavior
     include Hydra::AccessControls::Permissions
 

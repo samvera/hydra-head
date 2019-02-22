@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Hydra::AccessControls
   class AccessControlList < ActiveFedora::Base
     belongs_to :access_to, predicate: ::ACL.accessTo, class_name: 'ActiveFedora::Base'

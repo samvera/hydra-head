@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Hydra::AccessControlsEnforcement
   extend ActiveSupport::Concern
   include Blacklight::AccessControls::Enforcement
@@ -17,7 +19,7 @@ module Hydra::AccessControlsEnforcement
   # Which permission levels (logical OR) will grant you the ability to discover documents in a search.
   # Overrides blacklight-access_controls method.
   def discovery_permissions
-    @discovery_permissions ||= ["edit","discover","read"]
+    @discovery_permissions ||= %w[edit discover read]
   end
 
   # Find the name of the solr field for this type of permission.
@@ -27,5 +29,4 @@ module Hydra::AccessControlsEnforcement
     permissions = Hydra.config.permissions[permission_type.to_sym]
     permission_category == 'group' ? permissions.group : permissions.individual
   end
-
 end

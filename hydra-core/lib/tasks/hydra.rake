@@ -1,14 +1,16 @@
+# frozen_string_literal: true
+
 require 'active_fedora/rake_support'
 
 namespace :hydra do
-  desc "Start a solr, fedora and rails instance"
+  desc 'Start a solr, fedora and rails instance'
   task :server do
     with_server(ENV['RAILS_ENV'] || 'development') do
       puts "Fedora: #{ActiveFedora.config.credentials[:url]}"
       puts "Solr..: #{ActiveFedora.solr_config[:url]}"
       begin
         if ENV['SKIP_RAILS']
-          puts "^C to exit"
+          puts '^C to exit'
           sleep
         else
           # If HOST specified, bind to that IP with -b
@@ -20,12 +22,12 @@ namespace :hydra do
           end
         end
       rescue Interrupt
-        puts "Stopping server"
+        puts 'Stopping server'
       end
     end
   end
 
-  desc "Start solr and fedora instances for tests"
+  desc 'Start solr and fedora instances for tests'
   task :test_server do
     ENV['RAILS_ENV'] = 'test'
     ENV['SKIP_RAILS'] = 'true'

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Hydra
   module PermissionsQuery
     extend ActiveSupport::Concern
@@ -9,6 +11,5 @@ module Hydra
     def permissions_document_class
       Hydra::PermissionsSolrDocument
     end
-
   end
 end

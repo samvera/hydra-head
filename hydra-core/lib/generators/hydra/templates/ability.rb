@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class Ability
   include Hydra::Ability
-  
+
   # Define any customized permissions here.
   def custom_permissions
     # Limits deleting objects to a the admin user

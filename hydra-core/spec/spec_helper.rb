@@ -1,4 +1,6 @@
-ENV["RAILS_ENV"] ||= "test"
+# frozen_string_literal: true
+
+ENV['RAILS_ENV'] ||= 'test'
 
 require 'engine_cart'
 path = File.expand_path(File.join('..', '..', '..', '.internal_test_app'), __FILE__)
@@ -16,7 +18,7 @@ if coverage_needed?
   require 'simplecov'
   require 'coveralls'
 
-  SimpleCov.root(File.expand_path('../../../', __FILE__))
+  SimpleCov.root(File.expand_path('../..', __dir__))
   SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new(
     [
       SimpleCov::Formatter::HTMLFormatter,

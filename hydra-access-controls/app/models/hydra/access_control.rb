@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 module Hydra
   class AccessControl < ActiveFedora::Base
-
-    before_destroy do |obj|
+    before_destroy do |_obj|
       contains.destroy_all
     end
 
@@ -20,6 +21,7 @@ module Hydra
 
     def permissions_attributes=(attribute_list)
       raise ArgumentError unless attribute_list.is_a? Array
+
       any_destroyed = false
       attribute_list.each do |attributes|
         if attributes.key?(:id)
@@ -68,6 +70,7 @@ module Hydra
         unless id.start_with?(@owner.id)
           raise ArgumentError, "requested ACL (#{id}) is not a member of #{@owner.id}"
         end
+
         ActiveFedora::Base.find(id)
       end
 
