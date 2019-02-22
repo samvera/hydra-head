@@ -1,6 +1,5 @@
 module Hydra::AccessControlsEnforcement
   extend ActiveSupport::Concern
-  include Blacklight::AccessControls::Enforcement
 
   protected
 

@@ -20,4 +20,9 @@ module Hydra::Catalog
 
     permissions_doc
   end
+
+  # This overrides the method in Blacklight::AccessControls::Catalog
+  def search_builder
+    Hydra::SearchBuilder.new(self, ability: current_ability)
+  end
 end
