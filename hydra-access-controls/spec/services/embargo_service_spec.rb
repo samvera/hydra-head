@@ -29,7 +29,6 @@ describe Hydra::EmbargoService do
 
   describe "#assets_under_embargo" do
     it "returns all assets with embargo release date set" do
-      result = subject.assets_under_embargo
       returned_ids = subject.assets_under_embargo.map {|a| a.id}
       expect(returned_ids).to include work_with_expired_embargo1.id, work_with_expired_embargo2.id, work_with_embargo_in_effect.id
       expect(returned_ids).to_not include work_without_embargo.id
