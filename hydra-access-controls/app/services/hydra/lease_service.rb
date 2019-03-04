@@ -10,7 +10,7 @@ module Hydra
       #   (assumes that when lease visibility is applied to assets
       #    whose leases have expired, the lease expiration date will be removed from its metadata)
       def assets_under_lease
-        ActiveFedora::Base.where("#{Hydra.config.permissions.lease.expiration_date}:*")
+        ActiveFedora::Base.where("#{Hydra.config.permissions.lease.expiration_date}:[* TO *]")
       end
 
       # Returns all assets that have had embargoes deactivated in the past.
@@ -20,4 +20,3 @@ module Hydra
     end
   end
 end
-
