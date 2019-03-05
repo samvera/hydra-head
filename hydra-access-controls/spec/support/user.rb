@@ -5,7 +5,7 @@ class User
   attr_accessor :uid
 
   def initialize(params={})
-    self.uid = params.delete(:uid) if params[:uid]
+    self.uid = params.delete(:uid) if params && params[:uid]
     super
   end
   
