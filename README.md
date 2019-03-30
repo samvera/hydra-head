@@ -1,7 +1,7 @@
 # Hydra-Head
 
 Code: [![Version](https://badge.fury.io/rb/hydra-head.png)](http://badge.fury.io/rb/hydra-head)
-[![Build Status](https://travis-ci.org/samvera/hydra-head.png?branch=master)](https://travis-ci.org/samvera/hydra-head)
+[![Build Status](https://circleci.com/gh/samvera/hydra-head.svg?style=svg)](https://circleci.com/gh/samvera/hydra-head)
 [![Coverage Status](https://coveralls.io/repos/github/samvera/hydra-head/badge.svg?branch=master)](https://coveralls.io/github/samvera/hydra-head?branch=master)
 
 Docs: [![Contribution Guidelines](http://img.shields.io/badge/CONTRIBUTING-Guidelines-blue.svg)](./CONTRIBUTING.md)

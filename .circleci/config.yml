@@ -1,0 +1,92 @@
+version: 2.1
+orbs:
+  samvera: samvera/circleci-orb@0
+jobs:
+  bundle_and_test:
+    parameters:
+      ruby_version:
+        type: string
+        default: 2.5.5
+      bundler_version:
+        type: string
+        default: 1.17.3
+      rails_version:
+        type: string
+        default: 5.1.7
+      solr_port:
+        type: string
+        default: '8985'
+      active_fedora_version:
+        type: string
+        default: '>0'
+    executor:
+      name: 'samvera/ruby_fcrepo_solr'
+      ruby_version: << parameters.ruby_version >>
+      solr_port: << parameters.solr_port >>
+    working_directory: ~/project
+
+    environment:
+      ENGINE_CART_RAILS_OPTIONS: --skip-git --skip-bundle --skip-listen --skip-spring --skip-yarn --skip-keeps --skip-coffee --skip-puma --skip-test
+      RAILS_VERSION: << parameters.rails_version >>
+      SOLR_TEST_PORT: << parameters.solr_port >>
+      ACTIVE_FEDORA_VERSION: << parameters.active_fedora_version >>
+    steps:
+      - samvera/cached_checkout
+
+      - samvera/bundle_for_gem:
+          ruby_version: << parameters.ruby_version >>
+          bundler_version: << parameters.bundler_version >>
+          project: hydra-head
+
+      - samvera/engine_cart_generate:
+          cache_key: v1-internal-test-app-{{ checksum "hydra-head.gemspec" }}-{{ checksum "spec/test_app_templates/lib/generators/test_app_generator.rb" }}-{{ checksum "hydra-core/lib/generators/hydra/head_generator.rb" }}-<< parameters.rails_version >>-<< parameters.ruby_version >>
+
+      - samvera/install_solr_core:
+          solr_config_path: .internal_test_app/solr/config
+
+      - samvera/bundle_for_gem:
+          ruby_version: << parameters.ruby_version >>
+          bundler_version: << parameters.bundler_version >>
+          project: hydra-head
+
+      - run: bundle exec rake spec
+
+workflows:
+  ci:
+    jobs:
+      - bundle_and_test:
+          name: "ruby2-5-5_rails5.2.3"
+          ruby_version: 2.5.5
+          rails_version: 5.2.3
+      - bundle_and_test:
+          name: "ruby2-5-5_rails5.1.7"
+          ruby_version: 2.5.5
+          rails_version: 5.1.7
+      - bundle_and_test:
+          name: "ruby2-5-5_rails5.1.7_AF11"
+          ruby_version: 2.5.5
+          rails_version: 5.1.7
+          active_fedora_version: '~>11.5'
+      - bundle_and_test:
+          name: "ruby2-5-5_rails5.0.7_AF10"
+          ruby_version: 2.5.5
+          rails_version: 5.0.7
+          active_fedora_version: '~>10.3'
+      - bundle_and_test:
+          name: "ruby2-6-2_rails5.2.3"
+          ruby_version: 2.6.2
+          rails_version: 5.2.3
+      - bundle_and_test:
+          name: "ruby2-6-2_rails5.1.7"
+          ruby_version: 2.6.2
+          rails_version: 5.1.7
+      - bundle_and_test:
+          name: "ruby2-6-2_rails5.1.7_AF11"
+          ruby_version: 2.6.2
+          rails_version: 5.1.7
+          active_fedora_version: '~>11.5'
+      - bundle_and_test:
+          name: "ruby2-6-2_rails5.0.7_AF10"
+          ruby_version: 2.6.2
+          rails_version: 5.0.7
+          active_fedora_version: '~>10.3'
