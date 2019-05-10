@@ -12,7 +12,7 @@ Hydra::Engine.config.autoload_paths.each { |path| $LOAD_PATH.unshift path }
 require 'byebug' unless ENV['CI']
 
 def coverage_needed?
-  ENV['COVERAGE'] || ENV['TRAVIS']
+  ENV['COVERAGE'] || ENV['CI']
 end
 
 if RUBY_VERSION =~ /^1.9/ && coverage_needed?
