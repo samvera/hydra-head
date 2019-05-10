@@ -9,7 +9,7 @@ require 'rspec/rails'
 require 'hydra-core'
 
 def coverage_needed?
-  ENV['COVERAGE'] || ENV['TRAVIS']
+  ENV['COVERAGE'] || ENV['CI']
 end
 
 if coverage_needed?
