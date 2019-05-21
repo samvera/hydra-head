@@ -40,7 +40,7 @@ jobs:
           cache_key: v1-internal-test-app-{{ checksum "hydra-head.gemspec" }}-{{ checksum "spec/test_app_templates/lib/generators/test_app_generator.rb" }}-{{ checksum "hydra-core/lib/generators/hydra/head_generator.rb" }}-<< parameters.rails_version >>-<< parameters.ruby_version >>
 
       - samvera/install_solr_core:
-          solr_config_path: .internal_test_app/solr/config
+          solr_config_path: .internal_test_app/solr/conf
 
       - samvera/bundle_for_gem:
           ruby_version: << parameters.ruby_version >>
