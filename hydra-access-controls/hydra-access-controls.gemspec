@@ -6,7 +6,7 @@ Gem::Specification.new do |gem|
   gem.email         = ["hydra-tech@googlegroups.com"]
   gem.description   = %q{Access controls for project hydra}
   gem.summary       = %q{Access controls for project hydra}
-  gem.homepage      = "http://projecthydra.org"
+  gem.homepage      = "https://github.com/samvera/hydra-head/tree/master/hydra-access-controls"
 
   gem.files         = `git ls-files`.split($\)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
