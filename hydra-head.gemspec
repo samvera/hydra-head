@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Matt Zumwalt, Bess Sadler, Julie Meloni, Naomi Dushay, Jessie Keck, John Scofield, Justin Coyne & many more.  See https://github.com/projecthydra/hydra-head/contributors"]
   s.email       = ["hydra-tech@googlegroups.com"]
-  s.homepage    = "http://projecthydra.org"
+  s.homepage    = "https://github.com/samvera/hydra-head"
   s.summary     = 'Hydra-Head Rails Engine'
   s.description = 'Hydra-Head is a Rails Engine containing the core code for a Hydra application.'
   s.files         = ['lib/hydra/head.rb']

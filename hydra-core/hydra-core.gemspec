@@ -4,7 +4,7 @@ version = File.read(File.expand_path("../../HYDRA_VERSION", __FILE__)).strip
 Gem::Specification.new do |gem|
   gem.authors     = ["Matt Zumwalt, Bess Sadler, Julie Meloni, Naomi Dushay, Jessie Keck, John Scofield, Justin Coyne & many more.  See https://github.com/projecthydra/hydra-head/contributors"]
   gem.email       = ["hydra-tech@googlegroups.com"]
-  gem.homepage    = "http://projecthydra.org"
+  gem.homepage    = "https://github.com/samvera/hydra-head/tree/master/hydra-core"
   gem.summary     = %q{Hydra-Head Rails Engine (requires Rails3) }
   gem.description = %q{Hydra-Head is a Rails Engine containing the core code for a Hydra application. The full hydra stack includes: Blacklight, Fedora, Solr, active-fedora, solrizer, and om}
 
