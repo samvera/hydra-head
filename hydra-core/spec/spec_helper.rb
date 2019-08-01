@@ -8,23 +8,17 @@ require 'bundler/setup'
 require 'rspec/rails'
 require 'hydra-core'
 
-def coverage_needed?
-  ENV['COVERAGE'] || ENV['CI']
-end
+require 'simplecov'
+require 'coveralls'
 
-if coverage_needed?
-  require 'simplecov'
-  require 'coveralls'
-
-  SimpleCov.root(File.expand_path('../../../', __FILE__))
-  SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new(
-    [
-      SimpleCov::Formatter::HTMLFormatter,
-      Coveralls::SimpleCov::Formatter
-    ]
-  )
-  SimpleCov.start('rails')
-end
+SimpleCov.root(File.expand_path('../../../', __FILE__))
+SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new(
+  [
+    SimpleCov::Formatter::HTMLFormatter,
+    Coveralls::SimpleCov::Formatter
+  ]
+)
+SimpleCov.start('rails')
 
 ActiveFedora::Base.logger = Logger.new(STDOUT)
 

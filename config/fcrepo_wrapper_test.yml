@@ -1,0 +1,7 @@
+---
+port: 8986
+verbose: true
+managed: true
+enable_jms: false
+fcrepo_home_dir: tmp/fcrepo4-test-data
+version: 4.7.4
