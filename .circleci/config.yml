@@ -6,13 +6,11 @@ jobs:
     parameters:
       ruby_version:
         type: string
-        default: 2.6.3
       bundler_version:
         type: string
         default: 1.17.3
       rails_version:
         type: string
-        default: 5.2.3
       solr_port:
         type: string
         default: '8985'
