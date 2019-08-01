@@ -20,6 +20,18 @@ task :ci => ['engine_cart:generate'] do
   end
 end
 
+desc 'Start up test server'
+task :test_server do
+  ENV["RAILS_ENV"] = "test"
+  with_test_server do
+    puts "Solr: http://localhost:#{ENV["SOLR_TEST_PORT"]}/solr"
+    puts "Fedora: http://localhost:#{ENV["FCREPO_TEST_PORT"]}/rest"
+    while(1) do
+      sleep(1)
+    end
+  end
+end
+
 task :default => [:ci]
 
 directory 'pkg'
@@ -113,7 +125,7 @@ end
 
 desc "run all specs"
 task :spec do
-  raise "test failures" unless all_modules("FCREPO_TEST_PORT=#{ENV['FCREPO_TEST_PORT']} SOLR_TEST_PORT=#{ENV['SOLR_TEST_PORT']} bundle exec rake spec")
+  raise "test failures" unless all_modules("FCREPO_TEST_PORT=#{ENV['FCREPO_TEST_PORT'] || '8986'} SOLR_TEST_PORT=#{ENV['SOLR_TEST_PORT'] || '8985'} bundle exec rake spec")
 end
 
 desc "Remove any existing test deploys"
