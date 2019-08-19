@@ -32,7 +32,7 @@ module Hydra::PolicyAwareAccessControlsEnforcement
   # @param [Array{String,#to_sym}] permission_types symbols (or equivalent) from Hydra.config.permissions.inheritable
   def apply_policy_group_permissions(permission_types = discovery_permissions)
       user_access_filters = []
-      ability.user_groups.each_with_index do |group, i|
+      current_ability.user_groups.each_with_index do |group, i|
         permission_types.each do |type|
           user_access_filters << escape_filter(Hydra.config.permissions.inheritable[type.to_sym].group, group)
         end
@@ -43,7 +43,7 @@ module Hydra::PolicyAwareAccessControlsEnforcement
   # for individual user access
   # @param [Array{String,#to_sym}] permission_types
   def apply_policy_user_permissions(permission_types = discovery_permissions)
-    user = ability.current_user
+    user = current_ability.current_user
     return [] unless user && user.user_key.present?
     permission_types.map do |type|
       escape_filter(Hydra.config.permissions.inheritable[type.to_sym].individual, user.user_key)
