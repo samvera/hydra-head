@@ -5,7 +5,6 @@ class TestAppGenerator < Rails::Generators::Base
   def install_blacklight
     # we can skip solr because the activefedora installer will also do it (in the hydra:head generator)
     generate 'blacklight:install --devise --skip-solr'
-    gem 'rsolr', '>= 1.0', '< 3'
   end
 
   # if you need to generate any additional configuration

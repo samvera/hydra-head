@@ -1,13 +1,14 @@
 require 'spec_helper'
 
-RSpec.describe Hydra::SearchBuilder do
-  let(:context) { CatalogController.new }
+describe SearchBuilder do
+  let(:processor_chain) { [:add_access_controls_to_solr_params] }
+  let(:context) { double('context') }
   let(:user) { double('user', user_key: 'joe') }
   let(:current_ability) { double('ability', user_groups: [], current_user: user) }
   let(:search_builder) { described_class }
 
   subject do
-    search_builder.new(context, ability: current_ability)
+    search_builder.new(processor_chain, context)
   end
 
   it "extends classes with the necessary Hydra modules" do
@@ -16,7 +17,7 @@ RSpec.describe Hydra::SearchBuilder do
 
   context "when a query is generated" do
     it "triggers add_access_controls_to_solr_params" do
-      expect(subject).to receive(:apply_gated_discovery)
+      expect(subject).to receive(:add_access_controls_to_solr_params)
       subject.query
     end
   end

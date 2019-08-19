@@ -49,6 +49,14 @@ module Hydra
       end
     end
 
+    # Add Hydra to the SearchBuilder
+    def inject_hydra_search_builder_behavior
+      insert_into_file "app/models/search_builder.rb", after: "include Blacklight::Solr::SearchBuilderBehavior\n" do
+        "  # Add a filter query to restrict the search to documents the current user has access to\n" \
+        "  include Hydra::AccessControlsEnforcement\n"
+      end
+    end
+
     # Copy all files in templates/config directory to host config
     def create_configuration_files
 
@@ -71,7 +79,7 @@ module Hydra
     def create_conneg_configuration
       file_path = "config/initializers/mime_types.rb"
       append_to_file file_path do
-        "Mime::Type.register \"application/n-triples\", :nt\n" +
+        "Mime::Type.register \"application/n-triples\", :nt\n" + 
         "Mime::Type.register \"application/ld+json\", :jsonld\n" +
         "Mime::Type.register \"text/turtle\", :ttl"
       end
@@ -81,7 +89,7 @@ module Hydra
       file_path = "app/models/solr_document.rb"
       if File.exists?(file_path)
         inject_into_file file_path, :before => /end\Z/ do
-          "\n  # Do content negotiation for AF models. \n" +
+          "\n  # Do content negotiation for AF models. \n" + 
           "\n  use_extension( Hydra::ContentNegotiation )\n"
         end
       end
