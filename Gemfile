@@ -42,3 +42,7 @@ end
 if !ENV['RAILS_VERSION'] || ENV['RAILS_VERSION'] =~ /^5/
   gem 'rails-controller-testing'
 end
+
+if ENV['ACTIVE_FEDORA_VERSION']
+  gem 'active-fedora', ENV['ACTIVE_FEDORA_VERSION']
+end
