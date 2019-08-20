@@ -44,5 +44,9 @@ if !ENV['RAILS_VERSION'] || ENV['RAILS_VERSION'] =~ /^5/
 end
 
 if ENV['ACTIVE_FEDORA_VERSION']
-  gem 'active-fedora', ENV['ACTIVE_FEDORA_VERSION']
+  if ENV['ACTIVE_FEDORA_VERSION'] =~ /10.3/
+    gem 'active-fedora', git: 'https://github.com/jrgriffiniii/active_fedora.git', branch: 'solr7-fix-10.3'
+  else
+    gem 'active-fedora', ENV['ACTIVE_FEDORA_VERSION']
+  end
 end

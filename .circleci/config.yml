@@ -1,7 +1,6 @@
 version: 2.1
 orbs:
   samvera: samvera/circleci-orb@0
-
 jobs:
   bundle_and_test:
     parameters:
@@ -18,9 +17,6 @@ jobs:
       active_fedora_version:
         type: string
         default: '>0'
-      fcrepo_version:
-        type: string
-        default: '4.7'
       solr_config_path:
         type: string
         default: '.internal_test_app/solr/conf'
