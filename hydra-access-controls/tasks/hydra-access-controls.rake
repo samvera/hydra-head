@@ -6,7 +6,7 @@ namespace "hydra-access" do
     fcrepo_params = { port: 8986, verbose: true, managed: true,
                       no_jms: true, fcrepo_home_dir: 'fcrepo4-test-data' }
     SolrWrapper.wrap(solr_params) do |solr|
-      solr.with_collection(name: 'hydra-test', dir: File.join(File.expand_path("../..", File.dirname(__FILE__)), "solr", "config")) do
+      solr.with_collection(name: 'hydra-test', dir: File.join(File.expand_path("../..", File.dirname(__FILE__)), "solr", "conf")) do
         FcrepoWrapper.wrap(fcrepo_params) do
           Rake::Task['spec'].invoke
         end

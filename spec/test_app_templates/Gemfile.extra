@@ -1,1 +1,5 @@
 gem 'byebug' unless ENV['CI']
+
+if ENV['ACTIVE_FEDORA_VERSION']
+  gem 'active-fedora', ENV['ACTIVE_FEDORA_VERSION']
+end
