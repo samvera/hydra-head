@@ -71,12 +71,6 @@ workflows:
           active_fedora_version: '~>11.5'
           solr_config_path: '.internal_test_app/solr/config'
       - bundle_and_test:
-          name: "ruby2-6_rails5.0_AF10"
-          ruby_version: 2.6.3
-          rails_version: 5.0.7.2
-          active_fedora_version: '~>10.3'
-          solr_config_path: '.internal_test_app/solr/config'
-      - bundle_and_test:
           name: "ruby2-5_rails5.2"
           ruby_version: 2.5.5
           rails_version: 5.2.3
@@ -91,12 +85,6 @@ workflows:
           active_fedora_version: '~>11.5'
           solr_config_path: '.internal_test_app/solr/config'
       - bundle_and_test:
-          name: "ruby2-5_rails5.0_AF10"
-          ruby_version: 2.5.5
-          rails_version: 5.0.7.2
-          active_fedora_version: '~>10.3'
-          solr_config_path: '.internal_test_app/solr/config'
-      - bundle_and_test:
           name: "ruby2-4_rails5.2"
           ruby_version: 2.4.6
           rails_version: 5.2.3
@@ -109,10 +97,4 @@ workflows:
           ruby_version: 2.4.6
           rails_version: 5.1.7
           active_fedora_version: '~>11.5'
-          solr_config_path: '.internal_test_app/solr/config'
-      - bundle_and_test:
-          name: "ruby2-4_rails5.0_AF10"
-          ruby_version: 2.4.6
-          rails_version: 5.0.7.2
-          active_fedora_version: '~>10.3'
           solr_config_path: '.internal_test_app/solr/config'
