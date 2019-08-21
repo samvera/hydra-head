@@ -5,4 +5,4 @@
 1. Release the gem to rubygems.org: `rake all:release`
   * If this is your first time pushing to rubygems.org, you will be prompted for your rubygems.org credentials, in which case do the following: `gem push; rake all:release`
 1. If needed, push the new commit created in the previous step: `git push`
-1. Send a release message to [samvera-tech](mailto:samvera-tech@googlegroups.com), [samvera-community](mailto:hydra-community@googlegroups.com), and [samvera-releases](mailto:samvera-releases@googlegroups.com) describing the changes (which you can copy from the GitHub release).
+1. Send a release message to [samvera-tech](mailto:samvera-tech@googlegroups.com), [samvera-community](mailto:samvera-community@googlegroups.com), and [samvera-releases](mailto:samvera-releases@googlegroups.com) describing the changes (which you can copy from the GitHub release).
