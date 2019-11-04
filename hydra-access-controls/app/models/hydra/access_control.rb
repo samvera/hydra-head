@@ -31,7 +31,7 @@ module Hydra
             obj.update(attributes.except(:id, '_destroy'))
           end
         else
-          relationship.create(attributes)
+          relationship.build(attributes)
         end
       end
       # Poison the cache
