@@ -20,6 +20,7 @@ Gem::Specification.new do |gem|
 
   gem.add_dependency 'hydra-access-controls', version
   gem.add_dependency "railties", '>= 4.0.0', '< 6'
+  gem.add_dependency 'sass-rails', '~> 5.0'
 
   gem.add_development_dependency 'rails-controller-testing', '~> 1'
   gem.add_development_dependency 'rspec-rails', '~> 3.1'
