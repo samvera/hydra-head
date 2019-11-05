@@ -35,7 +35,7 @@ module Hydra
         end
       end
       # Poison the cache
-      relationship.reset if any_destroyed
+      save! && relationship.reset if any_destroyed
     end
 
     def relationship
