@@ -16,7 +16,7 @@ Gem::Specification.new do |gem|
   gem.version       = version
   gem.license       = "APACHE2"
 
-  gem.required_ruby_version = '>= 1.9.3'
+  gem.required_ruby_version = '>= 2.4'
 
   gem.add_dependency 'hydra-access-controls', version
   gem.add_dependency "railties", '>= 4.0.0', '< 6'
