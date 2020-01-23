@@ -26,6 +26,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'fcrepo_wrapper', '~> 0.6'
   s.add_development_dependency 'rspec-rails'
   s.add_development_dependency 'simplecov'
-  s.add_development_dependency 'solr_wrapper', '~> 0.18'
+  s.add_development_dependency 'solr_wrapper', '~> 2.1'
   s.add_development_dependency 'rspec_junit_formatter'
 end
