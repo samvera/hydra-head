@@ -23,7 +23,7 @@ describe "active_fedora/accessible_by" do
 
   describe "#accsesible_by" do
     it "should return objects readable by the ability" do
-      expect(ModsAsset.accessible_by(ability)).to eq [public_obj, editable_obj]
+      expect(ModsAsset.accessible_by(ability)).to contain_exactly(public_obj, editable_obj)
     end
     it "should return object editable by the ability" do
       expect(ModsAsset.accessible_by(ability, :edit)).to eq [editable_obj]
