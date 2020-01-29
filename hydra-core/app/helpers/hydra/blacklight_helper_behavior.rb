@@ -15,6 +15,7 @@ module Hydra
     #   type_field_to_partial_name(["text.pdf"])
     #   => 'text_pdf'
     def type_field_to_partial_name(document, display_type)
+      byebug
       str = Array(display_type).join(' '.freeze).underscore
       if Rails.version >= '5.0.0'
         str.parameterize(separator: '_'.freeze)

@@ -9,6 +9,9 @@ gem 'rspec-its'
 # Specify gem dependencies in hydra-head.gemspec
 gemspec
 
+gem 'byebug' unless ENV['TRAVIS']
+gem 'pry-byebug' unless ENV['CI']
+
 # BEGIN ENGINE_CART BLOCK
 # engine_cart: 1.0.1
 # engine_cart stanza: 0.10.0
