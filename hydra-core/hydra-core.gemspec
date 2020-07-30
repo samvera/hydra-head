@@ -19,7 +19,7 @@ Gem::Specification.new do |gem|
   gem.required_ruby_version = '>= 2.4'
 
   gem.add_dependency 'hydra-access-controls', version
-  gem.add_dependency "railties", '>= 4.0.0', '< 7'
+  gem.add_dependency "railties", '>= 5.2', '< 7'
 
   gem.add_development_dependency 'rails-controller-testing', '~> 1'
   gem.add_development_dependency 'rspec-rails', '~> 4.0'
