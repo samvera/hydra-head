@@ -213,7 +213,11 @@ describe Hydra::AccessControls::Embargoable do
       before do
         subject.visibility = Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC
         # reset the changed log
-        subject.send(:instance_variable_set, :@visibility_will_change, false)
+        if ActiveModel.version < Gem::Version.new('4.2.0')
+          subject.send(:reset_changes)
+        else
+          subject.send(:clear_changes_information)
+        end
       end
 
       it "applies appropriate embargo_visibility settings" do

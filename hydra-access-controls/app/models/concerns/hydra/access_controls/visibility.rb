@@ -2,6 +2,14 @@ module Hydra::AccessControls
   module Visibility
     extend ActiveSupport::Concern
 
+    included do
+      # ActiveModel::Dirty requires defining the attribute method
+      # @see https://api.rubyonrails.org/classes/ActiveModel/Dirty.html
+      define_attribute_methods :visibility
+      # instance variable needs to be initialized here based upon what is in read_groups
+      after_initialize { @visibility = visibility }
+    end
+
     def visibility=(value)
       return if value.nil?
       # only set explicit permissions
@@ -15,6 +23,7 @@ module Hydra::AccessControls
       else
         raise ArgumentError, "Invalid visibility: #{value.inspect}"
       end
+      @visibility = value
     end
 
     def visibility
@@ -27,8 +36,14 @@ module Hydra::AccessControls
       end
     end
 
-    def visibility_changed?
-      !!@visibility_will_change
+    # Overridden for ActiveModel::Dirty tracking of visibility
+    # Required by ActiveModel::AttributeMethods
+    # @see https://api.rubyonrails.org/classes/ActiveModel/AttributeMethods.html
+    # An instance variable is used to avoid infinite recursion caused by calling #visibility
+    # Using this approach requires setting visibility read groups through #visibility=
+    # instead of manipulating them directly if #visibility_changed? is expected to work correctly.
+    def attributes
+      super.merge({ 'visibility' => @visibility })
     end
 
     private
@@ -39,10 +54,6 @@ module Hydra::AccessControls
       def represented_visibility
         [AccessRight::PERMISSION_TEXT_VALUE_AUTHENTICATED,
          AccessRight::PERMISSION_TEXT_VALUE_PUBLIC]
-      end
-
-      def visibility_will_change!
-        @visibility_will_change = true
       end
 
       def public_visibility!

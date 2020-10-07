@@ -100,4 +100,29 @@ describe Hydra::AccessControls::Visibility do
       expect(model.read_groups).to contain_exactly 'public', 'another'
     end
   end
+
+  context 'dirty tracking' do
+    let(:object_class) do
+      Class.new(ActiveFedora::Base) do
+        include Hydra::AccessControls::Permissions
+      end
+    end
+
+    before { stub_const("Foo", object_class) }
+
+    subject { Foo.new }
+
+    it 'responds to visibility_changed?' do
+      expect(subject).to respond_to(:visibility_changed?)
+    end
+
+    it 'tracks changes' do
+      expect(subject.visibility_changed?).to eq false
+      subject.visibility = Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC
+      expect(subject.visibility_changed?).to eq true
+      expect(subject.visibility_changed?(to: Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC)).to eq true
+      expect(subject.visibility_changed?(from: Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE)).to eq true
+      expect(subject.visibility_changed?(from: Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE, to: Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC)).to eq true
+    end
+  end
 end
