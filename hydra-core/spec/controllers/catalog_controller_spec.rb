@@ -48,9 +48,19 @@ describe CatalogController do
       end
       context "with no asset" do
         it "returns a not found response code" do
-          get 'show', params: { id: "test", format: :nt }
+          handled = false
 
-          expect(response).to be_not_found
+          begin
+            get 'show', params: { id: "test", format: :nt }
+            # blacklight 6
+            expect(response).to be_not_found
+            handled = true
+          rescue Blacklight::Exceptions::RecordNotFound
+            # blacklight 7
+            handled = true
+          end
+
+          expect(handled).to eq true
         end
       end
       context "with an asset" do
@@ -77,7 +87,7 @@ describe CatalogController do
 
         it "is able to negotiate ttl" do
           get 'show', params: { id: asset.id, format: :ttl }
-          
+
           expect(response).to be_success
           graph = RDF::Reader.for(:ttl).new(response.body)
           expect(graph.statements.to_a.length).to eq 3
@@ -115,7 +125,11 @@ describe CatalogController do
       it "triggers enforce_show_permissions" do
         allow(controller).to receive(:current_user).and_return(nil)
         expect(controller).to receive(:enforce_show_permissions)
-        get :show, params: { id: 'test:3' }
+        begin
+          get :show, params: { id: 'test:3' }
+        rescue Blacklight::Exceptions::RecordNotFound
+          # blacklight 7
+        end
       end
     end
   end

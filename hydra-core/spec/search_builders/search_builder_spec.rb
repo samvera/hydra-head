@@ -7,7 +7,7 @@ RSpec.describe Hydra::SearchBuilder do
   let(:search_builder) { described_class }
 
   subject do
-    search_builder.new(context, ability: current_ability)
+    search_builder.new(context).with_ability(current_ability)
   end
 
   it "extends classes with the necessary Hydra modules" do
@@ -16,7 +16,7 @@ RSpec.describe Hydra::SearchBuilder do
 
   context "when a query is generated" do
     it "triggers add_access_controls_to_solr_params" do
-      expect(subject).to receive(:apply_gated_discovery)
+      expect(subject).to receive(:add_access_controls_to_solr_params)
       subject.query
     end
   end

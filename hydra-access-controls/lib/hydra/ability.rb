@@ -12,7 +12,6 @@ module Hydra
 
     included do
       include Hydra::PermissionsQuery
-      include Blacklight::SearchHelper
 
       self.ability_logic = [:create_permissions, :edit_permissions, :read_permissions, :discover_permissions, :download_permissions, :custom_permissions]
     end

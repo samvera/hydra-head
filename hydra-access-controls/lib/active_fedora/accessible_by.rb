@@ -8,7 +8,7 @@ ActiveFedora::QueryMethods.module_eval do
       when :update, :edit, :create, :new, :destroy then [:edit]
     end
 
-    builder = Hydra::SearchBuilder.new(nil, ability: ability, permission_types: permission_types)
+    builder = Hydra::SearchBuilder.new(nil).with_ability(ability).with_discovery_permissions(permission_types)
     filters = builder.send(:gated_discovery_filters).join(" OR ")
     spawn.where!(filters)
   end

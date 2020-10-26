@@ -1,5 +1,22 @@
 module Hydra::AccessControlsEnforcement
   extend ActiveSupport::Concern
+  include Blacklight::AccessControls::Enforcement
+
+  def current_ability
+    @current_ability || (scope.current_ability if scope&.respond_to?(:current_ability))
+  end
+
+  def with_ability(ability)
+    params_will_change!
+    @current_ability = ability
+    self
+  end
+
+  def with_discovery_permissions(permissions)
+    params_will_change!
+    @discovery_permissions = Array(permissions)
+    self
+  end
 
   protected
 

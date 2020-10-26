@@ -78,7 +78,7 @@ RSpec.describe Hydra::PolicyAwareAccessControlsEnforcement do
   end
 
   let(:current_ability) { Ability.new(user) }
-  subject { PolicyMockSearchBuilder.new(nil, ability: current_ability) }
+  subject { PolicyMockSearchBuilder.new(nil).with_ability(current_ability) }
   let(:user) { FactoryBot.build(:sara_student) }
 
   before do
