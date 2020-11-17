@@ -29,7 +29,13 @@ module Hydra
     alias :config :configure
   end
 
-  class Engine < Rails::Engine; end
+  class Engine < Rails::Engine
+    config.before_configuration do
+      ActiveSupport::Inflector.inflections(:en) do |inflect|
+        inflect.acronym 'ACL'
+      end
+    end
+  end
 
   # This error is raised when a user isn't allowed to access a given controller action.
   # This usually happens within a call to AccessControlsEnforcement#enforce_access_controls but can be
