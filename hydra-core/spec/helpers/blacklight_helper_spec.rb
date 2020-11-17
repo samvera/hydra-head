@@ -18,9 +18,7 @@ describe BlacklightHelper do
 
     it "changes camel case to underscored lowercase" do
       expect(helper.document_partial_name('has_model_s' => ["Presentation"])).to eq "presentation"
-
-      # different versions of rails seem to do different things
-      expect(helper.document_partial_name('has_model_s' => ["GenericContent"])).to eq("generic_content").or eq('genericcontent')
+      expect(helper.document_partial_name('has_model_s' => ["GenericContent"])).to eq("generic_content")
     end
 
     context "with a single valued field" do
