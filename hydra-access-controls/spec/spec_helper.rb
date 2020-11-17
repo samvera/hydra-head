@@ -48,7 +48,8 @@ require "support/user"
 require "factory_bot"
 require 'rspec/mocks'
 require 'rspec/its'
-require "factories"
+require 'factories/user'
+require 'factories/objects'
 
 # HttpLogger.logger = Logger.new(STDOUT)
 # HttpLogger.ignore = [/localhost:8983\/solr/]
