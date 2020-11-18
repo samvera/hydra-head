@@ -79,7 +79,7 @@ describe CatalogController do
         it "is able to negotiate jsonld" do
           get 'show', params: { id: asset.id, format: :jsonld }
 
-          expect(response).to be_success
+          expect(response).to be_successful
           expect(response.headers['Content-Type']).to include("application/ld+json")
           graph = RDF::Reader.for(:jsonld).new(response.body)
           expect(graph.statements.to_a.length).to eq 3
@@ -88,7 +88,7 @@ describe CatalogController do
         it "is able to negotiate ttl" do
           get 'show', params: { id: asset.id, format: :ttl }
 
-          expect(response).to be_success
+          expect(response).to be_successful
           graph = RDF::Reader.for(:ttl).new(response.body)
           expect(graph.statements.to_a.length).to eq 3
         end

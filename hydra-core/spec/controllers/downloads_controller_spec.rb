@@ -76,7 +76,7 @@ describe DownloadsController do
           get :show, params: { id: obj }
           expect(response).to be_successful
           expect(response.headers['Content-Type']).to start_with "image/png"
-          expect(response.headers["Content-Disposition"]).to eq "inline; filename=\"buzz.png\""
+          expect(response.headers["Content-Disposition"]).to start_with "inline; filename=\"buzz.png\""
           expect(response.body).to eq 'fizz'
         end
 
@@ -85,7 +85,7 @@ describe DownloadsController do
           get :show, params: { id: obj }
           expect(response).to be_successful
           expect(response.headers['Content-Type']).to start_with "image/png"
-          expect(response.headers["Content-Disposition"]).to eq "inline; filename=\"world.png\""
+          expect(response.headers["Content-Disposition"]).to start_with "inline; filename=\"world.png\""
           expect(response.body).to eq 'foobarfoobarfoobar'
         end
 
@@ -101,7 +101,7 @@ describe DownloadsController do
               get :show, params: { id: obj, file: "descMetadata" }
               expect(response).to be_successful
               expect(response.headers['Content-Type']).to start_with "text/plain"
-              expect(response.headers["Content-Disposition"]).to eq "inline; filename=\"metadata.xml\""
+              expect(response.headers["Content-Disposition"]).to start_with "inline; filename=\"metadata.xml\""
               expect(response.body).to eq "It's a stream"
             end
           end
@@ -111,7 +111,7 @@ describe DownloadsController do
           get :show, params: { id: obj, disposition: "inline" }
           expect(response).to be_successful
           expect(response.headers['Content-Type']).to start_with "image/png"
-          expect(response.headers["Content-Disposition"]).to eq "inline; filename=\"world.png\""
+          expect(response.headers["Content-Disposition"]).to start_with "inline; filename=\"world.png\""
           expect(response.body).to eq 'foobarfoobarfoobar'
         end
 
@@ -119,7 +119,8 @@ describe DownloadsController do
           get :show, params: { id: obj, "filename" => "my%20dog.png" }
           expect(response).to be_successful
           expect(response.headers['Content-Type']).to start_with "image/png"
-          expect(response.headers["Content-Disposition"]).to eq "inline; filename=\"my%20dog.png\""
+          expect(response.headers["Content-Disposition"]).to start_with "inline; filename="
+          expect(response.headers["Content-Disposition"]).to include "my%20dog.png"
           expect(response.body).to eq 'foobarfoobarfoobar'
         end
       end
@@ -148,7 +149,7 @@ describe DownloadsController do
           expect(response.headers["Content-Length"]).to eq '16'
           expect(response.headers['Accept-Ranges']).to eq 'bytes'
           expect(response.headers['Content-Type']).to start_with "video/webm"
-          expect(response.headers["Content-Disposition"]).to eq "inline; filename=\"MyVideo.webm\""
+          expect(response.headers["Content-Disposition"]).to start_with "inline; filename=\"MyVideo.webm\""
           expect(response.status).to eq 206
         end
 

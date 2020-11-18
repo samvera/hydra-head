@@ -80,7 +80,9 @@ module Hydra
       # Override this if you'd like a different filename
       # @return [String] the filename
       def file_name
-        params[:filename] || file.original_name || (asset.respond_to?(:label) && asset.label) || file.id
+        fname = params[:filename] || file.original_name || (asset.respond_to?(:label) && asset.label) || file.id
+        fname = URI.unescape(fname) if Rails.version >= '6.0'
+        fname
       end
 
 
