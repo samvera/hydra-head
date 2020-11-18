@@ -3,6 +3,10 @@ module Hydra::Catalog
   include Blacklight::Catalog
   include Blacklight::AccessControls::Catalog
 
+  included do
+    self.search_service_class = Hydra::SearchService if respond_to?(:search_service_class)
+  end
+
   # Action-specific enforcement
   # Controller "before" filter for enforcing access controls on show actions
   # @param [Hash] opts (optional, not currently used)
@@ -19,5 +23,14 @@ module Hydra::Catalog
     end
 
     permissions_doc
+  end
+
+  # @return [Hash] a hash of context information to pass through to the search service
+  def search_service_context
+    ((super if defined?(super)) || {}).merge(hydra_search_service_context)
+  end
+
+  def hydra_search_service_context
+    { current_ability: current_ability }
   end
 end

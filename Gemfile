@@ -48,3 +48,7 @@ end
 if ENV['ACTIVE_FEDORA_VERSION']
   gem 'active-fedora', ENV['ACTIVE_FEDORA_VERSION']
 end
+
+if ENV['BLACKLIGHT_VERSION']
+  gem 'blacklight', ENV['BLACKLIGHT_VERSION']
+end

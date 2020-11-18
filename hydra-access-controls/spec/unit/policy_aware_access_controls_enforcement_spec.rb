@@ -1,28 +1,15 @@
 require 'spec_helper'
 
-describe Hydra::PolicyAwareAccessControlsEnforcement do
+RSpec.describe Hydra::PolicyAwareAccessControlsEnforcement do
   before do
     allow(Devise).to receive(:authentication_keys).and_return(['uid'])
 
-    class PolicyMockSearchBuilder < Blacklight::SearchBuilder
-      include Blacklight::Solr::SearchBuilderBehavior
-      include Hydra::AccessControlsEnforcement
+    class PolicyMockSearchBuilder < Hydra::SearchBuilder
       include Hydra::PolicyAwareAccessControlsEnforcement
-      attr_accessor :params
-
-      def initialize(current_ability)
-        @current_ability = current_ability
-      end
-
-      def current_ability
-        @current_ability
-      end
-
-      def session
-      end
 
       delegate :logger, to: :Rails
     end
+
     @sample_policies = []
     # user discover
     policy1 = Hydra::AdminPolicy.create(id: "test-policy1")
@@ -91,7 +78,7 @@ describe Hydra::PolicyAwareAccessControlsEnforcement do
   end
 
   let(:current_ability) { Ability.new(user) }
-  subject { PolicyMockSearchBuilder.new(current_ability) }
+  subject { PolicyMockSearchBuilder.new(nil).with_ability(current_ability) }
   let(:user) { FactoryBot.build(:sara_student) }
 
   before do
@@ -134,7 +121,7 @@ describe Hydra::PolicyAwareAccessControlsEnforcement do
 
     context "when policies are included" do
       before { subject.apply_gated_discovery(@solr_parameters) }
-      
+
       it "builds a query that includes all the policies" do
         skip if ActiveFedora.version.split('.').first.to_i < 11
         (1..11).each do |p|
@@ -142,7 +129,7 @@ describe Hydra::PolicyAwareAccessControlsEnforcement do
         end
       end
     end
-    
+
     context "when policies are not included" do
       before do
         allow(subject).to receive(:policy_clauses).and_return(nil)

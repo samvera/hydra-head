@@ -12,11 +12,13 @@ describe BlacklightHelper do
 
     before do
       allow(helper).to receive(:blacklight_config).and_return(config)
+      allow(helper).to receive(:blacklight_configuration_context).and_return(helper)
+      allow(helper).to receive(:evaluate_if_unless_configuration).and_return(true)
     end
 
     it "changes camel case to underscored lowercase" do
       expect(helper.document_partial_name('has_model_s' => ["Presentation"])).to eq "presentation"
-      expect(helper.document_partial_name('has_model_s' => ["GenericContent"])).to eq "generic_content"
+      expect(helper.document_partial_name('has_model_s' => ["GenericContent"])).to eq("generic_content")
     end
 
     context "with a single valued field" do

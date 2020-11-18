@@ -6,6 +6,9 @@ jobs:
     parameters:
       ruby_version:
         type: string
+      blacklight_version:
+        type: string
+        default: '~> 7'
       bundler_version:
         type: string
         default: 1.17.3
@@ -32,6 +35,7 @@ jobs:
       RAILS_VERSION: << parameters.rails_version >>
       SOLR_TEST_PORT: << parameters.solr_port >>
       ACTIVE_FEDORA_VERSION: << parameters.active_fedora_version >>
+      BLACKLIGHT_VERSION: << parameters.blacklight_version >>
     steps:
       - samvera/cached_checkout
 
@@ -41,7 +45,7 @@ jobs:
           project: hydra-head
 
       - samvera/engine_cart_generate:
-          cache_key: v1-internal-test-app-{{ checksum "hydra-head.gemspec" }}-{{ checksum "spec/test_app_templates/lib/generators/test_app_generator.rb" }}-{{ checksum "hydra-core/lib/generators/hydra/head_generator.rb" }}-{{ checksum "spec/test_app_templates/Gemfile.extra" }}-<< parameters.active_fedora_version >>-<< parameters.rails_version >>-<< parameters.ruby_version >>
+          cache_key: v1-internal-test-app-{{ checksum "hydra-head.gemspec" }}-{{ checksum "spec/test_app_templates/lib/generators/test_app_generator.rb" }}-{{ checksum "hydra-core/lib/generators/hydra/head_generator.rb" }}-{{ checksum "spec/test_app_templates/Gemfile.extra" }}-<< parameters.active_fedora_version >>-<< parameters.rails_version >>-<< parameters.ruby_version >>-<< parameters.blacklight_version >>
 
       - samvera/install_solr_core:
           solr_config_path: << parameters.solr_config_path >>
@@ -59,16 +63,17 @@ workflows:
       - bundle_and_test:
           name: "ruby2-7_rails5.2"
           ruby_version: 2.7.0
-          rails_version: 5.2.4.1
+          rails_version: 5.2.4.4
+      - bundle_and_test:
+          name: "ruby2-7_rails5.2-bl6"
+          blacklight_version: 6.23.0
+          ruby_version: 2.7.0
+          rails_version: 5.2.4.4
       - bundle_and_test:
           name: "ruby2-6_rails5.2"
           ruby_version: 2.6.3
-          rails_version: 5.2.4.1
+          rails_version: 5.2.4.4
       - bundle_and_test:
           name: "ruby2-5_rails5.2"
           ruby_version: 2.5.5
-          rails_version: 5.2.4.1
-      - bundle_and_test:
-          name: "ruby2-4_rails5.2"
-          ruby_version: 2.4.6
-          rails_version: 5.2.4.1
+          rails_version: 5.2.4.4
