@@ -165,11 +165,7 @@ describe Hydra::AccessControls::Embargoable do
     context "when the same embargo is applied" do
       before do
         subject.apply_embargo(future_date.to_s)
-        if ActiveModel.version < Gem::Version.new('4.2.0')
-          subject.embargo.send(:reset_changes)
-        else
-          subject.embargo.send(:clear_changes_information)
-        end
+        subject.embargo.send(:clear_changes_information)
       end
 
       it "doesn't call visibility_will_change!" do
@@ -248,11 +244,7 @@ describe Hydra::AccessControls::Embargoable do
       context "when the same lease is applied" do
         before do
           subject.apply_lease(future_date.to_s)
-          if ActiveModel.version < Gem::Version.new('4.2.0')
-            subject.lease.send(:reset_changes)
-          else
-            subject.lease.send(:clear_changes_information)
-          end
+          subject.lease.send(:clear_changes_information)
         end
 
         it "doesn't call visibility_will_change!" do
@@ -266,11 +258,7 @@ describe Hydra::AccessControls::Embargoable do
       before do
         subject.visibility = Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC
         # reset the changed log
-        if ActiveModel.version < Gem::Version.new('4.2.0')
-          subject.send(:reset_changes)
-        else
-          subject.send(:clear_changes_information)
-        end
+        subject.send(:clear_changes_information)
       end
 
       it "applies appropriate embargo_visibility settings" do
