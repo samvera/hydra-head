@@ -29,4 +29,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'simplecov'
   s.add_development_dependency 'solr_wrapper', '~> 2.0'
   s.add_development_dependency 'rspec_junit_formatter'
+  s.add_development_dependency 'rails-controller-testing'
 end
