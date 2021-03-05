@@ -41,7 +41,7 @@ module Hydra::AccessControls
     end
 
     def agent_name
-      URI.decode_www_form(parsed_agent.last)
+      URI.decode(parsed_agent.last)
     end
 
     def update(*)
@@ -80,7 +80,7 @@ module Hydra::AccessControls
     end
 
     def build_agent_resource(prefix, name)
-      [Agent.new(::RDF::URI.new("#{prefix}##{URI.encode_www_form_component(name)}"))]
+      [Agent.new(::RDF::URI.new("#{prefix}##{URI.encode(name)}"))]
     end
 
     def build_access(access)
