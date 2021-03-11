@@ -18,10 +18,10 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'hydra-access-controls', version
   s.add_dependency 'hydra-core', version
-  s.add_dependency 'rails', '>= 5.2', '< 6.1'
+  s.add_dependency 'rails', '>= 5.2.4', '< 6.1'
 
   s.add_development_dependency 'coveralls'
-  s.add_development_dependency 'engine_cart', '~> 2.2'
+  s.add_development_dependency 'engine_cart', '~> 2.2.0'
   s.add_development_dependency 'factory_bot'
   s.add_development_dependency 'fcrepo_wrapper', '~> 0.6'
   s.add_development_dependency 'rspec-rails'
