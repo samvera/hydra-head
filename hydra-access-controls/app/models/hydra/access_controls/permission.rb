@@ -1,12 +1,11 @@
 module Hydra::AccessControls
   AGENT_URL_SCHEME = 'http'.freeze
   AGENT_URL_HOST = 'projecthydra.org'.freeze
-  AGENT_URL_PATH = '/ns/auth/'.freeze
   GROUP_AGENT_PATH = '/ns/auth/group'.freeze
   PERSON_AGENT_PATH = '/ns/auth/person'.freeze
   AGENT_URL_PREFIX = 'http://projecthydra.org/ns/auth/'.freeze
-  GROUP_AGENT_URL_PREFIX = 'http://projecthydra.org/ns/auth/group'.freeze
-  PERSON_AGENT_URL_PREFIX = 'http://projecthydra.org/ns/auth/person'.freeze
+  GROUP_AGENT_URL_PREFIX = 'http://projecthydra.org/ns/auth/group'.freeze # This is currently only used in the context of testing this code
+  PERSON_AGENT_URL_PREFIX = 'http://projecthydra.org/ns/auth/person'.freeze # This is currently only used in the context of testing this code
   class Permission < AccessControlList
     has_many :admin_policies, inverse_of: :default_permissions, class_name: 'Hydra::AdminPolicy'
 
