@@ -5,8 +5,15 @@ module Hydra::AccessControls
   GROUP_AGENT_PATH = '/ns/auth/group'.freeze
   PERSON_AGENT_PATH = '/ns/auth/person'.freeze
   AGENT_URL_PREFIX = 'http://projecthydra.org/ns/auth/'.freeze
-  GROUP_AGENT_URL_PREFIX = 'http://projecthydra.org/ns/auth/group'.freeze
-  PERSON_AGENT_URL_PREFIX = 'http://projecthydra.org/ns/auth/person'.freeze
+
+  GroupAgentUrlPrefix = Exception.new("GROUP_AGENT_URL_PREFIX is deprecated and being replaced by the individual portions of the url, AGENT_URL_SCHEME, AGENT_URL_HOST, and GROUP_AGENT_PATH")
+  GROUP_AGENT_URL_PREFIX = GroupAgentUrlPrefix # previous version used this name, superceded by individual url components
+  PersonAgentUrlPrefix = Exception.new("PERSON_AGENT_URL_PREFIX is deprecated and being replaced by the individual portions of the url, AGENT_URL_SCHEME, AGENT_URL_HOST, and PERSON_AGENT_PATH")
+  PERSON_AGENT_URL_PREFIX = PersonAgentUrlPrefix
+
+  deprecate_constant :GROUP_AGENT_URL_PREFIX
+  deprecate_constant :PERSON_AGENT_URL_PREFIX
+
   class Permission < AccessControlList
     has_many :admin_policies, inverse_of: :default_permissions, class_name: 'Hydra::AdminPolicy'
 
