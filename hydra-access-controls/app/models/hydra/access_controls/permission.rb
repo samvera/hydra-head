@@ -1,11 +1,7 @@
 module Hydra::AccessControls
-  AGENT_URL_SCHEME = 'http'.freeze
-  AGENT_URL_HOST = 'projecthydra.org'.freeze
-  GROUP_AGENT_PATH = '/ns/auth/group'.freeze
-  PERSON_AGENT_PATH = '/ns/auth/person'.freeze
   AGENT_URL_PREFIX = 'http://projecthydra.org/ns/auth/'.freeze
-  GROUP_AGENT_URL_PREFIX = 'http://projecthydra.org/ns/auth/group'.freeze # This is currently only used in the context of testing this code
-  PERSON_AGENT_URL_PREFIX = 'http://projecthydra.org/ns/auth/person'.freeze # This is currently only used in the context of testing this code
+  GROUP_AGENT_URL_PREFIX = 'http://projecthydra.org/ns/auth/group'.freeze
+  PERSON_AGENT_URL_PREFIX = 'http://projecthydra.org/ns/auth/person'.freeze
   class Permission < AccessControlList
     has_many :admin_policies, inverse_of: :default_permissions, class_name: 'Hydra::AdminPolicy'
 
@@ -75,9 +71,9 @@ module Hydra::AccessControls
       raise "Can't build agent #{inspect}" unless name && type
       self.agent = case type
                    when 'group'
-                     build_agent_resource(GROUP_AGENT_PATH, name)
+                     build_agent_resource(GROUP_AGENT_URL_PREFIX, name)
                    when 'person'
-                     build_agent_resource(PERSON_AGENT_PATH, name)
+                     build_agent_resource(PERSON_AGENT_URL_PREFIX, name)
                    else
                      raise ArgumentError, "Unknown agent type #{type.inspect}"
                    end
@@ -86,12 +82,8 @@ module Hydra::AccessControls
     # The current URL.hash standard (As of March 2021) is that the post-hash portion of the URL is not percent-decoded
     # however in order to ensure backward compatibility with already recorded values we are normalizing
     # the fragment here. See https://developer.mozilla.org/en-US/docs/Web/API/URL/hash
-    def build_agent_rdf(path, name)
-      ::RDF::URI.new(scheme: AGENT_URL_SCHEME, host: AGENT_URL_HOST, path: path, fragment: name).normalize!
-    end
-
-    def build_agent_resource(path, name)
-      [Agent.new(build_agent_rdf(path, name))]
+    def build_agent_resource(prefix, name)
+      [Agent.new(::RDF::URI.new("#{prefix}##{URI.encode(name)}").normalize!)]
     end
 
     def build_access(access)
