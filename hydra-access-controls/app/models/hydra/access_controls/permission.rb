@@ -83,7 +83,7 @@ module Hydra::AccessControls
     # however in order to ensure backward compatibility with already recorded values we are normalizing
     # the fragment here. See https://developer.mozilla.org/en-US/docs/Web/API/URL/hash
     def build_agent_resource(prefix, name)
-      [Agent.new(::RDF::URI.new("#{prefix}##{URI.encode(name)}").normalize!)]
+      [Agent.new(::RDF::URI.new("#{prefix}##{name}").normalize!)]
     end
 
     def build_access(access)
