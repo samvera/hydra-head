@@ -41,7 +41,7 @@ module Hydra::AccessControls
     end
 
     def agent_name
-      URI.decode_www_form_component(parsed_agent.last)
+      URI.decode(parsed_agent.last)
     end
 
     def update(*)
@@ -79,11 +79,8 @@ module Hydra::AccessControls
                    end
     end
 
-    # The current URL.hash standard (As of March 2021) is that the post-hash portion of the URL is not percent-decoded
-    # however in order to ensure backward compatibility with already recorded values we are normalizing
-    # the fragment here. See https://developer.mozilla.org/en-US/docs/Web/API/URL/hash
     def build_agent_resource(prefix, name)
-      [Agent.new(::RDF::URI.new("#{prefix}##{name}").normalize!)]
+      [Agent.new(::RDF::URI.new("#{prefix}##{URI.encode(name)}"))]
     end
 
     def build_access(access)
