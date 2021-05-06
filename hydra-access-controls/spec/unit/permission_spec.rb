@@ -47,17 +47,29 @@ describe Hydra::AccessControls::Permission do
   end
 
   describe "URI escaping" do
-    let(:permission) { described_class.new(type: 'person', name: 'john doe', access: 'read') }
-    let(:permission2) { described_class.new(type: 'group', name: 'hydra devs', access: 'read') }
+    let(:user_permission) { described_class.new(type: 'person', name: 'john doe', access: 'read') }
+    let(:user_permission2) { described_class.new(type: 'person', name: 'john%20doe', access: 'read') }
+    let(:user_permission3) { described_class.new(type: 'person', name: 'john+doe', access: 'read') }
+    let(:group_permission) { described_class.new(type: 'group', name: 'hydra devs', access: 'read') }
+    let(:group_permission2) { described_class.new(type: 'group', name: 'hydra%20devs', access: 'read') }
+    let(:group_permission3) { described_class.new(type: 'group', name: 'hydra+devs', access: 'read') }
 
     it "should escape agent when building" do
-      expect(permission.agent.first.rdf_subject.to_s).to eq 'http://projecthydra.org/ns/auth/person#john%20doe'
-      expect(permission2.agent.first.rdf_subject.to_s).to eq 'http://projecthydra.org/ns/auth/group#hydra%20devs'
+      expect(user_permission.agent.first.rdf_subject.to_s).to eq 'http://projecthydra.org/ns/auth/person#john%20doe'
+      expect(user_permission2.agent.first.rdf_subject.to_s).to eq 'http://projecthydra.org/ns/auth/person#john%2520doe'
+      expect(user_permission3.agent.first.rdf_subject.to_s).to eq 'http://projecthydra.org/ns/auth/person#john+doe'
+      expect(group_permission.agent.first.rdf_subject.to_s).to eq 'http://projecthydra.org/ns/auth/group#hydra%20devs'
+      expect(group_permission2.agent.first.rdf_subject.to_s).to eq 'http://projecthydra.org/ns/auth/group#hydra%2520devs'
+      expect(group_permission3.agent.first.rdf_subject.to_s).to eq 'http://projecthydra.org/ns/auth/group#hydra+devs'
     end
 
     it "should unescape agent when parsing" do
-      expect(permission.agent_name).to eq 'john doe'
-      expect(permission2.agent_name).to eq 'hydra devs'
+      expect(user_permission.agent_name).to eq 'john doe'
+      expect(user_permission2.agent_name).to eq 'john%20doe'
+      expect(user_permission3.agent_name).to eq 'john+doe'
+      expect(group_permission.agent_name).to eq 'hydra devs'
+      expect(group_permission2.agent_name).to eq 'hydra%20devs'
+      expect(group_permission3.agent_name).to eq 'hydra+devs'
     end
 
     context 'with a User instance passed as :name argument' do
