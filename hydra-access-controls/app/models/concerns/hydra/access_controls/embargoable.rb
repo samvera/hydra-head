@@ -5,8 +5,8 @@ module Hydra
       include Hydra::AccessControls::WithAccessRight
 
       included do
-        validates :lease_expiration_date, :'hydra/future_date' => true, if: :enforce_future_date_for_lease?
-        validates :embargo_release_date, :'hydra/future_date' => true, if: :enforce_future_date_for_embargo?
+        validates :lease_expiration_date, :'hydra/future_date' => true, if: :enforce_future_date_for_lease?, on: :create
+        validates :embargo_release_date, :'hydra/future_date' => true, if: :enforce_future_date_for_embargo?, on: :create
 
         belongs_to :embargo, predicate: Hydra::ACL.hasEmbargo, class_name: 'Hydra::AccessControls::Embargo', autosave: true
         belongs_to :lease, predicate: Hydra::ACL.hasLease, class_name: 'Hydra::AccessControls::Lease', autosave: true
