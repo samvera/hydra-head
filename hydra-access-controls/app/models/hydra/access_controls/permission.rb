@@ -41,7 +41,7 @@ module Hydra::AccessControls
     end
 
     def agent_name
-      URI.decode(parsed_agent.last)
+      decode(parsed_agent.last)
     end
 
     def update(*)
@@ -80,7 +80,7 @@ module Hydra::AccessControls
     end
 
     def build_agent_resource(prefix, name)
-      [Agent.new(::RDF::URI.new("#{prefix}##{URI.encode(name)}"))]
+      [Agent.new(::RDF::URI.new("#{prefix}##{encode(name)}"))]
     end
 
     def build_access(access)
@@ -95,6 +95,16 @@ module Hydra::AccessControls
                   else
                     raise ArgumentError, "Unknown access #{access.inspect}"
                   end
+    end
+
+    private
+
+    def encode(str)
+      URI::RFC2396_Parser.new.escape(str)
+    end
+
+    def decode(str)
+      URI::RFC2396_Parser.new.unescape(str)
     end
   end
 end
