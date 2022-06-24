@@ -1,7 +1,5 @@
 source "https://rubygems.org"
 
-gem 'rspec-its'
-gem 'active-fedora', git: 'https://github.com/samvera/active_fedora.git', branch: 'updating-active-triples'
 # Specify gem dependencies in hydra-head.gemspec
 gemspec
 
@@ -30,26 +28,21 @@ else
   end
 
   case ENV['RAILS_VERSION']
-  when /^5.[12]/
+  when /^5\.[2]/
     gem 'sass-rails', '~> 5.0'
-  when /^4.2/
-    gem 'responders', '~> 2.0'
-    gem 'sass-rails', '>= 5.0'
-    gem 'coffee-rails', '~> 4.1.0'
-  when /^4.[01]/
-    gem 'sass-rails', '< 5.0'
   end
 end
 # END ENGINE_CART BLOCK
 
-if !ENV['RAILS_VERSION'] || ENV['RAILS_VERSION'] =~ /^5/
-  gem 'rails-controller-testing'
-end
-
 if ENV['ACTIVE_FEDORA_VERSION']
   gem 'active-fedora', ENV['ACTIVE_FEDORA_VERSION']
+else
+  gem 'active-fedora', git: 'https://github.com/samvera/active_fedora.git', branch: 'updating-active-triples'
 end
 
 if ENV['BLACKLIGHT_VERSION']
   gem 'blacklight', ENV['BLACKLIGHT_VERSION']
+else
+  gem 'blacklight', '>= 7.26'
 end
+
