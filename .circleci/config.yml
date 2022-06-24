@@ -60,7 +60,7 @@ jobs:
           bundler_version: << parameters.bundler_version >>
           project: hydra-head
 
-      - run: bundle exec rake spec
+      - samvera/parallel_rspec
 
 workflows:
   ci:
@@ -88,7 +88,7 @@ workflows:
           name: "ruby2-7_rails5.2-bl6"
           ruby_version: 2.7.3
           rails_version: 5.2.6
-          blacklight_version: 6.23.0
+          blacklight_version: 6.24.0
 
   nightly:
     triggers:
@@ -120,6 +120,6 @@ workflows:
           rails_version: 5.2.6
       - bundle_and_test:
           name: "ruby2-7_rails5.2-bl6"
-          blacklight_version: 6.23.0
           ruby_version: 2.7.3
           rails_version: 5.2.6
+          blacklight_version: 6.24.0
