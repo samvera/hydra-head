@@ -1,6 +1,7 @@
 source "https://rubygems.org"
 
 gem 'rspec-its'
+gem 'active-fedora', git: 'https://github.com/samvera/active_fedora.git', branch: 'updating-active-triples'
 # Specify gem dependencies in hydra-head.gemspec
 gemspec
 
