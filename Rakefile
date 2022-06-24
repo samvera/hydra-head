@@ -7,30 +7,8 @@ end
 Bundler::GemHelper.install_tasks
 
 APP_ROOT= File.dirname(__FILE__)
-require 'solr_wrapper'
-require 'fcrepo_wrapper'
 require 'active_fedora/rake_support'
 require 'engine_cart/rake_task'
-
-desc "Run Continuous Integration"
-task :ci => ['engine_cart:generate'] do
-  ENV['environment'] = "test"
-  with_test_server do
-    Rake::Task['spec'].invoke
-  end
-end
-
-desc 'Start up test server'
-task :test_server do
-  ENV["RAILS_ENV"] = "test"
-  with_test_server do
-    puts "Solr: http://localhost:#{ENV["SOLR_TEST_PORT"]}/solr"
-    puts "Fedora: http://localhost:#{ENV["FCREPO_TEST_PORT"]}/rest"
-    while(1) do
-      sleep(1)
-    end
-  end
-end
 
 task :default => [:ci]
 
