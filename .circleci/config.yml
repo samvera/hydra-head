@@ -52,6 +52,7 @@ jobs:
       - run:
           name: 'Install the package for the sqlite3 library headers'
           command: |
+            sudo apt-get update
             sudo apt-get install -y libsqlite3-dev
 
       - samvera/engine_cart_generate:
