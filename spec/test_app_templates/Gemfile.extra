@@ -1,9 +1,11 @@
-gem 'byebug' unless ENV['CI']
-
 if ENV['ACTIVE_FEDORA_VERSION']
   gem 'active-fedora', ENV['ACTIVE_FEDORA_VERSION']
+else
+  gem 'active-fedora', git: 'https://github.com/samvera/active_fedora.git', branch: 'updating-active-triples'
 end
 
 if ENV['BLACKLIGHT_VERSION']
   gem 'blacklight', ENV['BLACKLIGHT_VERSION']
+else
+  gem 'blacklight', '>= 7.26'
 end

@@ -1,9 +1,10 @@
 require 'rails'
+
 require 'active-fedora'
 require 'blacklight'
+require 'blacklight-access_controls'
 require 'cancan'
 require "deprecation"
-require 'blacklight-access_controls'
 
 module Hydra
   extend ActiveSupport::Autoload

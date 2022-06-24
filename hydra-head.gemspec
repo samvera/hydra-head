@@ -1,5 +1,8 @@
 # -*- encoding: utf-8 -*-
-version = File.read(File.expand_path("../HYDRA_VERSION",__FILE__)).strip
+
+version_path = File.expand_path("../HYDRA_VERSION", __FILE__)
+version_contents = File.read(version_path)
+version = version_contents.strip
 
 Gem::Specification.new do |s|
   s.name        = "hydra-head"
@@ -24,6 +27,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'engine_cart'
   s.add_development_dependency 'factory_bot'
   s.add_development_dependency 'factory_bot_rails'
+  s.add_development_dependency 'pry-byebug'
   s.add_development_dependency 'rails-controller-testing'
   s.add_development_dependency 'rspec-its'
   s.add_development_dependency 'rspec_junit_formatter'
