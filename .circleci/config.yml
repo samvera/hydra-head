@@ -37,6 +37,9 @@ jobs:
       ACTIVE_FEDORA_VERSION: << parameters.active_fedora_version >>
       BLACKLIGHT_VERSION: << parameters.blacklight_version >>
     steps:
+      # Explicitly install sqlite3 since it isn't included in the cimg/ruby:2.5 image
+      - run: sudo apt-get update && sudo apt-get install -y sqlite3 libsqlite3-dev
+
       - samvera/cached_checkout
       - run:
           name: Check for a branch named 'master'
