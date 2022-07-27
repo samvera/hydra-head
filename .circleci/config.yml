@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  samvera: samvera/circleci-orb@0
+  samvera: samvera/circleci-orb@1
 jobs:
   bundle_and_test:
     parameters:
@@ -37,6 +37,9 @@ jobs:
       ACTIVE_FEDORA_VERSION: << parameters.active_fedora_version >>
       BLACKLIGHT_VERSION: << parameters.blacklight_version >>
     steps:
+      # Explicitly install sqlite3 since it isn't included in the cimg/ruby:2.5 image
+      - run: sudo apt-get update && sudo apt-get install -y sqlite3 libsqlite3-dev
+
       - samvera/cached_checkout
       - run:
           name: Check for a branch named 'master'
@@ -47,10 +50,9 @@ jobs:
               echo "$(git branch --all --list master */master)"
             fi
             [[ -z "$(git branch --all --list master */master)" ]]
-      - samvera/bundle_for_gem:
+      - samvera/bundle:
           ruby_version: << parameters.ruby_version >>
           bundler_version: << parameters.bundler_version >>
-          project: hydra-head
 
       - samvera/engine_cart_generate:
           cache_key: v1-internal-test-app-{{ checksum "hydra-head.gemspec" }}-{{ checksum "spec/test_app_templates/lib/generators/test_app_generator.rb" }}-{{ checksum "hydra-core/lib/generators/hydra/head_generator.rb" }}-{{ checksum "spec/test_app_templates/Gemfile.extra" }}-<< parameters.active_fedora_version >>-<< parameters.rails_version >>-<< parameters.ruby_version >>-<< parameters.blacklight_version >>
@@ -58,10 +60,9 @@ jobs:
       - samvera/install_solr_core:
           solr_config_path: << parameters.solr_config_path >>
 
-      - samvera/bundle_for_gem:
+      - samvera/bundle:
           ruby_version: << parameters.ruby_version >>
           bundler_version: << parameters.bundler_version >>
-          project: hydra-head
 
       - run: bundle exec rake spec
 
@@ -69,26 +70,30 @@ workflows:
   ci:
     jobs:
       - bundle_and_test:
+          name: "ruby2-7_rails6.1"
+          ruby_version: 2.7.6
+          rails_version: 6.1.6.1
+      - bundle_and_test:
           name: "ruby2-7_rails6.0"
-          ruby_version: 2.7.3
-          rails_version: 6.0.3.7
+          ruby_version: 2.7.6
+          rails_version: 6.0.5.1
       - bundle_and_test:
           name: "ruby2-7_rails5.2"
-          ruby_version: 2.7.3
-          rails_version: 5.2.6
+          ruby_version: 2.7.6
+          rails_version: 5.2.8.1
       - bundle_and_test:
           name: "ruby2-7_rails5.2-bl6"
           blacklight_version: 6.23.0
-          ruby_version: 2.7.3
-          rails_version: 5.2.6
+          ruby_version: 2.7.6
+          rails_version: 5.2.8.1
       - bundle_and_test:
           name: "ruby2-6_rails5.2"
-          ruby_version: 2.6.7
-          rails_version: 5.2.6
+          ruby_version: 2.6.10
+          rails_version: 5.2.8.1
       - bundle_and_test:
           name: "ruby2-5_rails5.2"
           ruby_version: 2.5.9
-          rails_version: 5.2.6
+          rails_version: 5.2.8.1
 
   nightly:
     triggers:
@@ -100,23 +105,27 @@ workflows:
                 - main
     jobs:
       - bundle_and_test:
+          name: "ruby2-7_rails6.1"
+          ruby_version: 2.7.6
+          rails_version: 6.1.6.1
+      - bundle_and_test:
           name: "ruby2-7_rails6.0"
-          ruby_version: 2.7.3
-          rails_version: 6.0.3.7
+          ruby_version: 2.7.6
+          rails_version: 6.0.5.1
       - bundle_and_test:
           name: "ruby2-7_rails5.2"
-          ruby_version: 2.7.3
-          rails_version: 5.2.6
+          ruby_version: 2.7.6
+          rails_version: 5.2.8.1
       - bundle_and_test:
           name: "ruby2-7_rails5.2-bl6"
           blacklight_version: 6.23.0
-          ruby_version: 2.7.3
-          rails_version: 5.2.6
+          ruby_version: 2.7.6
+          rails_version: 5.2.8.1
       - bundle_and_test:
           name: "ruby2-6_rails5.2"
-          ruby_version: 2.6.7
-          rails_version: 5.2.6
+          ruby_version: 2.6.10
+          rails_version: 5.2.8.1
       - bundle_and_test:
           name: "ruby2-5_rails5.2"
           ruby_version: 2.5.9
-          rails_version: 5.2.6
+          rails_version: 5.2.8.1
