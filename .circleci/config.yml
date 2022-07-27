@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  samvera: samvera/circleci-orb@0
+  samvera: samvera/circleci-orb@1
 jobs:
   bundle_and_test:
     parameters:
@@ -47,10 +47,9 @@ jobs:
               echo "$(git branch --all --list master */master)"
             fi
             [[ -z "$(git branch --all --list master */master)" ]]
-      - samvera/bundle_for_gem:
+      - samvera/bundle:
           ruby_version: << parameters.ruby_version >>
           bundler_version: << parameters.bundler_version >>
-          project: hydra-head
 
       - samvera/engine_cart_generate:
           cache_key: v1-internal-test-app-{{ checksum "hydra-head.gemspec" }}-{{ checksum "spec/test_app_templates/lib/generators/test_app_generator.rb" }}-{{ checksum "hydra-core/lib/generators/hydra/head_generator.rb" }}-{{ checksum "spec/test_app_templates/Gemfile.extra" }}-<< parameters.active_fedora_version >>-<< parameters.rails_version >>-<< parameters.ruby_version >>-<< parameters.blacklight_version >>
@@ -58,10 +57,9 @@ jobs:
       - samvera/install_solr_core:
           solr_config_path: << parameters.solr_config_path >>
 
-      - samvera/bundle_for_gem:
+      - samvera/bundle:
           ruby_version: << parameters.ruby_version >>
           bundler_version: << parameters.bundler_version >>
-          project: hydra-head
 
       - run: bundle exec rake spec
 
