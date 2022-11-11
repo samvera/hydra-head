@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  samvera: samvera/circleci-orb@1
+  samvera: samvera/circleci-orb@1.0
 jobs:
   bundle_and_test:
     parameters:
@@ -90,11 +90,6 @@ workflows:
           name: "ruby2-6_rails5.2"
           ruby_version: 2.6.10
           rails_version: 5.2.8.1
-      - bundle_and_test:
-          name: "ruby2-5_rails5.2"
-          ruby_version: 2.5.9
-          rails_version: 5.2.8.1
-
   nightly:
     triggers:
       - schedule:
@@ -124,8 +119,4 @@ workflows:
       - bundle_and_test:
           name: "ruby2-6_rails5.2"
           ruby_version: 2.6.10
-          rails_version: 5.2.8.1
-      - bundle_and_test:
-          name: "ruby2-5_rails5.2"
-          ruby_version: 2.5.9
           rails_version: 5.2.8.1
