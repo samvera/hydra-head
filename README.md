@@ -2,7 +2,7 @@
 
 Code: [![Version](https://badge.fury.io/rb/hydra-head.png)](http://badge.fury.io/rb/hydra-head)
 [![Build Status](https://circleci.com/gh/samvera/hydra-head.svg?style=svg)](https://circleci.com/gh/samvera/hydra-head)
-[![Coverage Status](https://coveralls.io/repos/github/samvera/hydra-head/badge.svg?branch=master)](https://coveralls.io/github/samvera/hydra-head?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/samvera/hydra-head/badge.svg?branch=main)](https://coveralls.io/github/samvera/hydra-head?branch=main)
 
 Docs: [![Contribution Guidelines](http://img.shields.io/badge/CONTRIBUTING-Guidelines-blue.svg)](./CONTRIBUTING.md)
 [![Apache 2.0 License](http://img.shields.io/badge/APACHE2-license-blue.svg)](./LICENSE)
@@ -11,18 +11,15 @@ Community Support: [![Samvera Community Slack](https://img.shields.io/badge/samv
 
 # What is Hydra-Head?
 
-Hydra-Head is a Ruby-on-Rails gem containing the core code for a web
-application using the full stack of Samvera building blocks.
+Hydra-Head is a Ruby-on-Rails gem containing the core code for a web application using the full stack of Samvera building blocks.
 
 ## Product Owner & Maintenance
 
-`hydra-head` was a Core Component of the Samvera Community. Given a decline in available labor required for maintenance, this project no longer has a dedicated Product Owner. The documentation for what this means can be found [here](http://samvera.github.io/core_components.html#requirements-for-a-core-component).
+`hydra-head` is a Core Component of the Samvera Community. The documentation for what this means can be found [here](http://samvera.github.io/core_components.html#requirements-for-a-core-component).
 
 ### Product Owner
 
-**Vacant**
-
-_Until a Product Owner has been identified, we ask that you please direct all requests for support, bug reports, and general questions to the [`#dev` Channel on the Samvera Slack](https://samvera.slack.com/app_redirect?channel=dev)._
+[cjcolvar](https://github.com/cjcolvar)
 
 # Help
 
@@ -34,8 +31,7 @@ See the Github wikis for information targeted to developers:
 See the Duraspace Hydra wikis for information at the architecture level:
 <http://wiki.duraspace.org/display/samvera/>
 
-Additionally, new adopters and potential adopters may find the pages
-here useful: <http://samvera.org/>
+Additionally, new adopters and potential adopters may find the pages here useful: <http://samvera.org/>
 
 Further questions? [Get in touch](https://wiki.duraspace.org/pages/viewpage.action?pageId=87460391)
 
