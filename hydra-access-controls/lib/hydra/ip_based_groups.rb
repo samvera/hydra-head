@@ -43,7 +43,11 @@ module Hydra
         end
 
         begin
-          yml = YAML::load_file(file)
+          yml = if Psych::VERSION > '4.0'
+            YAML.safe_load(file, aliases: true)
+          else
+            YAML.safe_load(file, [], [], true)
+          end
         rescue
           raise("#{filename} was found, but could not be parsed.\n")
         end
