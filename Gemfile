@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 
 gem 'rspec-its'
-gem 'psych', '< 5'
+#gem 'psych', '< 5'
 gem 'active-triples', git: 'https://github.com/samvera-labs/activetriples.git', branch: 'merge-gitlab-upstream'
 
 # Specify gem dependencies in hydra-head.gemspec
