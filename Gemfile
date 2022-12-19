@@ -1,7 +1,6 @@
 source "https://rubygems.org"
 
 gem 'rspec-its'
-#gem 'psych', '< 5'
 gem 'active-triples', git: 'https://github.com/samvera-labs/activetriples.git', branch: 'merge-gitlab-upstream'
 
 # Specify gem dependencies in hydra-head.gemspec
@@ -44,8 +43,13 @@ else
 end
 # END ENGINE_CART BLOCK
 
+if !ENV['RAILS_VERSION'] || ENV['RAILS_VERSION'] =~ /^6.0/
+  gem 'psych', '< 4'
+end
+
 if !ENV['RAILS_VERSION'] || ENV['RAILS_VERSION'] =~ /^5/
   gem 'rails-controller-testing'
+  gem 'psych', '< 4'
 end
 
 gem 'active-fedora', git: 'https://github.com/samvera/active_fedora.git', branch: 'ruby3'
