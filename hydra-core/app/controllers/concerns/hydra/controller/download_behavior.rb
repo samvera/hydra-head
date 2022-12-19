@@ -81,7 +81,7 @@ module Hydra
       # @return [String] the filename
       def file_name
         fname = params[:filename] || file.original_name || (asset.respond_to?(:label) && asset.label) || file.id
-        fname = URI.unescape(fname) if Rails.version >= '6.0'
+        fname = CGI.unescape(fname) if Rails.version >= '6.0'
         fname
       end
 
