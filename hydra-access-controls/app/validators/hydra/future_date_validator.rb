@@ -6,13 +6,13 @@ module Hydra
         begin
           if date = value.to_date
             if date <= Date.today
-              record.errors[attribute] << "Must be a future date"
+              record.errors.add(attribute, "Must be a future date")
             end
           else
-            record.errors[attribute] << "Invalid Date Format"
+            record.errors.add(attribute, "Invalid Date Format")
           end
         rescue ArgumentError, NoMethodError
-          record.errors[attribute] << "Invalid Date Format"
+          record.errors.add(attribute, "Invalid Date Format")
         end
       end
     end

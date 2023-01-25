@@ -93,7 +93,7 @@ module Hydra
         end
         if visibility != expected_visibility
           failure_message << "visibility should be #{expected_visibility} but it is currently #{visibility}.  Call embargo_visibility! on this object to repair."
-          self.errors[:embargo] << failure_message
+          self.errors.add(:embargo, failure_message)
           return false
         end
         true
@@ -122,7 +122,7 @@ module Hydra
         end
         if visibility != expected_visibility
           failure_message << "visibility should be #{expected_visibility} but it is currently #{visibility}.  Call lease_visibility! on this object to repair."
-          self.errors[:lease] << failure_message
+          self.errors.add(:lease, failure_message)
           return false
         end
         true
