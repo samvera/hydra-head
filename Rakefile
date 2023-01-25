@@ -147,7 +147,7 @@ begin
   require 'yard/rake/yardoc_task'
   project_root = File.expand_path(".")
   doc_destination = File.join(project_root, 'doc')
-  if !File.exists?(doc_destination)
+  if !File.exist?(doc_destination)
     FileUtils.mkdir_p(doc_destination)
   end
 

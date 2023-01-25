@@ -38,7 +38,7 @@ module Hydra
 
         file = File.join(Rails.root, filename)
 
-        unless File.exists?(file)
+        unless File.exist?(file)
           raise "ip-range configuration file not found. Expected: #{file}."
         end
 

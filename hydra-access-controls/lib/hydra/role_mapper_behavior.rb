@@ -56,7 +56,7 @@ module Hydra::RoleMapperBehavior
         filename = 'config/role_map.yml'
         file = File.join(Rails.root, filename)
 
-        unless File.exists?(file)
+        unless File.exist?(file)
           raise "You are missing a role map configuration file: #{filename}. Have you run \"rails generate hydra:head\"?"
         end
 
