@@ -70,6 +70,7 @@ module Hydra
 
     def create_conneg_configuration
       file_path = "config/initializers/mime_types.rb"
+      create_file file_path unless File.exist?(file_path)
       append_to_file file_path do
         "Mime::Type.register \"application/n-triples\", :nt\n" +
         "Mime::Type.register \"application/ld+json\", :jsonld\n" +
