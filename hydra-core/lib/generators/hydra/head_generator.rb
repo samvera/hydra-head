@@ -70,6 +70,7 @@ module Hydra
 
     def create_conneg_configuration
       file_path = "config/initializers/mime_types.rb"
+      create_file file_path unless File.exist?(file_path)
       append_to_file file_path do
         "Mime::Type.register \"application/n-triples\", :nt\n" +
         "Mime::Type.register \"application/ld+json\", :jsonld\n" +
@@ -79,7 +80,7 @@ module Hydra
 
     def inject_solr_document_conneg
       file_path = "app/models/solr_document.rb"
-      if File.exists?(file_path)
+      if File.exist?(file_path)
         inject_into_file file_path, :before => /end\Z/ do
           "\n  # Do content negotiation for AF models. \n" +
           "\n  use_extension( Hydra::ContentNegotiation )\n"
@@ -90,7 +91,7 @@ module Hydra
     # Add Hydra behaviors to the user model
     def inject_hydra_user_behavior
       file_path = "app/models/#{model_name.underscore}.rb"
-      if File.exists?(file_path)
+      if File.exist?(file_path)
         inject_into_class file_path, model_name.classify do
           "  # Connects this user object to Hydra behaviors.\n" +
           "  include Hydra::User\n\n"

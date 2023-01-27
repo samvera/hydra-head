@@ -56,7 +56,7 @@ module Hydra::RoleMapperBehavior
         filename = 'config/role_map.yml'
         file = File.join(Rails.root, filename)
 
-        unless File.exists?(file)
+        unless File.exist?(file)
           raise "You are missing a role map configuration file: #{filename}. Have you run \"rails generate hydra:head\"?"
         end
 
@@ -67,7 +67,11 @@ module Hydra::RoleMapperBehavior
         end
 
         begin
-          yml = YAML::load(erb)
+	  yml = if Psych::VERSION > '4.0'
+	    YAML.safe_load(erb, aliases: true)
+	  else
+	    YAML.safe_load(erb, [], [], true)
+	  end
         rescue
           raise("#{filename} was found, but could not be parsed.\n")
         end

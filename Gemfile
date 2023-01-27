@@ -1,6 +1,7 @@
 source "https://rubygems.org"
 
 gem 'rspec-its'
+
 # Specify gem dependencies in hydra-head.gemspec
 gemspec
 
@@ -41,8 +42,13 @@ else
 end
 # END ENGINE_CART BLOCK
 
+if !ENV['RAILS_VERSION'] || ENV['RAILS_VERSION'] =~ /^6.0/
+  gem 'psych', '< 4'
+end
+
 if !ENV['RAILS_VERSION'] || ENV['RAILS_VERSION'] =~ /^5/
   gem 'rails-controller-testing'
+  gem 'psych', '< 4'
 end
 
 if ENV['ACTIVE_FEDORA_VERSION']

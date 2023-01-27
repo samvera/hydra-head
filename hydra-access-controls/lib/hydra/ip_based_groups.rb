@@ -38,12 +38,16 @@ module Hydra
 
         file = File.join(Rails.root, filename)
 
-        unless File.exists?(file)
+        unless File.exist?(file)
           raise "ip-range configuration file not found. Expected: #{file}."
         end
 
         begin
-          yml = YAML::load_file(file)
+          yml = if Psych::VERSION > '4.0'
+            YAML.safe_load(File.read(file), aliases: true)
+          else
+            YAML.safe_load(File.read(file), [], [], true)
+          end
         rescue
           raise("#{filename} was found, but could not be parsed.\n")
         end
