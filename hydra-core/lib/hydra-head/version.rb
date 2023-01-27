@@ -1,3 +1,3 @@
 module HydraHead
-  VERSION = "12.0.1"
+  VERSION = "12.1.0"
 end
