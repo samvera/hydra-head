@@ -13,6 +13,7 @@ Gem::Specification.new do |s|
   s.files         = ['lib/hydra/head.rb']
   s.require_paths = ['lib']
   s.license       = 'APACHE-2.0'
+  s.metadata      = { "rubygems_mfa_required" => "true" }
 
   s.required_ruby_version = '>= 2.5'
 
