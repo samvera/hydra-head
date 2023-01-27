@@ -1,7 +1,6 @@
 source "https://rubygems.org"
 
 gem 'rspec-its'
-gem 'active-triples', git: 'https://github.com/samvera-labs/activetriples.git', branch: 'merge-gitlab-upstream'
 
 # Specify gem dependencies in hydra-head.gemspec
 gemspec
@@ -52,10 +51,9 @@ if !ENV['RAILS_VERSION'] || ENV['RAILS_VERSION'] =~ /^5/
   gem 'psych', '< 4'
 end
 
-gem 'active-fedora', git: 'https://github.com/samvera/active_fedora.git', branch: 'ruby3'
-#if ENV['ACTIVE_FEDORA_VERSION']
-#  gem 'active-fedora', ENV['ACTIVE_FEDORA_VERSION']
-#end
+if ENV['ACTIVE_FEDORA_VERSION']
+  gem 'active-fedora', ENV['ACTIVE_FEDORA_VERSION']
+end
 
 if ENV['BLACKLIGHT_VERSION']
   gem 'blacklight', ENV['BLACKLIGHT_VERSION']

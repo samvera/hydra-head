@@ -1,10 +1,8 @@
 gem 'byebug' unless ENV['CI']
 
-gem 'active-triples', git: 'https://github.com/samvera-labs/activetriples.git', branch: 'merge-gitlab-upstream'
-gem 'active-fedora', git: 'https://github.com/samvera/active_fedora.git', branch: 'ruby3'
-#if ENV['ACTIVE_FEDORA_VERSION']
-#  gem 'active-fedora', ENV['ACTIVE_FEDORA_VERSION']
-#end
+if ENV['ACTIVE_FEDORA_VERSION']
+  gem 'active-fedora', ENV['ACTIVE_FEDORA_VERSION']
+end
 
 if !ENV['RAILS_VERSION'] || ENV['RAILS_VERSION'] =~ /^6.0/ || ENV['RAILS_VERSION'] =~ /^5/
   gem 'psych', '< 4'
