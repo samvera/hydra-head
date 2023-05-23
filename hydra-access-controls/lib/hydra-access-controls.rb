@@ -30,8 +30,10 @@ module Hydra
 
   class Engine < Rails::Engine
     config.before_configuration do
-      ActiveSupport::Inflector.inflections(:en) do |inflect|
-        inflect.acronym 'ACL'
+      Rails.autoloaders.each do |autoloader|
+	autoloader.inflector.inflect(
+	  "acl" => "ACL"
+	)
       end
     end
   end
