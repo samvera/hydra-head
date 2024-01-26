@@ -7,7 +7,6 @@ require 'blacklight-access_controls'
 
 module Hydra
   extend ActiveSupport::Autoload
-  autoload :AccessControls
   autoload :User
   autoload :AccessControlsEnforcement
   autoload :PolicyAwareAccessControlsEnforcement
