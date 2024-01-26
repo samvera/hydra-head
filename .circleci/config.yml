@@ -28,6 +28,7 @@ jobs:
       name: 'samvera/ruby_fcrepo_solr'
       ruby_version: << parameters.ruby_version >>
       solr_port: << parameters.solr_port >>
+      solr_version: "9"
     working_directory: ~/project
 
     environment:
@@ -57,8 +58,13 @@ jobs:
       - samvera/engine_cart_generate:
           cache_key: v1-internal-test-app-{{ checksum "hydra-head.gemspec" }}-{{ checksum "spec/test_app_templates/lib/generators/test_app_generator.rb" }}-{{ checksum "hydra-core/lib/generators/hydra/head_generator.rb" }}-{{ checksum "spec/test_app_templates/Gemfile.extra" }}-<< parameters.active_fedora_version >>-<< parameters.rails_version >>-<< parameters.ruby_version >>-<< parameters.blacklight_version >>
 
-      - samvera/install_solr_core:
-          solr_config_path: << parameters.solr_config_path >>
+      - run:
+          name: Install solr core
+          command: |
+            cd << parameters.solr_config_path >>
+            zip -1 -r solr_conf.zip ./*
+            curl -H "Content-type:application/octet-stream" --data-binary @solr_conf.zip "http://solr:SolrRocks@127.0.0.1:8985/solr/admin/configs?action=UPLOAD&name=solrconfig"
+            curl "http://solr:SolrRocks@127.0.0.1:8985/solr/admin/collections?action=CREATE&name=hydra-test&numShards=1&collection.configName=solrconfig"
 
       - samvera/bundle:
           ruby_version: << parameters.ruby_version >>
