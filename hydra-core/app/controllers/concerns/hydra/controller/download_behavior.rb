@@ -95,6 +95,8 @@ module Hydra
       # render an HTTP Range response
       def send_range
         _, range = request.headers['HTTP_RANGE'].split('bytes=')
+        # assume client is requesting whole file if no range specified
+        range = '0-' if range.nil?
         from, to = range.split('-').map(&:to_i)
         to = file.size - 1 unless to
         length = to - from + 1
