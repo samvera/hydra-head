@@ -28,6 +28,7 @@ jobs:
       name: 'samvera/ruby_fcrepo_solr'
       ruby_version: << parameters.ruby_version >>
       solr_port: << parameters.solr_port >>
+      solr_version: "9"
     working_directory: ~/project
 
     environment:
@@ -57,8 +58,13 @@ jobs:
       - samvera/engine_cart_generate:
           cache_key: v1-internal-test-app-{{ checksum "hydra-head.gemspec" }}-{{ checksum "spec/test_app_templates/lib/generators/test_app_generator.rb" }}-{{ checksum "hydra-core/lib/generators/hydra/head_generator.rb" }}-{{ checksum "spec/test_app_templates/Gemfile.extra" }}-<< parameters.active_fedora_version >>-<< parameters.rails_version >>-<< parameters.ruby_version >>-<< parameters.blacklight_version >>
 
-      - samvera/install_solr_core:
-          solr_config_path: << parameters.solr_config_path >>
+      - run:
+          name: Install solr core
+          command: |
+            cd << parameters.solr_config_path >>
+            zip -1 -r solr_conf.zip ./*
+            curl -H "Content-type:application/octet-stream" --data-binary @solr_conf.zip "http://solr:SolrRocks@127.0.0.1:8985/solr/admin/configs?action=UPLOAD&name=solrconfig"
+            curl "http://solr:SolrRocks@127.0.0.1:8985/solr/admin/collections?action=CREATE&name=hydra-test&numShards=1&collection.configName=solrconfig"
 
       - samvera/bundle:
           ruby_version: << parameters.ruby_version >>
@@ -70,57 +76,77 @@ workflows:
   ci:
     jobs:
       - bundle_and_test:
+          name: "ruby3-3_rails7.1"
+          ruby_version: 3.3.0
+          rails_version: 7.1.3
+      - bundle_and_test:
+          name: "ruby3-2_rails7.1"
+          ruby_version: 3.2.3
+          rails_version: 7.1.3
+      - bundle_and_test:
+          name: "ruby3-1_rails7.1"
+          ruby_version: 3.1.4
+          rails_version: 7.1.3
+      - bundle_and_test:
+          name: "ruby3-0_rails7.1"
+          ruby_version: 3.0.6
+          rails_version: 7.1.3
+      - bundle_and_test:
+          name: "ruby3-3_rails7.0"
+          ruby_version: 3.3.0
+          rails_version: 7.0.8
+      - bundle_and_test:
           name: "ruby3-2_rails7.0"
-          ruby_version: 3.2.0
-          rails_version: 7.0.4.1
+          ruby_version: 3.2.3
+          rails_version: 7.0.8
       - bundle_and_test:
           name: "ruby3-1_rails7.0"
-          ruby_version: 3.1.3
-          rails_version: 7.0.4.1
+          ruby_version: 3.1.4
+          rails_version: 7.0.8
       - bundle_and_test:
           name: "ruby3-0_rails7.0"
-          ruby_version: 3.0.5
-          rails_version: 7.0.4.1
+          ruby_version: 3.0.6
+          rails_version: 7.0.8
       - bundle_and_test:
           name: "ruby3-2_rails6.1"
-          ruby_version: 3.2.0
-          rails_version: 6.1.7.1
+          ruby_version: 3.2.3
+          rails_version: 6.1.7.6
       - bundle_and_test:
           name: "ruby3-1_rails6.1"
-          ruby_version: 3.1.3
-          rails_version: 6.1.7.1
+          ruby_version: 3.1.4
+          rails_version: 6.1.7.6
       - bundle_and_test:
           name: "ruby3-0_rails6.1"
-          ruby_version: 3.0.5
-          rails_version: 6.1.7.1
+          ruby_version: 3.0.6
+          rails_version: 6.1.7.6
       - bundle_and_test:
           name: "ruby2-7_rails6.1"
-          ruby_version: 2.7.6
-          rails_version: 6.1.7.1
+          ruby_version: 2.7.8
+          rails_version: 6.1.7.6
       - bundle_and_test:
           name: "ruby3-2_rails6.0"
-          ruby_version: 3.2.0
+          ruby_version: 3.2.3
           rails_version: 6.0.6.1
       - bundle_and_test:
           name: "ruby3-1_rails6.0"
-          ruby_version: 3.1.3
+          ruby_version: 3.1.4
           rails_version: 6.0.6.1
       - bundle_and_test:
           name: "ruby3-0_rails6.0"
-          ruby_version: 3.0.5
+          ruby_version: 3.0.6
           rails_version: 6.1.7.1
       - bundle_and_test:
           name: "ruby2-7_rails6.0"
-          ruby_version: 2.7.6
+          ruby_version: 2.7.8
           rails_version: 6.0.6.1
       - bundle_and_test:
           name: "ruby2-7_rails5.2"
-          ruby_version: 2.7.6
+          ruby_version: 2.7.8
           rails_version: 5.2.8.1
       - bundle_and_test:
           name: "ruby2-7_rails5.2-bl6"
           blacklight_version: 6.23.0
-          ruby_version: 2.7.6
+          ruby_version: 2.7.8
           rails_version: 5.2.8.1
 
   nightly:
@@ -134,55 +160,75 @@ workflows:
 
     jobs:
       - bundle_and_test:
+          name: "ruby3-3_rails7.1"
+          ruby_version: 3.3.0
+          rails_version: 7.1.3
+      - bundle_and_test:
+          name: "ruby3-2_rails7.1"
+          ruby_version: 3.2.3
+          rails_version: 7.1.3
+      - bundle_and_test:
+          name: "ruby3-1_rails7.1"
+          ruby_version: 3.1.4
+          rails_version: 7.1.3
+      - bundle_and_test:
+          name: "ruby3-0_rails7.1"
+          ruby_version: 3.0.6
+          rails_version: 7.1.3
+      - bundle_and_test:
+          name: "ruby3-3_rails7.0"
+          ruby_version: 3.3.0
+          rails_version: 7.0.8
+      - bundle_and_test:
           name: "ruby3-2_rails7.0"
-          ruby_version: 3.2.0
-          rails_version: 7.0.4.1
+          ruby_version: 3.2.3
+          rails_version: 7.0.8
       - bundle_and_test:
           name: "ruby3-1_rails7.0"
-          ruby_version: 3.1.3
-          rails_version: 7.0.4.1
+          ruby_version: 3.1.4
+          rails_version: 7.0.8
       - bundle_and_test:
           name: "ruby3-0_rails7.0"
-          ruby_version: 3.0.5
-          rails_version: 7.0.4.1
+          ruby_version: 3.0.6
+          rails_version: 7.0.8
       - bundle_and_test:
           name: "ruby3-2_rails6.1"
-          ruby_version: 3.2.0
-          rails_version: 6.1.7.1
+          ruby_version: 3.2.3
+          rails_version: 6.1.7.6
       - bundle_and_test:
           name: "ruby3-1_rails6.1"
-          ruby_version: 3.1.3
-          rails_version: 6.1.7.1
+          ruby_version: 3.1.4
+          rails_version: 6.1.7.6
       - bundle_and_test:
           name: "ruby3-0_rails6.1"
-          ruby_version: 3.0.5
-          rails_version: 6.1.7.1
+          ruby_version: 3.0.6
+          rails_version: 6.1.7.6
       - bundle_and_test:
           name: "ruby2-7_rails6.1"
-          ruby_version: 2.7.6
-          rails_version: 6.1.7.1
+          ruby_version: 2.7.8
+          rails_version: 6.1.7.6
       - bundle_and_test:
           name: "ruby3-2_rails6.0"
-          ruby_version: 3.2.0
+          ruby_version: 3.2.3
           rails_version: 6.0.6.1
       - bundle_and_test:
           name: "ruby3-1_rails6.0"
-          ruby_version: 3.1.3
+          ruby_version: 3.1.4
           rails_version: 6.0.6.1
       - bundle_and_test:
           name: "ruby3-0_rails6.0"
-          ruby_version: 3.0.5
+          ruby_version: 3.0.6
           rails_version: 6.1.7.1
       - bundle_and_test:
           name: "ruby2-7_rails6.0"
-          ruby_version: 2.7.6
+          ruby_version: 2.7.8
           rails_version: 6.0.6.1
       - bundle_and_test:
           name: "ruby2-7_rails5.2"
-          ruby_version: 2.7.6
+          ruby_version: 2.7.8
           rails_version: 5.2.8.1
       - bundle_and_test:
           name: "ruby2-7_rails5.2-bl6"
           blacklight_version: 6.23.0
-          ruby_version: 2.7.6
+          ruby_version: 2.7.8
           rails_version: 5.2.8.1
