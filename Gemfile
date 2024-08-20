@@ -51,7 +51,7 @@ if !ENV['RAILS_VERSION'] || ENV['RAILS_VERSION'] =~ /^5/
   gem 'psych', '< 4'
 end
 
-gem 'active-fedora', git: "https://github.com/samvera/active_fedora.git", branch: "ruby_rails_bump"
+gem 'active-fedora', git: "https://github.com/samvera/active_fedora.git", branch: "further_along_the_rails"
 #if ENV['ACTIVE_FEDORA_VERSION']
 #  gem 'active-fedora', ENV['ACTIVE_FEDORA_VERSION']
 #end
