@@ -17,9 +17,9 @@ Gem::Specification.new do |gem|
   gem.license       = "APACHE-2.0"
   gem.metadata      = { "rubygems_mfa_required" => "true" }
 
-  gem.required_ruby_version = '>= 2.4'
+  gem.required_ruby_version = '>= 3.1'
 
-  gem.add_dependency 'activesupport', '>= 5.2', '< 8.0'
+  gem.add_dependency 'activesupport', '>= 6.1', '< 8.0'
   gem.add_dependency 'active-fedora', '>= 10.0.0'
   gem.add_dependency 'blacklight-access_controls', '~> 6.0'
   gem.add_dependency 'cancancan', '>= 1.8', '< 4'

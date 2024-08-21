@@ -15,11 +15,11 @@ Gem::Specification.new do |s|
   s.license       = 'APACHE-2.0'
   s.metadata      = { "rubygems_mfa_required" => "true" }
 
-  s.required_ruby_version = '>= 2.5'
+  s.required_ruby_version = '>= 3.1'
 
   s.add_dependency 'hydra-access-controls', version
   s.add_dependency 'hydra-core', version
-  s.add_dependency 'rails', '>= 5.2', '< 8.0'
+  s.add_dependency 'rails', '>= 6.1', '< 8.0'
 
   s.add_development_dependency 'coveralls'
   s.add_development_dependency 'engine_cart', '~> 2.3'
