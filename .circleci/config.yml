@@ -11,7 +11,7 @@ jobs:
         default: '~> 7'
       bundler_version:
         type: string
-        default: 2.4.5
+        default: 2.5.18
       rails_version:
         type: string
       solr_port:
@@ -103,19 +103,19 @@ workflows:
       - bundle_and_test:
           name: "ruby3-3_rails7.2"
           ruby_version: 3.3.4
-          rails_version: 7.2.0
+          rails_version: 7.2.1
       - bundle_and_test:
           name: "ruby3-3_rails7.1"
           ruby_version: 3.3.4
-          rails_version: 7.1.3.4
+          rails_version: 7.1.4
       - bundle_and_test:
           name: "ruby3-2_rails7.1"
           ruby_version: 3.2.5
-          rails_version: 7.1.3.4
+          rails_version: 7.1.4
       - bundle_and_test:
           name: "ruby3-1_rails7.1"
           ruby_version: 3.1.6
-          rails_version: 7.1.3.4
+          rails_version: 7.1.4
       - bundle_and_test:
           name: "ruby3-3_rails7.0"
           ruby_version: 3.3.4
@@ -150,19 +150,19 @@ workflows:
       - bundle_and_test:
           name: "ruby3-3_rails7.2"
           ruby_version: 3.3.4
-          rails_version: 7.2.0
+          rails_version: 7.2.1
       - bundle_and_test:
           name: "ruby3-3_rails7.1"
           ruby_version: 3.3.4
-          rails_version: 7.1.3.4
+          rails_version: 7.1.4
       - bundle_and_test:
           name: "ruby3-2_rails7.1"
           ruby_version: 3.2.5
-          rails_version: 7.1.3.4
+          rails_version: 7.1.4
       - bundle_and_test:
           name: "ruby3-1_rails7.1"
           ruby_version: 3.1.6
-          rails_version: 7.1.3.4
+          rails_version: 7.1.4
       - bundle_and_test:
           name: "ruby3-3_rails7.0"
           ruby_version: 3.3.4
