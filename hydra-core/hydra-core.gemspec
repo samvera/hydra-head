@@ -17,10 +17,10 @@ Gem::Specification.new do |gem|
   gem.license       = "APACHE2"
   gem.metadata      = { "rubygems_mfa_required" => "true" }
 
-  gem.required_ruby_version = '>= 2.4'
+  gem.required_ruby_version = '>= 3.1'
 
   gem.add_dependency 'hydra-access-controls', version
-  gem.add_dependency "railties", '>= 5.2', '< 7.2'
+  gem.add_dependency "railties", '>= 6.1', '< 8.0'
 
   gem.add_development_dependency 'rails-controller-testing', '~> 1'
   gem.add_development_dependency 'rspec-rails', '~> 4.0'
