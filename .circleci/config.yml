@@ -82,7 +82,9 @@ jobs:
 
       - samvera/engine_cart_generate:
           cache_key: v2-internal-test-app-{{ checksum "hydra-head.gemspec" }}-{{ checksum "spec/test_app_templates/lib/generators/test_app_generator.rb" }}-{{ checksum "hydra-core/lib/generators/hydra/head_generator.rb" }}-{{ checksum "spec/test_app_templates/Gemfile.extra" }}-<< parameters.active_fedora_version >>-<< parameters.rails_version >>-<< parameters.ruby_version >>-<< parameters.blacklight_version >>
-
+      - run:
+          name: Fix test app's Gemfile
+          command: sed -i 's/\(^.*error_highlight.*$\)/# \1/' .internal_test_app/Gemfile
       - run:
           name: Install solr core
           command: |
