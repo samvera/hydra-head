@@ -101,6 +101,11 @@ workflows:
   ci:
     jobs:
       - bundle_and_test:
+          name: "ruby3-4_rails8.0"
+          ruby_version: 3.4.4
+          rails_version: 8.0.2
+          active_fedora_version: '>= 15.0.0'
+      - bundle_and_test:
           name: "ruby3-3_rails7.2"
           ruby_version: 3.3.4
           rails_version: 7.2.1
