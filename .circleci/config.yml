@@ -32,6 +32,9 @@ jobs:
       solr_version:
         type: string
         default: "9"
+      additional_engine_cart_options:
+        type: string
+        default: ""
 
     docker:
       - image: cimg/<< parameters.ruby_type >>:<< parameters.ruby_version >>-browsers
@@ -51,7 +54,7 @@ jobs:
     working_directory: ~/project
 
     environment:
-      ENGINE_CART_RAILS_OPTIONS: --skip-git --skip-bundle --skip-listen --skip-spring --skip-yarn --skip-keeps --skip-coffee --skip-puma --skip-test
+      ENGINE_CART_RAILS_OPTIONS: --skip-git --skip-bundle --skip-listen --skip-spring --skip-yarn --skip-keeps --skip-coffee --skip-puma --skip-test <<parameters.additional_engine_cart_options >>
       RAILS_VERSION: << parameters.rails_version >>
       SOLR_TEST_PORT: << parameters.solr_port >>
       ACTIVE_FEDORA_VERSION: << parameters.active_fedora_version >>
@@ -107,6 +110,7 @@ workflows:
           rails_version: 8.0.2
           active_fedora_version: '>= 15.0.0'
           blacklight_version: '~> 8'
+          additional_engine_cart_options: "--css=bootstrap"
       - bundle_and_test:
           name: "ruby3-3_rails7.2"
           ruby_version: 3.3.4
