@@ -28,6 +28,14 @@ else
       gem 'rails', ENV['RAILS_VERSION']
     end
   end
+
+  case ENV['RAILS_VERSION']
+  when /^7\.0/
+    # concurrent-ruby 1.3.5 causes Rails versions below 7.1 to break
+    gem 'concurrent-ruby', '1.3.4'
+  when /^6\.[01]/
+    gem 'concurrent-ruby', '1.3.4'
+  end
 end
 # END ENGINE_CART BLOCK
 
