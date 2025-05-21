@@ -11,7 +11,7 @@ jobs:
         default: '~> 7'
       bundler_version:
         type: string
-        default: 2.5.18
+        default: '2.6.9'
       rails_version:
         type: string
       solr_port:
@@ -106,6 +106,7 @@ workflows:
           ruby_version: 3.4.4
           rails_version: 8.0.2
           active_fedora_version: '>= 15.0.0'
+          blacklight_version: '~> 8'
       - bundle_and_test:
           name: "ruby3-3_rails7.2"
           ruby_version: 3.3.4
