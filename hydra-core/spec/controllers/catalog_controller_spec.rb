@@ -30,13 +30,13 @@ describe CatalogController do
       it "should only return public documents if role does not have permissions" do
         allow(controller).to receive(:current_user).and_return(nil)
         get :index
-        expect(assigns(:document_list).count).to eq @public_only_results.docs.count
+        expect(assigns(:response).documents.count).to eq @public_only_results.docs.count
       end
 
       it "should return documents if the group names need to be escaped" do
         allow(RoleMapper).to receive(:roles).and_return(["abc/123","cde/567"])
         get :index
-        expect(assigns(:document_list).count).to eq @public_only_results.docs.count
+        expect(assigns(:response).documents.count).to eq @public_only_results.docs.count
       end
     end
   end

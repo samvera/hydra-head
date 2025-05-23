@@ -30,24 +30,16 @@ else
   end
 
   case ENV['RAILS_VERSION']
-  when /^5.[12]/
-    gem 'sass-rails', '~> 5.0'
-  when /^4.2/
-    gem 'responders', '~> 2.0'
-    gem 'sass-rails', '>= 5.0'
-    gem 'coffee-rails', '~> 4.1.0'
-  when /^4.[01]/
-    gem 'sass-rails', '< 5.0'
+  when /^7\.0/
+    # concurrent-ruby 1.3.5 causes Rails versions below 7.1 to break
+    gem 'concurrent-ruby', '1.3.4'
+  when /^6\.[01]/
+    gem 'concurrent-ruby', '1.3.4'
   end
 end
 # END ENGINE_CART BLOCK
 
 if !ENV['RAILS_VERSION'] || ENV['RAILS_VERSION'] =~ /^6.0/
-  gem 'psych', '< 4'
-end
-
-if !ENV['RAILS_VERSION'] || ENV['RAILS_VERSION'] =~ /^5/
-  gem 'rails-controller-testing'
   gem 'psych', '< 4'
 end
 

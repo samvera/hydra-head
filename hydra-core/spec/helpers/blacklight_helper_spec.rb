@@ -17,19 +17,19 @@ describe BlacklightHelper do
     end
 
     it "changes camel case to underscored lowercase" do
-      expect(helper.document_partial_name('has_model_s' => ["Presentation"])).to eq "presentation"
-      expect(helper.document_partial_name('has_model_s' => ["GenericContent"])).to eq("generic_content")
+      expect(helper.send(:document_partial_name, 'has_model_s' => ["Presentation"])).to eq "presentation"
+      expect(helper.send(:document_partial_name, 'has_model_s' => ["GenericContent"])).to eq("generic_content")
     end
 
     context "with a single valued field" do
       let(:field_name) { 'has_model_s' }
       it "should support single valued fields" do
-        expect(helper.document_partial_name('has_model_s' => "Chicken")).to eq "chicken"
+        expect(helper.send(:document_partial_name, 'has_model_s' => "Chicken")).to eq "chicken"
       end
     end
 
     it "handles periods" do
-      expect(helper.document_partial_name('has_model_s' => ["text.PDF"])).to eq "text_pdf"
+      expect(helper.send(:document_partial_name, 'has_model_s' => ["text.PDF"])).to eq "text_pdf"
     end
   end
 end

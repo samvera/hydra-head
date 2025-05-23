@@ -11,7 +11,7 @@ jobs:
         default: '~> 7'
       bundler_version:
         type: string
-        default: 2.5.18
+        default: '2.6.9'
       rails_version:
         type: string
       solr_port:
@@ -32,6 +32,9 @@ jobs:
       solr_version:
         type: string
         default: "9"
+      additional_engine_cart_options:
+        type: string
+        default: ""
 
     docker:
       - image: cimg/<< parameters.ruby_type >>:<< parameters.ruby_version >>-browsers
@@ -45,12 +48,13 @@ jobs:
         environment:
           VERBOSE: yes
           SECURITY_JSON: '{"authentication":{"blockUnknown": false, "class":"solr.BasicAuthPlugin", "credentials":{"solr":"IV0EHq1OnNrj6gvRCwvFwTrZ1+z1oBbnQdiVC3otuq0= Ndd7LKvVBAaZIF0QAVi1ekCfAJXr1GGfLtRUXhgrF8c="}, "realm":"My Solr users", "forwardCredentials": false}, "authorization":{ "class":"solr.RuleBasedAuthorizationPlugin", "permissions":[{"name":"security-edit", "role":"admin"}], "user-role":{"solr":"admin"}}}'
+          SOLR_MODULES: "analysis-extras,extraction"
         command: sh -c "server/scripts/cloud-scripts/zkcli.sh -zkhost localhost:2181 -cmd put /security.json \"${SECURITY_JSON}\" && solr-fg -cloud -noprompt  -p << parameters.solr_port >> -z localhost:2181"
 
     working_directory: ~/project
 
     environment:
-      ENGINE_CART_RAILS_OPTIONS: --skip-git --skip-bundle --skip-listen --skip-spring --skip-yarn --skip-keeps --skip-coffee --skip-puma --skip-test
+      ENGINE_CART_RAILS_OPTIONS: --skip-git --skip-bundle --skip-listen --skip-spring --skip-yarn --skip-keeps --skip-coffee --skip-puma --skip-test <<parameters.additional_engine_cart_options >>
       RAILS_VERSION: << parameters.rails_version >>
       SOLR_TEST_PORT: << parameters.solr_port >>
       ACTIVE_FEDORA_VERSION: << parameters.active_fedora_version >>
@@ -101,45 +105,52 @@ workflows:
   ci:
     jobs:
       - bundle_and_test:
+          name: "ruby3-4_rails8.0"
+          ruby_version: 3.4.4
+          rails_version: 8.0.2
+          active_fedora_version: '>= 15.0.0'
+          blacklight_version: '~> 8'
+          additional_engine_cart_options: "--css=bootstrap"
+      - bundle_and_test:
           name: "ruby3-3_rails7.2"
-          ruby_version: 3.3.4
-          rails_version: 7.2.1
+          ruby_version: 3.3.8
+          rails_version: 7.2.2.1
           active_fedora_version: '>= 15.0.0'
       - bundle_and_test:
           name: "ruby3-3_rails7.1"
-          ruby_version: 3.3.4
-          rails_version: 7.1.4
+          ruby_version: 3.3.8
+          rails_version: 7.1.5.1
           active_fedora_version: '>= 15.0.0'
       - bundle_and_test:
           name: "ruby3-2_rails7.1"
-          ruby_version: 3.2.5
-          rails_version: 7.1.4
+          ruby_version: 3.2.8
+          rails_version: 7.1.5.1
           active_fedora_version: '>= 15.0.0'
       - bundle_and_test:
           name: "ruby3-1_rails7.1"
-          ruby_version: 3.1.6
-          rails_version: 7.1.4
+          ruby_version: 3.1.7
+          rails_version: 7.1.5.1
           active_fedora_version: '>= 15.0.0'
       - bundle_and_test:
           name: "ruby3-3_rails7.0"
-          ruby_version: 3.3.4
-          rails_version: 7.0.8.4
+          ruby_version: 3.3.8
+          rails_version: 7.0.8.7
       - bundle_and_test:
           name: "ruby3-2_rails7.0"
-          ruby_version: 3.2.5
-          rails_version: 7.0.8.4
+          ruby_version: 3.2.8
+          rails_version: 7.0.8.7
       - bundle_and_test:
           name: "ruby3-1_rails7.0"
-          ruby_version: 3.1.6
-          rails_version: 7.0.8.4
+          ruby_version: 3.1.7
+          rails_version: 7.0.8.7
       - bundle_and_test:
           name: "ruby3-2_rails6.1"
-          ruby_version: 3.2.5
-          rails_version: 6.1.7.8
+          ruby_version: 3.2.8
+          rails_version: 6.1.7.10
       - bundle_and_test:
           name: "ruby3-1_rails6.1"
-          ruby_version: 3.1.6
-          rails_version: 6.1.7.8
+          ruby_version: 3.1.7
+          rails_version: 6.1.7.10
 
   nightly:
     triggers:
@@ -152,42 +163,49 @@ workflows:
 
     jobs:
       - bundle_and_test:
+          name: "ruby3-4_rails8.0"
+          ruby_version: 3.4.4
+          rails_version: 8.0.2
+          active_fedora_version: '>= 15.0.0'
+          blacklight_version: '~> 8'
+          additional_engine_cart_options: "--css=bootstrap"
+      - bundle_and_test:
           name: "ruby3-3_rails7.2"
-          ruby_version: 3.3.4
-          rails_version: 7.2.1
+          ruby_version: 3.3.8
+          rails_version: 7.2.2.1
           active_fedora_version: '>= 15.0.0'
       - bundle_and_test:
           name: "ruby3-3_rails7.1"
-          ruby_version: 3.3.4
-          rails_version: 7.1.4
+          ruby_version: 3.3.8
+          rails_version: 7.1.5.1
           active_fedora_version: '>= 15.0.0'
       - bundle_and_test:
           name: "ruby3-2_rails7.1"
-          ruby_version: 3.2.5
-          rails_version: 7.1.4
+          ruby_version: 3.2.8
+          rails_version: 7.1.5.1
           active_fedora_version: '>= 15.0.0'
       - bundle_and_test:
           name: "ruby3-1_rails7.1"
-          ruby_version: 3.1.6
-          rails_version: 7.1.4
+          ruby_version: 3.1.7
+          rails_version: 7.1.5.1
           active_fedora_version: '>= 15.0.0'
       - bundle_and_test:
           name: "ruby3-3_rails7.0"
-          ruby_version: 3.3.4
-          rails_version: 7.0.8.4
+          ruby_version: 3.3.8
+          rails_version: 7.0.8.7
       - bundle_and_test:
           name: "ruby3-2_rails7.0"
-          ruby_version: 3.2.5
-          rails_version: 7.0.8.4
+          ruby_version: 3.2.8
+          rails_version: 7.0.8.7
       - bundle_and_test:
           name: "ruby3-1_rails7.0"
-          ruby_version: 3.1.6
-          rails_version: 7.0.8.4
+          ruby_version: 3.1.7
+          rails_version: 7.0.8.7
       - bundle_and_test:
           name: "ruby3-2_rails6.1"
-          ruby_version: 3.2.5
-          rails_version: 6.1.7.8
+          ruby_version: 3.2.8
+          rails_version: 6.1.7.10
       - bundle_and_test:
           name: "ruby3-1_rails6.1"
-          ruby_version: 3.1.6
-          rails_version: 6.1.7.8
+          ruby_version: 3.1.7
+          rails_version: 6.1.7.10
