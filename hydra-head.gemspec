@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'hydra-access-controls', version
   s.add_dependency 'hydra-core', version
-  s.add_dependency 'rails', '>= 6.1', '< 8.1'
+  s.add_dependency 'rails', '>= 6.1', '< 9'
 
   s.add_development_dependency 'coveralls'
   s.add_development_dependency 'engine_cart', '>= 2.3'

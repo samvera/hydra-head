@@ -19,7 +19,7 @@ Gem::Specification.new do |gem|
 
   gem.required_ruby_version = '>= 3.1'
 
-  gem.add_dependency 'activesupport', '>= 6.1', '< 8.1'
+  gem.add_dependency 'activesupport', '>= 6.1', '< 9'
   gem.add_dependency 'active-fedora', '>= 10.0.0'
   gem.add_dependency 'blacklight-access_controls', '~> 6.0'
   gem.add_dependency 'cancancan', '>= 1.8', '< 4'
