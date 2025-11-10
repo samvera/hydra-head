@@ -11,7 +11,7 @@ module Hydra::AccessControls
     end
 
     def active?
-      lease_expiration_date.present? && Date.today < lease_expiration_date
+      (lease_expiration_date.present? && Date.today.end_of_day < lease_expiration_date)
     end
 
     def deactivate!
