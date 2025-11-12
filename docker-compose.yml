@@ -1,0 +1,27 @@
+volumes:
+  fedora:
+  solr:
+
+services:
+  fedora:
+    image: samvera/fcrepo4:4.7.5
+    volumes:
+      - fedora:/data
+    environment:
+      - CATALINA_OPTS=-Djava.awt.headless=true -Dfile.encoding=UTF-8 -server -Xms512m -Xmx1024m -XX:NewSize=256m -XX:MaxNewSize=256m -XX:PermSize=256m -XX:MaxPermSize=256m -XX:+DisableExplicitGC
+    ports:
+      - 8986:8080
+
+  solr:
+    image: solr:9
+    volumes:
+      - .internal_test_app/solr/conf:/opt/solr/hydra_conf
+      - solr:/var/solr
+    command:
+      - solr-precreate
+      - hydra-test
+      - /opt/solr/hydra_conf
+    environment:
+      - SOLR_MODULES=analysis-extras,extraction
+    ports:
+      - 8985:8983
