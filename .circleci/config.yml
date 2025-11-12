@@ -19,7 +19,7 @@ jobs:
         default: '8985'
       active_fedora_version:
         type: string
-        default: '>0'
+        default: '~> 15.0'
       solr_config_path:
         type: string
         default: '.internal_test_app/solr/conf'
@@ -106,51 +106,24 @@ workflows:
     jobs:
       - bundle_and_test:
           name: "ruby3-4_rails8.0"
-          ruby_version: 3.4.4
-          rails_version: 8.0.2
-          active_fedora_version: '>= 15.0.0'
+          ruby_version: 3.4.7
+          rails_version: 8.0.4
           blacklight_version: '~> 8'
           additional_engine_cart_options: "--css=bootstrap"
       - bundle_and_test:
+          name: "ruby3-4_rails8.0_blacklight7"
+          ruby_version: 3.4.7
+          rails_version: 8.0.4
+          blacklight_version: '~> 7.0'
+          additional_engine_cart_options: "--css=bootstrap"
+      - bundle_and_test:
           name: "ruby3-3_rails7.2"
-          ruby_version: 3.3.8
-          rails_version: 7.2.2.1
-          active_fedora_version: '>= 15.0.0'
+          ruby_version: 3.3.9
+          rails_version: 7.2.3
       - bundle_and_test:
-          name: "ruby3-3_rails7.1"
-          ruby_version: 3.3.8
-          rails_version: 7.1.5.1
-          active_fedora_version: '>= 15.0.0'
-      - bundle_and_test:
-          name: "ruby3-2_rails7.1"
-          ruby_version: 3.2.8
-          rails_version: 7.1.5.1
-          active_fedora_version: '>= 15.0.0'
-      - bundle_and_test:
-          name: "ruby3-1_rails7.1"
-          ruby_version: 3.1.7
-          rails_version: 7.1.5.1
-          active_fedora_version: '>= 15.0.0'
-      - bundle_and_test:
-          name: "ruby3-3_rails7.0"
-          ruby_version: 3.3.8
-          rails_version: 7.0.8.7
-      - bundle_and_test:
-          name: "ruby3-2_rails7.0"
-          ruby_version: 3.2.8
-          rails_version: 7.0.8.7
-      - bundle_and_test:
-          name: "ruby3-1_rails7.0"
-          ruby_version: 3.1.7
-          rails_version: 7.0.8.7
-      - bundle_and_test:
-          name: "ruby3-2_rails6.1"
-          ruby_version: 3.2.8
-          rails_version: 6.1.7.10
-      - bundle_and_test:
-          name: "ruby3-1_rails6.1"
-          ruby_version: 3.1.7
-          rails_version: 6.1.7.10
+          name: "ruby3-2_rails7.2"
+          ruby_version: 3.2.9
+          rails_version: 7.2.3
 
   nightly:
     triggers:
@@ -164,48 +137,21 @@ workflows:
     jobs:
       - bundle_and_test:
           name: "ruby3-4_rails8.0"
-          ruby_version: 3.4.4
-          rails_version: 8.0.2
-          active_fedora_version: '>= 15.0.0'
+          ruby_version: 3.4.7
+          rails_version: 8.0.4
           blacklight_version: '~> 8'
           additional_engine_cart_options: "--css=bootstrap"
       - bundle_and_test:
+          name: "ruby3-4_rails8.0_blacklight7"
+          ruby_version: 3.4.7
+          rails_version: 8.0.4
+          blacklight_version: '~> 7.0'
+          additional_engine_cart_options: "--css=bootstrap"
+      - bundle_and_test:
           name: "ruby3-3_rails7.2"
-          ruby_version: 3.3.8
-          rails_version: 7.2.2.1
-          active_fedora_version: '>= 15.0.0'
+          ruby_version: 3.3.9
+          rails_version: 7.2.3
       - bundle_and_test:
-          name: "ruby3-3_rails7.1"
-          ruby_version: 3.3.8
-          rails_version: 7.1.5.1
-          active_fedora_version: '>= 15.0.0'
-      - bundle_and_test:
-          name: "ruby3-2_rails7.1"
-          ruby_version: 3.2.8
-          rails_version: 7.1.5.1
-          active_fedora_version: '>= 15.0.0'
-      - bundle_and_test:
-          name: "ruby3-1_rails7.1"
-          ruby_version: 3.1.7
-          rails_version: 7.1.5.1
-          active_fedora_version: '>= 15.0.0'
-      - bundle_and_test:
-          name: "ruby3-3_rails7.0"
-          ruby_version: 3.3.8
-          rails_version: 7.0.8.7
-      - bundle_and_test:
-          name: "ruby3-2_rails7.0"
-          ruby_version: 3.2.8
-          rails_version: 7.0.8.7
-      - bundle_and_test:
-          name: "ruby3-1_rails7.0"
-          ruby_version: 3.1.7
-          rails_version: 7.0.8.7
-      - bundle_and_test:
-          name: "ruby3-2_rails6.1"
-          ruby_version: 3.2.8
-          rails_version: 6.1.7.10
-      - bundle_and_test:
-          name: "ruby3-1_rails6.1"
-          ruby_version: 3.1.7
-          rails_version: 6.1.7.10
+          name: "ruby3-2_rails7.2"
+          ruby_version: 3.2.9
+          rails_version: 7.2.3
