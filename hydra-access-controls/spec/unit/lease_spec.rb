@@ -27,19 +27,19 @@ describe Hydra::AccessControls::Lease do
       end
 
       context 'with today\'s date' do
-        it 'returns true when set to today at end of day' do
+        it 'returns false when set to today at end of day' do
           lease.lease_expiration_date = Date.today.end_of_day
-          expect(lease.active?).to be true
+          expect(lease.active?).to be false
         end
 
-        it 'returns true when set to today at beginning of day' do
+        it 'returns false when set to today at beginning of day' do
           lease.lease_expiration_date = Date.today.beginning_of_day
-          expect(lease.active?).to be true
+          expect(lease.active?).to be false
         end
 
-        it 'returns true when set to today at noon' do
+        it 'returns false when set to today at noon' do
           lease.lease_expiration_date = Date.today.noon
-          expect(lease.active?).to be true
+          expect(lease.active?).to be false
         end
       end
 
